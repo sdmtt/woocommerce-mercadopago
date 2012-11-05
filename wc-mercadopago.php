@@ -244,7 +244,6 @@ function wcmercadopago_gateway_load() {
          * @return string
          */
         public function generate_form( $order_id ) {
-            global $woocommerce;
 
             $order = new WC_Order( $order_id );
 

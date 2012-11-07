@@ -294,6 +294,7 @@ function wcmercadopago_gateway_load() {
         public function css() {
             echo '<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>';
         }
+
         /**
          * Process the payment and return the result.
          *

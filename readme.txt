@@ -17,12 +17,66 @@ This plugin adds MercadoPago gateway to WooCommerce.
 
 Please notice that WooCommerce must be installed and active.
 
+### Descrição em Português:
+
+Adicione o MercadoPago como método de pagamento em sua loja WooCommerce.
+
+[MercadoPago](https://www.mercadopago.com/) é um método de pagamento desenvolvido pelo Mercado Livre.
+
+O plugin WooCommerce MercadoPago foi desenvolvido sem nenhum incentivo do MercadoPago ou Mercado Livre. Nenhum dos desenvolvedores deste plugin possuem vínculos com estas duas empresas.
+
+Este plugin foi feito baseado na [documentação oficial do MercadoPago](http://developers.mercadopago.com/).
+
+= Instalação: =
+
+Confira o nosso guia de instalação e configuração do WooCommerce MercadoPago na aba [Installation](http://wordpress.org/extend/plugins/woocommerce-mercadopago/installation/).
+
+= Dúvidas? =
+
+Você pode esclarecer suas dúvidas usando:
+
+* A nossa sessão de [FAQ](http://wordpress.org/extend/plugins/woocommerce-mercadopago/faq/).
+* Criando um tópico no [forúm de ajuda do WordPress](http://wordpress.org/support/plugin/woocommerce-mercadopago) (apenas em inglês).
+* Ou entre em contato com os desenvolvedores do plugin em nossa [página](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
+
 == Installation ==
 
 = Plugin Install: =
 * Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 * Activate the plugin
 * Navigate to WooCommerce -> Settings -> Payment Gateways, choose MercadoPago and fill in your MercadoPago Client_id and Client_secret
+
+### Instalação e configuração em Português:
+
+= Instalação do plugin: =
+
+* Envie os arquivos do plugin para a pasta wp-content/plugins ou usando o instalador de plugins do WordPress.
+* Ative o plugin.
+
+= Requerimentos: =
+
+É necessário possuir uma conta no [MercadoPago](https://www.mercadopago.com/) e instalar a última versão do [WooCommerce](http://wordpress.org/extend/plugins/woocommerce/).
+
+= Configurações no MercadoPago: =
+
+No MercadoPago você precisa validar sua conta e conseguir o seu Client_id e Client_secret.
+Você pode acessar as suas informações de Client_id e Client_secret em:
+[MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/aplicacoes) ou [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/aplicaciones).
+
+É necessário também configurar a página de retorno, para isso é necessário acessar:
+[MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/notificacoes) ou [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/notificaciones).
+
+Deve ser configurada a sua página de retorno como por exemplo:
+
+    http://seusite.com/finalizar-compra/pedido-recebido/
+
+= Configurações do Plugin: =
+
+Com o plugin instalado acesse o admin do WordPress e entre em "WooCommerce" > "Configurações" > "Portais de pagamento"  > "MercadoPago".
+
+Habilite o MercadoPago, adicione o seu e-mail, Client_id e Client_secret.
+
+Pronto, sua loja já pode receber pagamentos pelo MercadoPago.
 
 == License ==
 
@@ -40,7 +94,43 @@ You should have received a copy of the GNU General Public License along with Aut
 
 = What is needed to use this plugin? =
 * WooCommerce installed and active
-* Only one account on [MercadoPago](http://site.mercadopago.com.br/ "MercadoPago").
+* Only one account on [MercadoPago](https://www.mercadopago.com/ "MercadoPago").
+
+### FAQ em Português:
+
+= Qual é a licença do plugin? =
+
+Este plugin esta licenciado como GPL.
+
+= O que eu preciso para utilizar este plugin? =
+
+* Ter instalado o plugin WooCommerce.
+* Possuir uma conta no MercadoPago.
+* Pegar as informações de Client_id e Client_secret.
+* Configurar a página de retorno automático de dados.
+
+= Como funciona o MercadoPago? =
+
+* Saiba mais em "[O que é o MercadoPago e como funciona?](http://guia.mercadolivre.com.br/mercadopago-como-funciona-6983-VGP)".
+
+= Quais são os meios de pagamento que o plugin aceita? =
+
+São aceitos todos os meios de pagamentos que o MercadoPago disponibiliza.
+Entretanto você precisa ativa-los na sua conta no MercadoPago.
+
+Consulte os meios de pagamento em "[Meios de pagamento e parcelamento](https://www.mercadopago.com/mlb/ml.faqs.framework.main.FaqsController?pageId=FAQ&faqId=2991&categId=How&type=FAQ)".
+
+= Quais são as taxas de transações que o MercadoPago cobra? =
+
+Consulte a página "[Taxas do Mercado Pago](http://guia.mercadolivre.com.br/taxas-mercado-pago-12593-VGP)".
+
+= Como que plugin faz integração com MercadoPago? =
+
+Fazemos a integração baseada na documentação oficial do MercadoPago que pode ser encontrada em "[MercadoPago Developers](http://developers.mercadopago.com/)"
+
+= Mais dúvidas relacionadas ao funcionamento do plugin? =
+
+Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
 
 == Changelog ==
 

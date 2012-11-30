@@ -3,7 +3,7 @@ Contributors: claudiosanches
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -141,6 +141,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 1.1.1 - 30/11/2012 =
+
+* Correção dos logs de erro.
+
 = 1.1 - 30/11/2012 =
 
 * Adicionada opção para logs de erro.
@@ -150,6 +154,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 * Versão Inicial.
 
 == Upgrade Notice ==
+
+= 1.1.1 =
+
+* Fixed error logs.
 
 = 1.1 =
 

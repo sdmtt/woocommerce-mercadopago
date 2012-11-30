@@ -141,7 +141,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
-= 1.1 =
+= 1.1 - 30/11/2012 =
 
 * Adicionada opção para logs de erro.
 

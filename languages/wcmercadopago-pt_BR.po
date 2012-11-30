@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce MercadoPago v1.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-11-30 15:38:04+0000\n"
+"PO-Revision-Date: 2012-11-30 15:52:09+0000\n"
 "Last-Translator: Claudio Sanches <contato@claudiosmweb.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -245,20 +245,20 @@ msgstr "1.1"
 #: wc-mercadopago.php:192
 #@ wcmercadopago
 msgid "Gateway Testing"
-msgstr ""
+msgstr "Teste de Gateway"
 
 #: wc-mercadopago.php:197
 #@ wcmercadopago
 msgid "Debug Log"
-msgstr ""
+msgstr "Log de depuração"
 
 #: wc-mercadopago.php:199
 #@ wcmercadopago
 msgid "Enable logging"
-msgstr ""
+msgstr "Habilitar log"
 
 #: wc-mercadopago.php:201
-#@ default
+#@ wcmercadopago
 msgid "Log MercadoPago events, such as API requests, inside <code>woocommerce/logs/mercadopago.txt</code>"
-msgstr ""
+msgstr "Registrar log de eventos do MercadoPago, como solicitações de API, dentro do arquivo <code>woocommerce/logs/mercadopago.txt</code>"
 

@@ -198,7 +198,7 @@ function wcmercadopago_gateway_load() {
                     'type' => 'checkbox',
                     'label' => __( 'Enable logging', 'wcmercadopago' ),
                     'default' => 'no',
-                    'description' => __( 'Log MercadoPago events, such as API requests, inside <code>woocommerce/logs/mercadopago.txt</code>' ),
+                    'description' => __( 'Log MercadoPago events, such as API requests, inside <code>woocommerce/logs/mercadopago.txt</code>', 'wcmercadopago'  ),
                 )
             );
         }

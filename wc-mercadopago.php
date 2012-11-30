@@ -304,7 +304,7 @@ function wcmercadopago_gateway_load() {
 
                 $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
 
-                if ( $this->debug == 'yes') {
+                if ( $this->debug == 'yes' ) {
                     $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( $response, true ) );
                 }
 
@@ -426,7 +426,7 @@ function wcmercadopago_gateway_load() {
 
                 return $body;
             } else {
-                if ( $this->debug == 'yes') {
+                if ( $this->debug == 'yes' ) {
                     $this->log->add( 'mercadopago', 'Received invalid IPN response from MercadoPago.' );
                 }
             }
@@ -486,7 +486,7 @@ function wcmercadopago_gateway_load() {
                 if ( $order->id === $order_id ) {
 
                     if ( $this->debug == 'yes' ) {
-                        $this->log->add( 'mercadopago', 'Payment status: ' . $data->status );
+                        $this->log->add( 'mercadopago', 'Payment status from order #' . $order->id . ': ' . $data->status );
                     }
 
                     switch ( $data->status ) {

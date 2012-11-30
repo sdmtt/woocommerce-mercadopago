@@ -305,7 +305,7 @@ function wcmercadopago_gateway_load() {
                 $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
 
                 if ( $this->debug == 'yes') {
-                    $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( json_decode( $response, true ) ) );
+                    $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( $response, true ) );
                 }
 
                 return $html;

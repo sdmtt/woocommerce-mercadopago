@@ -3,7 +3,7 @@ Contributors: claudiosanches
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.0
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,7 @@ Você pode esclarecer suas dúvidas usando:
 == Installation ==
 
 = Plugin Install: =
+
 * Upload plugin files to your plugins folder, or install using WordPress' built-in Add New Plugin installer
 * Activate the plugin
 * Navigate to WooCommerce -> Settings -> Payment Gateways, choose MercadoPago and fill in your MercadoPago Client_id and Client_secret
@@ -90,9 +91,11 @@ You should have received a copy of the GNU General Public License along with Aut
 == Frequently Asked Questions ==
 
 = What is the plugin license? =
+
 * This plugin is released under a GPL license.
 
 = What is needed to use this plugin? =
+
 * WooCommerce installed and active
 * Only one account on [MercadoPago](https://www.mercadopago.com/ "MercadoPago").
 
@@ -120,6 +123,10 @@ Entretanto você precisa ativa-los na sua conta no MercadoPago.
 
 Consulte os meios de pagamento em "[Meios de pagamento e parcelamento](https://www.mercadopago.com/mlb/ml.faqs.framework.main.FaqsController?pageId=FAQ&faqId=2991&categId=How&type=FAQ)".
 
+= Quais são as moedas que o plugin aceita? =
+
+No momento é aceito **ARL** (Argentine peso ley) e **BRL** (Real Brasileiro).
+
 = Quais são as taxas de transações que o MercadoPago cobra? =
 
 Consulte a página "[Taxas do Mercado Pago](http://guia.mercadolivre.com.br/taxas-mercado-pago-12593-VGP)".
@@ -134,12 +141,22 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 1.1 =
+
+* Adicionada opção para logs de erro.
+
 = 1.0 =
-* Initial release.
+
+* Versão Inicial.
 
 == Upgrade Notice ==
 
+= 1.1 =
+
+* Added error logs.
+
 = 1.0 =
+
 * Enjoy it.
 
 == Screenshots ==

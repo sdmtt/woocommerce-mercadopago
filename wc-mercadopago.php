@@ -5,7 +5,7 @@
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
  * Author URI: http://www.claudiosmweb.com/
- * Version: 1.0
+ * Version: 1.1
  * License: GPLv2 or later
  * Text Domain: wcmercadopago
  * Domain Path: /languages/
@@ -67,6 +67,7 @@ function wcmercadopago_gateway_load() {
          * @return void
          */
         public function __construct() {
+            global $woocommerce;
 
             $this->id             = 'mercadopago';
             $this->icon           = plugins_url( 'images/mercadopago.png', __FILE__ );
@@ -89,6 +90,7 @@ function wcmercadopago_gateway_load() {
             $this->client_id      = $this->settings['client_id'];
             $this->client_secret  = $this->settings['client_secret'];
             $this->invoice_prefix = !empty( $this->settings['invoice_prefix'] ) ? $this->settings['invoice_prefix'] : 'WC-';
+            $this->debug          = $this->settings['debug'];
 
             // Actions.
             add_action( 'init', array( &$this, 'check_ipn_response' ) );
@@ -105,6 +107,11 @@ function wcmercadopago_gateway_load() {
 
             // Checks if client_secret is not empty.
             $this->client_secret == '' ? add_action( 'admin_notices', array( &$this, 'client_secret_missing_message' ) ) : '';
+
+            // Active logs.
+            if ( $this->debug == 'yes' ) {
+                $this->log = $woocommerce->logger();
+            }
         }
 
         /**
@@ -180,6 +187,18 @@ function wcmercadopago_gateway_load() {
                     'type' => 'text',
                     'description' => __( 'Please enter a prefix for your invoice numbers. If you use your MercadoPago account for multiple stores ensure this prefix is unqiue as MercadoPago will not allow orders with the same invoice number.', 'wcmercadopago' ),
                     'default' => 'WC-'
+                ),
+                'testing' => array(
+                    'title' => __( 'Gateway Testing', 'wcmercadopago' ),
+                    'type' => 'title',
+                    'description' => '',
+                ),
+                'debug' => array(
+                    'title' => __( 'Debug Log', 'wcmercadopago' ),
+                    'type' => 'checkbox',
+                    'label' => __( 'Enable logging', 'wcmercadopago' ),
+                    'default' => 'no',
+                    'description' => __( 'Log MercadoPago events, such as API requests, inside <code>woocommerce/logs/mercadopago.txt</code>' ),
                 )
             );
         }
@@ -273,6 +292,10 @@ function wcmercadopago_gateway_load() {
                 // Add MercadoPago JS.
                 $html .= '<script type="text/javascript">(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent("onload", $MPBR_load) : window.addEventListener("load", $MPBR_load, false)) : null;})();</script>';
 
+                if ( $this->debug == 'yes') {
+                    $this->log->add( 'mercadopago', 'Payment link generated with success from MercadoPago' );
+                }
+
                 return $html;
 
             } else {
@@ -280,6 +303,10 @@ function wcmercadopago_gateway_load() {
                 $html = '<p>' . __( 'An error has occurred while processing your payment, please try again. Or contact us for assistance.', 'wcmercadopago' ) . '</p>';
 
                 $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
+
+                if ( $this->debug == 'yes') {
+                    $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( json_decode( $response, true ) ) );
+                }
 
                 return $html;
             }
@@ -327,6 +354,10 @@ function wcmercadopago_gateway_load() {
          */
         protected function get_client_credentials() {
 
+            if ( $this->debug == 'yes') {
+                $this->log->add( 'mercadopago', 'Getting client credentials...' );
+            }
+
             // Set postdata.
             $postdata = 'grant_type=client_credentials';
             $postdata .= '&client_id=' . $this->client_id;
@@ -346,7 +377,15 @@ function wcmercadopago_gateway_load() {
 
                 $token = json_decode( $response['body'] );
 
+                if ( $this->debug == 'yes') {
+                    $this->log->add( 'mercadopago', 'Received valid response from MercadoPago' );
+                }
+
                 return $token->access_token;
+            } else {
+                if ( $this->debug == 'yes') {
+                    $this->log->add( 'mercadopago', 'Received invalid response from MercadoPago. Error response: ' . print_r( $response, true ) );
+                }
             }
 
             return null;
@@ -359,6 +398,10 @@ function wcmercadopago_gateway_load() {
          */
         public function check_ipn_request_is_valid( $data ) {
 
+            if ( $this->debug == 'yes') {
+                $this->log->add( 'mercadopago', 'Checking IPN request...' );
+            }
+
             $url = $this->ipn_url . $data['id'] . '?access_token=' . $this->get_client_credentials();
 
             // Send back post vars.
@@ -370,12 +413,22 @@ function wcmercadopago_gateway_load() {
             // GET a response.
             $response = wp_remote_get( $url, $params );
 
+            if ( $this->debug == 'yes' ) {
+                $this->log->add( 'mercadopago', 'IPN Response: ' . print_r( $response, true ) );
+            }
+
             // Check to see if the request was valid.
             if ( !is_wp_error( $response ) && $response['response']['code'] == 200 ) {
 
                 $body = json_decode( $response['body'] );
 
+                $this->log->add( 'mercadopago', 'Received valid IPN response from MercadoPago' );
+
                 return $body;
+            } else {
+                if ( $this->debug == 'yes') {
+                    $this->log->add( 'mercadopago', 'Received invalid IPN response from MercadoPago.' );
+                }
             }
 
             return null;
@@ -431,6 +484,10 @@ function wcmercadopago_gateway_load() {
                 // Checks whether the invoice number matches the order.
                 // If true processes the payment.
                 if ( $order->id === $order_id ) {
+
+                    if ( $this->debug == 'yes' ) {
+                        $this->log->add( 'mercadopago', 'Payment status: ' . $data->status );
+                    }
 
                     switch ( $data->status ) {
                         case 'approved':

@@ -268,6 +268,10 @@ function wcmercadopago_gateway_load() {
 
             $args = json_encode( $this->get_form_args( $order ) );
 
+            if ( $this->debug == 'yes' ) {
+                $this->log->add( 'mercadopago', 'Payment arguments for order #' . $order_id . ': ' . print_r( $this->get_form_args( $order ), true ) );
+            }
+
             $url = $this->payment_url . $this->get_client_credentials();
 
             $params = array(

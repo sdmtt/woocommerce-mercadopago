@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce MercadoPago v1.2\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2012-12-01 19:36:26+0000\n"
+"PO-Revision-Date: 2012-12-01 20:18:41+0000\n"
 "Last-Translator: Gustavo Coronel <gcoronel@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -221,13 +221,13 @@ msgstr "Se inició una disputa por el pago."
 #, php-format
 #@ wcmercadopago
 msgid "<strong>Gateway Disabled</strong> You should inform your Client_id in MercadoPago. %sClick here to configure!%s"
-msgstr "<strong>Forma de pago deshabilitado</strong> Debe informar a su client_id de MercadoPago.  %sClique aqui para configurar!%s"
+msgstr "<strong>Forma de pago deshabilitado</strong> Debe informar a su client_id de MercadoPago. %sHaga clic aquí para configurar!%s"
 
 #: wc-mercadopago.php:580
 #, php-format
 #@ wcmercadopago
 msgid "<strong>Gateway Disabled</strong> You should inform your Client_secret in MercadoPago. %sClick here to configure!%s"
-msgstr "<strong>Método de pagamento desativado</strong> Debe informar su Client_secret de MercadoPago. %sClique aqui para configurar!%s"
+msgstr "<strong>Forma de pago deshabilitado</strong> Debe informar su Client_secret de MercadoPago. %sHaga clic aquí para configurar!%s"
 
 #: wc-mercadopago.php:176
 #: wc-mercadopago.php:182

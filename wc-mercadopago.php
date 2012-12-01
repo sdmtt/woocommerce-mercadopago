@@ -5,7 +5,7 @@
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
  * Author URI: http://www.claudiosmweb.com/
- * Version: 1.1.1
+ * Version: 1.2
  * License: GPLv2 or later
  * Text Domain: wcmercadopago
  * Domain Path: /languages/

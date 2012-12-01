@@ -3,7 +3,7 @@ Contributors: claudiosanches
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
 Requires at least: 3.0
 Tested up to: 3.4.2
-Stable tag: 1.1.1
+Stable tag: 1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -11,13 +11,13 @@ Adds MercadoPago gateway to the WooCommerce plugin
 
 == Description ==
 
-### Add MercadoPago gateway to WooCommerce
+### Add MercadoPago gateway to WooCommerce ###
 
 This plugin adds MercadoPago gateway to WooCommerce.
 
 Please notice that WooCommerce must be installed and active.
 
-### Descrição em Português:
+### Descrição em Português: ###
 
 Adicione o MercadoPago como método de pagamento em sua loja WooCommerce.
 
@@ -39,6 +39,10 @@ Você pode esclarecer suas dúvidas usando:
 * Criando um tópico no [fórum de ajuda do WordPress](http://wordpress.org/support/plugin/woocommerce-mercadopago) (apenas em inglês).
 * Ou entre em contato com os desenvolvedores do plugin em nossa [página](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
 
+### Translators ###
+
+* es_AR by [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
+
 == Installation ==
 
 = Plugin Install: =
@@ -47,7 +51,7 @@ Você pode esclarecer suas dúvidas usando:
 * Activate the plugin
 * Navigate to WooCommerce -> Settings -> Payment Gateways, choose MercadoPago and fill in your MercadoPago Client_id and Client_secret
 
-### Instalação e configuração em Português:
+### Instalação e configuração em Português: ###
 
 = Instalação do plugin: =
 
@@ -99,7 +103,7 @@ You should have received a copy of the GNU General Public License along with Aut
 * WooCommerce installed and active
 * Only one account on [MercadoPago](https://www.mercadopago.com/ "MercadoPago").
 
-### FAQ em Português:
+### FAQ em Português: ###
 
 = Qual é a licença do plugin? =
 
@@ -141,6 +145,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 1.2 - 01/12/2012 =
+
+* Adicionada tradução para es_AR por [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
+
 = 1.1.1 - 30/11/2012 =
 
 * Correção dos logs de erro.
@@ -154,6 +162,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 * Versão Inicial.
 
 == Upgrade Notice ==
+
+= 1.2 =
+
+* Added es_AR translation.
 
 = 1.1.1 =
 

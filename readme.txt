@@ -102,6 +102,14 @@ You should have received a copy of the GNU General Public License along with Aut
 
 * WooCommerce installed and active
 * Only one account on [MercadoPago](https://www.mercadopago.com/ "MercadoPago").
+* Get the information of Client_id and Client_secret from MercadoPago.
+* Set page of automatic return data.
+
+= Currencies accepted =
+
+The plugin works with ARS and BRL.
+
+Add ARS with [WooCommerce ARS Currency](http://wordpress.org/extend/plugins/woocommerce-ars-currency/) plugin.
 
 ### FAQ em Português: ###
 
@@ -115,6 +123,12 @@ Este plugin esta licenciado como GPL.
 * Possuir uma conta no MercadoPago.
 * Pegar as informações de Client_id e Client_secret.
 * Configurar a página de retorno automático de dados.
+
+= Moedas aceitas =
+
+Este plugin funciona com ARS (Peso Argentino) e BRL (Real Brasileiro).
+
+Adicione a moeda ARS usando o plugin [WooCommerce ARS Currency](http://wordpress.org/extend/plugins/woocommerce-ars-currency/).
 
 = Como funciona o MercadoPago? =
 

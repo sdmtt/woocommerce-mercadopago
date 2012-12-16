@@ -1,16 +1,16 @@
-=== WooCommerce MercadoPago ===
-Contributors: claudiosanches
-Donate link: http://claudiosmweb.com/doacoes/
-Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
-Requires at least: 3.0
-Tested up to: 3.5
-Stable tag: 1.2
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
+# WooCommerce MercadoPago #
+**Contributors:** claudiosanches  
+**Donate link:** http://claudiosmweb.com/doacoes/  
+**Tags:** ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago  
+**Requires at least:** 3.0  
+**Tested up to:** 3.5  
+**Stable tag:** 1.2  
+**License:** GPLv2 or later  
+**License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
 Adds MercadoPago gateway to the WooCommerce plugin
 
-== Description ==
+## Description ##
 
 ### Add MercadoPago gateway to WooCommerce ###
 
@@ -28,11 +28,11 @@ O plugin WooCommerce MercadoPago foi desenvolvido sem nenhum incentivo do Mercad
 
 Este plugin foi feito baseado na [documentação oficial do MercadoPago](http://developers.mercadopago.com/).
 
-= Instalação: =
+### Instalação: ###
 
 Confira o nosso guia de instalação e configuração do WooCommerce MercadoPago na aba [Installation](http://wordpress.org/extend/plugins/woocommerce-mercadopago/installation/).
 
-= Dúvidas? =
+### Dúvidas? ###
 
 Você pode esclarecer suas dúvidas usando:
 
@@ -44,7 +44,7 @@ Você pode esclarecer suas dúvidas usando:
 
 * es_AR by [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
 
-== Installation ==
+## Installation ##
 
 * Upload plugin files to your plugins folder, or install using WordPress built-in Add New Plugin installer;
 * Activate the plugin;
@@ -52,16 +52,16 @@ Você pode esclarecer suas dúvidas usando:
 
 ### Instalação e configuração em Português: ###
 
-= Instalação do plugin: =
+### Instalação do plugin: ###
 
 * Envie os arquivos do plugin para a pasta wp-content/plugins ou usando o instalador de plugins do WordPress.
 * Ative o plugin.
 
-= Requerimentos: =
+### Requerimentos: ###
 
 É necessário possuir uma conta no [MercadoPago](https://www.mercadopago.com/) e instalar a última versão do [WooCommerce](http://wordpress.org/extend/plugins/woocommerce/).
 
-= Configurações no MercadoPago: =
+### Configurações no MercadoPago: ###
 
 No MercadoPago você precisa validar sua conta e conseguir o seu Client_id e Client_secret.
 Você pode acessar as suas informações de Client_id e Client_secret em:
@@ -74,7 +74,7 @@ Deve ser configurada a sua página de retorno como por exemplo:
 
     http://seusite.com/finalizar-compra/pedido-recebido/
 
-= Configurações do Plugin: =
+### Configurações do Plugin: ###
 
 Com o plugin instalado acesse o admin do WordPress e entre em "WooCommerce" > "Configurações" > "Portais de pagamento"  > "MercadoPago".
 
@@ -82,20 +82,20 @@ Habilite o MercadoPago, adicione o seu e-mail, Client_id e Client_secret.
 
 Pronto, sua loja já pode receber pagamentos pelo MercadoPago.
 
-== Frequently Asked Questions ==
+## Frequently Asked Questions ##
 
-= What is the plugin license? =
+### What is the plugin license? ###
 
 * This plugin is released under a GPL license.
 
-= What is needed to use this plugin? =
+### What is needed to use this plugin? ###
 
 * WooCommerce installed and active
 * Only one account on [MercadoPago](https://www.mercadopago.com/ "MercadoPago").
 * Get the information of Client_id and Client_secret from MercadoPago.
 * Set page of automatic return data.
 
-= Currencies accepted =
+### Currencies accepted ###
 
 The plugin works with ARS and BRL.
 
@@ -103,95 +103,99 @@ Add ARS with [WooCommerce ARS Currency](http://wordpress.org/extend/plugins/wooc
 
 ### FAQ em Português: ###
 
-= Qual é a licença do plugin? =
+### Qual é a licença do plugin? ###
 
 Este plugin esta licenciado como GPL.
 
-= O que eu preciso para utilizar este plugin? =
+### O que eu preciso para utilizar este plugin? ###
 
 * Ter instalado o plugin WooCommerce.
 * Possuir uma conta no MercadoPago.
 * Pegar as informações de Client_id e Client_secret.
 * Configurar a página de retorno automático de dados.
 
-= Moedas aceitas =
+### Moedas aceitas ###
 
 Este plugin funciona com ARS (Peso Argentino) e BRL (Real Brasileiro).
 
 Adicione a moeda ARS usando o plugin [WooCommerce ARS Currency](http://wordpress.org/extend/plugins/woocommerce-ars-currency/).
 
-= Como funciona o MercadoPago? =
+### Como funciona o MercadoPago? ###
 
 * Saiba mais em "[O que é o MercadoPago e como funciona?](http://guia.mercadolivre.com.br/mercadopago-como-funciona-6983-VGP)".
 
-= Quais são os meios de pagamento que o plugin aceita? =
+### Quais são os meios de pagamento que o plugin aceita? ###
 
 São aceitos todos os meios de pagamentos que o MercadoPago disponibiliza.
 Entretanto você precisa ativa-los na sua conta no MercadoPago.
 
 Consulte os meios de pagamento em "[Meios de pagamento e parcelamento](https://www.mercadopago.com/mlb/ml.faqs.framework.main.FaqsController?pageId=FAQ&faqId=2991&categId=How&type=FAQ)".
 
-= Quais são as moedas que o plugin aceita? =
+### Quais são as moedas que o plugin aceita? ###
 
 No momento é aceito **ARL** (Argentine peso ley) e **BRL** (Real Brasileiro).
 
-= Quais são as taxas de transações que o MercadoPago cobra? =
+### Quais são as taxas de transações que o MercadoPago cobra? ###
 
 Consulte a página "[Taxas do Mercado Pago](http://guia.mercadolivre.com.br/taxas-mercado-pago-12593-VGP)".
 
-= Como que plugin faz integração com MercadoPago? =
+### Como que plugin faz integração com MercadoPago? ###
 
 Fazemos a integração baseada na documentação oficial do MercadoPago que pode ser encontrada em "[MercadoPago Developers](http://developers.mercadopago.com/)"
 
-= Mais dúvidas relacionadas ao funcionamento do plugin? =
+### Mais dúvidas relacionadas ao funcionamento do plugin? ###
 
 Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
 
-== Screenshots ==
+## Screenshots ##
 
-1. Settings page.
-2. Checkout page.
+###1. Settings page.###
+![Settings page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-1.png)
 
-== Changelog ==
+###2. Checkout page.###
+![Checkout page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-2.png)
 
-= 1.2 - 01/12/2012 =
+
+## Changelog ##
+
+### 1.2 - 01/12/2012 ###
 
 * Adicionada tradução para es_AR por [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
 
-= 1.1.1 - 30/11/2012 =
+### 1.1.1 - 30/11/2012 ###
 
 * Correção dos logs de erro.
 
-= 1.1 - 30/11/2012 =
+### 1.1 - 30/11/2012 ###
 
 * Adicionada opção para logs de erro.
 
-= 1.0 =
+### 1.0 ###
 
 * Versão Inicial.
 
-== Upgrade Notice ==
+## Upgrade Notice ##
 
-= 1.2 =
+### 1.2 ###
 
 * Added es_AR translation.
 
-= 1.1.1 =
+### 1.1.1 ###
 
 * Fixed error logs.
 
-= 1.1 =
+### 1.1 ###
 
 * Added error logs.
 
-= 1.0 =
+### 1.0 ###
 
 * Enjoy it.
 
-== License ==
+## License ##
 
 This file is part of WooCommerce MercadoPago.
-WooCommerce MercadoPago is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
+**WooCommerce MercadoPago is free software:** you can redistribute it and/or modify it under the terms of the GNU General Public License as published  
 by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 WooCommerce MercadoPago is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.

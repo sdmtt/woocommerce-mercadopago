@@ -5,7 +5,7 @@
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
  * Author URI: http://www.claudiosmweb.com/
- * Version: 1.2
+ * Version: 1.2.1
  * License: GPLv2 or later
  * Text Domain: wcmercadopago
  * Domain Path: /languages/
@@ -29,7 +29,7 @@ add_action( 'plugins_loaded', 'wcmercadopago_gateway_load', 0 );
 
 function wcmercadopago_gateway_load() {
 
-    if ( !class_exists( 'WC_Payment_Gateway' ) ) {
+    if ( ! class_exists( 'WC_Payment_Gateway' ) ) {
         add_action( 'admin_notices', 'wcmercadopago_woocommerce_fallback_notice' );
 
         return;
@@ -96,8 +96,12 @@ function wcmercadopago_gateway_load() {
             add_action( 'init', array( &$this, 'check_ipn_response' ) );
             add_action( 'valid_mercadopago_ipn_request', array( &$this, 'successful_request' ) );
             add_action( 'woocommerce_receipt_mercadopago', array( &$this, 'receipt_page' ) );
-            add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
             add_action( 'wp_head', array( &$this, 'css' ) );
+            if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '<' ) ) {
+                add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
+            } else {
+                add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
+            }
 
             // Valid for use.
             $this->enabled = ( 'yes' == $this->settings['enabled'] ) && !empty( $this->client_id ) && !empty( $this->client_secret ) && $this->is_valid_for_use();

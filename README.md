@@ -4,7 +4,7 @@
 **Tags:** ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago  
 **Requires at least:** 3.0  
 **Tested up to:** 3.5  
-**Stable tag:** 1.2  
+**Stable tag:** 1.2.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -149,14 +149,18 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 ## Screenshots ##
 
-###1. Settings page.###
-![Settings page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-1.png)
+### 1. Settings page. ###
+![1. Settings page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-1.png)
 
-###2. Checkout page.###
-![Checkout page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-2.png)
+### 2. Checkout page. ###
+![2. Checkout page.](http://s.wordpress.org/extend/plugins/woocommerce-mercadopago/screenshot-2.png)
 
 
 ## Changelog ##
+
+### 1.2.1 - 08/02/2013 ###
+
+* Corrigido o hook responsavel por salvar as opções para a versão 2.0 RC do WooCommerce.
 
 ### 1.2 - 01/12/2012 ###
 
@@ -195,7 +199,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 ## License ##
 
 This file is part of WooCommerce MercadoPago.
-**WooCommerce MercadoPago is free software:** you can redistribute it and/or modify it under the terms of the GNU General Public License as published  
+WooCommerce MercadoPago is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
 by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 WooCommerce MercadoPago is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.

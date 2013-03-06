@@ -5,7 +5,7 @@
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
  * Author URI: http://www.claudiosmweb.com/
- * Version: 1.2.1
+ * Version: 1.2.2
  * License: GPLv2 or later
  * Text Domain: wcmercadopago
  * Domain Path: /languages/
@@ -97,10 +97,10 @@ function wcmercadopago_gateway_load() {
             add_action( 'valid_mercadopago_ipn_request', array( &$this, 'successful_request' ) );
             add_action( 'woocommerce_receipt_mercadopago', array( &$this, 'receipt_page' ) );
             add_action( 'wp_head', array( &$this, 'css' ) );
-            if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '<' ) ) {
-                add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
-            } else {
+            if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '>=' ) ) {
                 add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
+            } else {
+                add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
             }
 
             // Valid for use.

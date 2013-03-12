@@ -124,7 +124,7 @@ function wcmercadopago_gateway_load() {
          * @return bool
          */
         public function is_valid_for_use() {
-            if ( !in_array( get_woocommerce_currency() , array( 'ARS', 'BRL' ) ) ) {
+            if ( ! in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) ) ) {
                 return false;
             }
 

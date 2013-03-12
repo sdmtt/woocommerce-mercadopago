@@ -4,7 +4,7 @@
 **Tags:** ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago  
 **Requires at least:** 3.0  
 **Tested up to:** 3.5.1  
-**Stable tag:** 1.2.2  
+**Stable tag:** 1.2.3  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -157,6 +157,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 
 ## Changelog ##
+
+### 1.2.3 - 11/03/2013 ###
+
+* Adicionada compatibilidade com as moedas: `MXN`, `USD` e `VEF`.
 
 ### 1.2.2 - 06/03/2013 ###
 

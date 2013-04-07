@@ -4,7 +4,7 @@
 **Tags:** ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago  
 **Requires at least:** 3.0  
 **Tested up to:** 3.5.1  
-**Stable tag:** 1.2.3  
+**Stable tag:** 1.3  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -64,15 +64,24 @@ Você pode esclarecer suas dúvidas usando:
 ### Configurações no MercadoPago: ###
 
 No MercadoPago você precisa validar sua conta e conseguir o seu Client_id e Client_secret.
+
 Você pode acessar as suas informações de Client_id e Client_secret em:
-[MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/aplicacoes) ou [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/aplicaciones).
+
+* [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/aplicaciones)
+* [MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/aplicacoes)
+* [MercadoPago do México](https://www.mercadopago.com/mlm/herramientas/aplicaciones)
+* [MercadoPago da Venezuela](https://www.mercadopago.com/mlv/herramientas/aplicaciones)
 
 É necessário também configurar a página de retorno, para isso é necessário acessar:
-[MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/notificacoes) ou [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/notificaciones).
+
+* [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/notificaciones)
+* [MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/notificacoes)
+* [MercadoPago do México](https://www.mercadopago.com/mlm/herramientas/notificaciones)
+* [MercadoPago da Venezuela](https://www.mercadopago.com/mlv/herramientas/notificaciones)
 
 Deve ser configurada a sua página de retorno como por exemplo:
 
-    http://seusite.com/finalizar-compra/pedido-recebido/
+    http://seusite.com/?wc-api=WC_MercadoPago_Gateway
 
 ### Configurações do Plugin: ###
 
@@ -157,6 +166,11 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 
 ## Changelog ##
+
+### 1.3 07/04/2013 ###
+
+* Correção do retorno automático de dados na versão 2.0.0 ou superior do WooCommerce.
+* Atualização da tradução em pt_BR e es_AR.
 
 ### 1.2.3 - 11/03/2013 ###
 

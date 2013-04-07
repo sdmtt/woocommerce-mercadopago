@@ -4,7 +4,7 @@
  * Plugin URI: http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
- * Author URI: http://www.claudiosmweb.com/
+ * Author URI: http://claudiosmweb.com/
  * Version: 1.3
  * License: GPLv2 or later
  * Text Domain: wcmercadopago

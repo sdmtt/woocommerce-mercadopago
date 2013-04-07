@@ -94,7 +94,7 @@ function wcmercadopago_gateway_load() {
             $this->debug          = $this->settings['debug'];
 
             // Actions.
-            add_action( 'init', array( &$this, 'check_ipn_response' ) );
+            add_action( 'woocommerce_api_wc_mercadopago_gateway', array( &$this, 'check_ipn_response' ) );
             add_action( 'valid_mercadopago_ipn_request', array( &$this, 'successful_request' ) );
             add_action( 'woocommerce_receipt_mercadopago', array( &$this, 'receipt_page' ) );
             add_action( 'wp_head', array( &$this, 'css' ) );
@@ -408,7 +408,11 @@ function wcmercadopago_gateway_load() {
          */
         public function check_ipn_request_is_valid( $data ) {
 
-            if ( 'yes' == $this->debug) {
+            if ( ! isset( $data['id'] ) ) {
+                return false;
+            }
+
+            if ( 'yes' == $this->debug ) {
                 $this->log->add( 'mercadopago', 'Checking IPN request...' );
             }
 
@@ -428,7 +432,7 @@ function wcmercadopago_gateway_load() {
             }
 
             // Check to see if the request was valid.
-            if ( ! is_wp_error( $response ) && $response['response']['code'] == 200 ) {
+            if ( ! is_wp_error( $response ) && 200 == $response['response']['code'] ) {
 
                 $body = json_decode( $response['body'] );
 
@@ -441,7 +445,7 @@ function wcmercadopago_gateway_load() {
                 }
             }
 
-            return null;
+            return false;
         }
 
         /**
@@ -451,28 +455,22 @@ function wcmercadopago_gateway_load() {
          */
         public function check_ipn_response() {
 
-            if ( is_admin() ) {
-                return;
+            @ob_clean();
+
+            $data = $this->check_ipn_request_is_valid( $_GET );
+
+            if ( $data ) {
+
+                header( 'HTTP/1.1 200 OK' );
+
+                do_action( 'valid_mercadopago_ipn_request', $data );
+
+            } else {
+
+                wp_die( __( 'MercadoPago Request Failure', 'wcpagseguro' ) );
+
             }
 
-            if ( isset( $_GET['topic'] ) ) {
-
-                @ob_clean();
-
-                $data = $this->check_ipn_request_is_valid( $_GET );
-
-                if ( $data ) {
-
-                    header( 'HTTP/1.0 200 OK' );
-
-                    do_action( 'valid_mercadopago_ipn_request', $data );
-
-                } else {
-
-                   header( 'HTTP/1.0 404 Not Found' );
-
-                }
-            }
         }
 
         /**
@@ -591,3 +589,20 @@ function wcmercadopago_gateway_load() {
 
     } // class WC_MercadoPago_Gateway.
 } // function wcmercadopago_gateway_load.
+
+/**
+ * Adds support to legacy IPN.
+ *
+ * @return void
+ */
+function wcmercadopago_legacy_ipn() {
+    if ( isset( $_GET['topic'] ) && ! isset( $_GET['wc-api'] ) ) {
+        global $woocommerce;
+
+        $woocommerce->payment_gateways();
+
+        do_action( 'woocommerce_api_wc_mercadopago_gateway' );
+    }
+}
+
+add_action( 'init', 'wcmercadopago_legacy_ipn' );

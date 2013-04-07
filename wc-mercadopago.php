@@ -236,7 +236,7 @@ function wcmercadopago_gateway_load() {
                         'quantity'    => 1,
                         'unit_price'  => (float) $order->order_total,
                         'currency_id' => get_woocommerce_currency(),
-                        'picture_url' => 'https://www.mercadopago.com/org-img/MP3/home/logomp3.gif'
+                        // 'picture_url' => 'https://www.mercadopago.com/org-img/MP3/home/logomp3.gif'
                     )
                 )
             );

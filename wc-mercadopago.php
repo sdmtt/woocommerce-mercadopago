@@ -5,7 +5,7 @@
  * Description: Gateway de pagamento MercadoPago para WooCommerce.
  * Author: claudiosanches
  * Author URI: http://www.claudiosmweb.com/
- * Version: 1.2.2
+ * Version: 1.3
  * License: GPLv2 or later
  * Text Domain: wcmercadopago
  * Domain Path: /languages/
@@ -157,6 +157,8 @@ function wcmercadopago_gateway_load() {
          */
         public function init_form_fields() {
 
+            $api_secret_locale = sprintf( '<a href="https://www.mercadopago.com/mla/herramientas/aplicaciones" target="_blank">%1$s</a>, <a href="https://www.mercadopago.com/mlb/ferramentas/aplicacoes" target="_blank">%2$s</a>, <a href="https://www.mercadopago.com/mlm/herramientas/aplicaciones" target="_blank">%3$s</a> %5$s <a href="https://www.mercadopago.com/mlv/herramientas/aplicaciones" target="_blank">%4$s</a>', __( 'Argentine', 'wcmercadopago' ), __( 'Brazil', 'wcmercadopago' ), __( 'Mexico', 'wcmercadopago' ), __( 'Venezuela', 'wcmercadopago' ), __( 'or', 'wcmercadopago' ) );
+
             $this->form_fields = array(
                 'enabled' => array(
                     'title' => __( 'Enable/Disable', 'wcmercadopago' ),
@@ -179,13 +181,13 @@ function wcmercadopago_gateway_load() {
                 'client_id' => array(
                     'title' => __( 'MercadoPago Client_id', 'wcmercadopago' ),
                     'type' => 'text',
-                    'description' => __( 'Please enter your MercadoPago Client_id.', 'wcmercadopago' ) . ' ' . sprintf( __( 'You can to get this information in: %sMercadoPago of Brazil%s or %sMercadoPago of Argentine%s.', 'wcmercadopago' ), '<a href="https://www.mercadopago.com/mlb/ferramentas/aplicacoes" target="_blank">', '</a>', '<a href="https://www.mercadopago.com/mla/herramientas/aplicaciones" target="_blank">', '</a>' ),
+                    'description' => __( 'Please enter your MercadoPago Client_id.', 'wcmercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'wcmercadopago' ), $api_secret_locale ),
                     'default' => ''
                 ),
                 'client_secret' => array(
                     'title' => __( 'MercadoPago Client_secret', 'wcmercadopago' ),
                     'type' => 'text',
-                    'description' => __( 'Please enter your MercadoPago Client_secret.', 'wcmercadopago' ) . ' ' . sprintf( __( 'You can to get this information in: %sMercadoPago of Brazil%s or %sMercadoPago of Argentine%s.', 'wcmercadopago' ), '<a href="https://www.mercadopago.com/mlb/ferramentas/aplicacoes" target="_blank">', '</a>', '<a href="https://www.mercadopago.com/mla/herramientas/aplicaciones" target="_blank">', '</a>' ),
+                    'description' => __( 'Please enter your MercadoPago Client_secret.', 'wcmercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'wcmercadopago' ), $api_secret_locale ),
                     'default' => ''
                 ),
                 'invoice_prefix' => array(
@@ -467,7 +469,7 @@ function wcmercadopago_gateway_load() {
 
             } else {
 
-                wp_die( __( 'MercadoPago Request Failure', 'wcpagseguro' ) );
+                wp_die( __( 'MercadoPago Request Failure', 'wcmercadopago' ) );
 
             }
 

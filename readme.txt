@@ -72,7 +72,7 @@ Você pode acessar as suas informações de Client_id e Client_secret em:
 
 Deve ser configurada a sua página de retorno como por exemplo:
 
-    http://seusite.com/finalizar-compra/pedido-recebido/
+    http://seusite.com/?wc-api=WC_MercadoPago_Gateway
 
 = Configurações do Plugin: =
 

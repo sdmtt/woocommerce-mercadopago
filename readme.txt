@@ -3,7 +3,7 @@ Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
 Requires at least: 3.0
-Tested up to: 3.5.1
+Tested up to: 3.5.2
 Stable tag: 1.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -17,6 +17,10 @@ Adds MercadoPago gateway to the WooCommerce plugin
 This plugin adds MercadoPago gateway to WooCommerce.
 
 Please notice that WooCommerce must be installed and active.
+
+= Contribute =
+
+You can contribute to the source code in our [GitHub](https://github.com/claudiosmweb/woocommerce-mercadopago) page.
 
 ### Descrição em Português: ###
 
@@ -39,6 +43,10 @@ Você pode esclarecer suas dúvidas usando:
 * A nossa sessão de [FAQ](http://wordpress.org/extend/plugins/woocommerce-mercadopago/faq/).
 * Criando um tópico no [fórum de ajuda do WordPress](http://wordpress.org/support/plugin/woocommerce-mercadopago) (apenas em inglês).
 * Ou entre em contato com os desenvolvedores do plugin em nossa [página](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
+
+= Coloborar =
+
+Você pode contribuir com código-fonte em nossa página no [GitHub](https://github.com/claudiosmweb/woocommerce-mercadopago).
 
 ### Translators ###
 

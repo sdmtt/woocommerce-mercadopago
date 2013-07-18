@@ -14,14 +14,17 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     public function __construct() {
         global $woocommerce;
 
-        $this->id             = 'mercadopago';
-        $this->icon           = plugins_url( 'images/mercadopago.png', __FILE__ );
-        $this->has_fields     = false;
-        $this->payment_url    = 'https://api.mercadolibre.com/checkout/preferences?access_token=';
-        $this->ipn_url        = 'https://api.mercadolibre.com/collections/notifications/';
-        $this->oauth_token    = 'https://api.mercadolibre.com/oauth/token';
+        // Standards
+        $this->id              = 'mercadopago';
+        $this->icon            = plugins_url( 'images/mercadopago.png', __FILE__ );
+        $this->has_fields      = false;
+        $this->method_title    = __( 'MercadoPago', 'wcmercadopago' );
 
-        $this->method_title   = __( 'MercadoPago', 'wcmercadopago' );
+        // API urls.
+        $this->payment_url     = 'https://api.mercadolibre.com/checkout/preferences?access_token=';
+        $this->ipn_url         = 'https://api.mercadolibre.com/collections/notifications/';
+        $this->sandbox_ipn_url = 'https://api.mercadolibre.com/sandbox/collections/notifications/';
+        $this->oauth_token     = 'https://api.mercadolibre.com/oauth/token';
 
         // Load the form fields.
         $this->init_form_fields();
@@ -36,6 +39,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $this->client_secret  = $this->settings['client_secret'];
         $this->invoice_prefix = ! empty( $this->settings['invoice_prefix'] ) ? $this->settings['invoice_prefix'] : 'WC-';
         $this->method         = ! empty( $this->settings['method'] ) ? $this->settings['method'] : 'modal';
+        $this->sandbox        = isset( $this->settings['sandbox'] ) ? $this->settings['sandbox'] : false;
         $this->debug          = $this->settings['debug'];
 
         // Actions.
@@ -153,6 +157,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'type' => 'title',
                 'description' => '',
             ),
+            'sandbox' => array(
+                'title' => __( 'MercadoPago Sandbox', 'wcmercadopago' ),
+                'type' => 'checkbox',
+                'label' => __( 'Enable MercadoPago sandbox', 'wcmercadopago' ),
+                'default' => 'no',
+                'description' => __( 'MercadoPago sandbox can be used to test payments.', 'wcmercadopago' ),
+            ),
             'debug' => array(
                 'title' => __( 'Debug Log', 'wcmercadopago' ),
                 'type' => 'checkbox',
@@ -245,7 +256,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Payment link generated with success from MercadoPago' );
 
-            return esc_url( $checkout_info->init_point );
+            if ( 'yes' == $this->sandbox )
+                return esc_url( $checkout_info->sandbox_init_point );
+            else
+                return esc_url( $checkout_info->init_point );
 
         } else {
             if ( 'yes' == $this->debug )
@@ -392,7 +406,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         if ( 'yes' == $this->debug )
             $this->log->add( 'mercadopago', 'Checking IPN request...' );
 
-        $url = $this->ipn_url . $data['id'] . '?access_token=' . $this->get_client_credentials();
+        if ( 'yes' == $this->sandbox )
+            $ipn_url = $this->sandbox_ipn_url;
+        else
+            $ipn_url = $this->ipn_url;
+
+        $url = $ipn_url . $data['id'] . '?access_token=' . $this->get_client_credentials();
 
         // Send back post vars.
         $params = array(

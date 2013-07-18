@@ -3,8 +3,8 @@ Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
 Requires at least: 3.0
-Tested up to: 3.5.2
-Stable tag: 1.3
+Tested up to: 3.6
+Stable tag: 1.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -183,10 +183,18 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
-= 1.3 07/04/2013 =
+= 1.4.0 - 07/04/2013 =
+
+* Melhoria no código.
+* Adicionada opção para pagamento direto ou por janela modal.
+* Adicionada opção de sandbox.
+* Adicionada compatibilidade com o WooCommerce 2.1 ou superior.
+* Atualização das traduções em pt_BR e es_AR.
+
+= 1.3 - 07/04/2013 =
 
 * Correção do retorno automático de dados na versão 2.0.0 ou superior do WooCommerce.
-* Atualização da tradução em pt_BR e es_AR.
+* Atualização das traduções em pt_BR e es_AR.
 
 = 1.2.3 - 11/03/2013 =
 

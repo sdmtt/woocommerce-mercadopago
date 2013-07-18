@@ -155,6 +155,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Generate the args to form.
      *
      * @param  array $order Order data.
+     *
      * @return array
      */
     public function get_form_args( $order ) {
@@ -206,6 +207,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Generate the form.
      *
      * @param mixed $order_id
+     *
      * @return string
      */
     public function generate_form( $order_id ) {
@@ -273,6 +275,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Process the payment and return the result.
      *
      * @param int $order_id
+     *
      * @return array
      */
     public function process_payment( $order_id ) {
@@ -414,6 +417,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Successful Payment!
      *
      * @param array $posted
+     *
      * @return void
      */
     public function successful_request( $posted ) {

@@ -42,29 +42,25 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         add_action( 'valid_mercadopago_ipn_request', array( &$this, 'successful_request' ) );
         add_action( 'woocommerce_receipt_mercadopago', array( &$this, 'receipt_page' ) );
         add_action( 'wp_head', array( &$this, 'css' ) );
-        if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '>=' ) ) {
+        if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '>=' ) )
             add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( &$this, 'process_admin_options' ) );
-        } else {
+        else
             add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
-        }
 
         // Valid for use.
         $this->enabled = ( 'yes' == $this->settings['enabled'] ) && ! empty( $this->client_id ) && ! empty( $this->client_secret ) && $this->is_valid_for_use();
 
         // Checks if client_id is not empty.
-        if ( empty( $this->client_id ) ) {
+        if ( empty( $this->client_id ) )
             add_action( 'admin_notices', array( &$this, 'client_id_missing_message' ) );
-        }
 
         // Checks if client_secret is not empty.
-        if ( empty( $this->client_secret ) ) {
+        if ( empty( $this->client_secret ) )
             add_action( 'admin_notices', array( &$this, 'client_secret_missing_message' ) );
-        }
 
         // Active logs.
-        if ( 'yes' == $this->debug ) {
+        if ( 'yes' == $this->debug )
             $this->log = $woocommerce->logger();
-        }
     }
 
     /**
@@ -73,9 +69,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return bool
      */
     public function is_valid_for_use() {
-        if ( ! in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) ) ) {
+        if ( ! in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) ) )
             return false;
-        }
 
         return true;
     }
@@ -84,13 +79,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Admin Panel Options.
      */
     public function admin_options() {
-
         ?>
         <h3><?php _e( 'MercadoPago standard', 'wcmercadopago' ); ?></h3>
         <p><?php _e( 'MercadoPago standard works by sending the user to MercadoPago to enter their payment information.', 'wcmercadopago' ); ?></p>
         <table class="form-table">
             <?php $this->generate_settings_html(); ?>
-        </table> <!-- /.form-table -->
+        </table>
         <?php
     }
 
@@ -190,18 +184,16 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
         if ( sizeof( $order->get_items() ) > 0 ) {
             foreach ( $order->get_items() as $item ) {
-                if ( $item['qty'] ) {
+                if ( $item['qty'] )
                     $item_names[] = $item['name'] . ' x ' . $item['qty'];
-                }
             }
         }
 
         $args['items'][0]['title'] = sprintf( __( 'Order %s', 'wcmercadopago' ), $order->get_order_number() ) . ' - ' . implode( ', ', $item_names );
 
         // Shipping Cost item.
-        if ( $order->get_shipping() > 0 ) {
+        if ( $order->get_shipping() > 0 )
             $args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'wcmercadopago' ) . ' ' . ucwords( $order->shipping_method_title );
-        }
 
         $args = apply_filters( 'woocommerce_mercadopago_args', $args );
 
@@ -220,9 +212,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
         $args = json_encode( $this->get_form_args( $order ) );
 
-        if ( 'yes' == $this->debug ) {
+        if ( 'yes' == $this->debug )
             $this->log->add( 'mercadopago', 'Payment arguments for order #' . $order_id . ': ' . print_r( $this->get_form_args( $order ), true ) );
-        }
 
         $url = $this->payment_url . $this->get_client_credentials();
 
@@ -248,9 +239,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             // Add MercadoPago JS.
             $html .= '<script type="text/javascript">(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent("onload", $MPBR_load) : window.addEventListener("load", $MPBR_load, false)) : null;})();</script>';
 
-            if ( 'yes' == $this->debug) {
+            if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Payment link generated with success from MercadoPago' );
-            }
 
             return $html;
 
@@ -260,9 +250,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
             $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
 
-            if ( 'yes' == $this->debug ) {
+            if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( $response, true ) );
-            }
 
             return $html;
         }
@@ -310,9 +299,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      */
     protected function get_client_credentials() {
 
-        if ( 'yes' == $this->debug) {
+        if ( 'yes' == $this->debug )
             $this->log->add( 'mercadopago', 'Getting client credentials...' );
-        }
 
         // Set postdata.
         $postdata = 'grant_type=client_credentials';
@@ -333,15 +321,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
             $token = json_decode( $response['body'] );
 
-            if ( 'yes' == $this->debug) {
+            if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Received valid response from MercadoPago' );
-            }
 
             return $token->access_token;
         } else {
-            if ( 'yes' == $this->debug) {
+            if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Received invalid response from MercadoPago. Error response: ' . print_r( $response, true ) );
-            }
         }
 
         return null;
@@ -354,13 +340,11 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      */
     public function check_ipn_request_is_valid( $data ) {
 
-        if ( ! isset( $data['id'] ) ) {
+        if ( ! isset( $data['id'] ) )
             return false;
-        }
 
-        if ( 'yes' == $this->debug ) {
+        if ( 'yes' == $this->debug )
             $this->log->add( 'mercadopago', 'Checking IPN request...' );
-        }
 
         $url = $this->ipn_url . $data['id'] . '?access_token=' . $this->get_client_credentials();
 
@@ -373,9 +357,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         // GET a response.
         $response = wp_remote_get( $url, $params );
 
-        if ( 'yes' == $this->debug ) {
+        if ( 'yes' == $this->debug )
             $this->log->add( 'mercadopago', 'IPN Response: ' . print_r( $response, true ) );
-        }
 
         // Check to see if the request was valid.
         if ( ! is_wp_error( $response ) && 200 == $response['response']['code'] ) {
@@ -386,9 +369,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
             return $body;
         } else {
-            if ( 'yes' == $this->debug ) {
+            if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Received invalid IPN response from MercadoPago.' );
-            }
         }
 
         return false;
@@ -439,9 +421,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             // If true processes the payment.
             if ( $order->id === $order_id ) {
 
-                if ( 'yes' == $this->debug ) {
+                if ( 'yes' == $this->debug )
                     $this->log->add( 'mercadopago', 'Payment status from order #' . $order->id . ': ' . $data->status );
-                }
 
                 switch ( $data->status ) {
                     case 'approved':

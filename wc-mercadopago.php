@@ -76,3 +76,25 @@ function wcmercadopago_legacy_ipn() {
 }
 
 add_action( 'init', 'wcmercadopago_legacy_ipn' );
+
+/**
+ * Adds custom settings url in plugins page.
+ *
+ * @param  array $links Default links.
+ *
+ * @return array        Default links and settings link.
+ */
+function wcmercadopago_action_links( $links ) {
+
+    $settings = array(
+        'settings' => sprintf(
+            '<a href="%s">%s</a>',
+            admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ),
+            __( 'Settings', 'wcmercadopago' )
+        )
+    );
+
+    return array_merge( $settings, $links );
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'wcmercadopago_action_links' );

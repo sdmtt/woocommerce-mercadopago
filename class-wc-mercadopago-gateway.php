@@ -279,10 +279,17 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
         $order = new WC_Order( $order_id );
 
-        return array(
-            'result'    => 'success',
-            'redirect'  => add_query_arg( 'order', $order->id, add_query_arg( 'key', $order->order_key, get_permalink( woocommerce_get_page_id( 'pay' ) ) ) )
-        );
+        if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+            return array(
+                'result'   => 'success',
+                'redirect' => $order->get_checkout_payment_url( true )
+            );
+        } else {
+            return array(
+                'result'   => 'success',
+                'redirect' => add_query_arg( 'order', $order->id, add_query_arg( 'key', $order->order_key, get_permalink( woocommerce_get_page_id( 'pay' ) ) ) )
+            );
+        }
     }
 
     /**

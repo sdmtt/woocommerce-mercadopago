@@ -144,7 +144,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             'method' => array(
                 'title' => __( 'Integration method', 'wcmercadopago' ),
                 'type' => 'select',
-                'description' => __( 'Choose how the customer will see the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago).', 'wcmercadopago' ),
+                'description' => __( 'Choose how the customer will interact with the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago).', 'wcmercadopago' ),
                 'desc_tip' => true,
                 'default' => 'modal',
                 'options' => array(

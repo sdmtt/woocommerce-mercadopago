@@ -15,11 +15,7 @@
  * WooCommerce fallback notice.
  */
 function wcmercadopago_woocommerce_fallback_notice() {
-    $html = '<div class="error">';
-        $html .= '<p>' . __( 'WooCommerce MercadoPago Gateway depends on the last version of <a href="http://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a> to work!', 'wcmercadopago' ) . '</p>';
-    $html .= '</div>';
-
-    echo $html;
+    echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'wcmercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a>' ) . '</p></div>';
 }
 
 /**

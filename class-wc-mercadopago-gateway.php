@@ -35,6 +35,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $this->client_id      = $this->settings['client_id'];
         $this->client_secret  = $this->settings['client_secret'];
         $this->invoice_prefix = ! empty( $this->settings['invoice_prefix'] ) ? $this->settings['invoice_prefix'] : 'WC-';
+        $this->method         = ! empty( $this->settings['method'] ) ? $this->settings['method'] : 'modal';
         $this->debug          = $this->settings['debug'];
 
         // Actions.
@@ -136,6 +137,17 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'desc_tip' => true,
                 'default' => 'WC-'
             ),
+            'method' => array(
+                'title' => __( 'Integration method', 'wcmercadopago' ),
+                'type' => 'select',
+                'description' => __( 'Choose how the customer will see the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago).', 'wcmercadopago' ),
+                'desc_tip' => true,
+                'default' => 'modal',
+                'options' => array(
+                    'modal' => __( 'Modal Window', 'wcmercadopago' ),
+                    'redirect' => __( 'Redirect', 'wcmercadopago' ),
+                )
+            ),
             'testing' => array(
                 'title' => __( 'Gateway Testing', 'wcmercadopago' ),
                 'type' => 'title',
@@ -204,20 +216,17 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * Generate the form.
+     * Generate the MercadoPago payment url.
      *
-     * @param mixed $order_id
+     * @param  object $order Order Object.
      *
-     * @return string
+     * @return string        MercadoPago payment url.
      */
-    public function generate_form( $order_id ) {
-
-        $order = new WC_Order( $order_id );
-
+    protected function get_mercadopago_url( $order ) {
         $args = json_encode( $this->get_form_args( $order ) );
 
         if ( 'yes' == $this->debug )
-            $this->log->add( 'mercadopago', 'Payment arguments for order #' . $order_id . ': ' . print_r( $this->get_form_args( $order ), true ) );
+            $this->log->add( 'mercadopago', 'Payment arguments for order #' . $order->id . ': ' . print_r( $this->get_form_args( $order ), true ) );
 
         $url = $this->payment_url . $this->get_client_credentials();
 
@@ -231,35 +240,52 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $response = wp_remote_post( $url, $params );
 
         if ( ! is_wp_error( $response ) && $response['response']['code'] == 201 && ( strcmp( $response['response']['message'], 'Created' ) == 0 ) ) {
-
-            // Get payment url.
             $checkout_info = json_decode( $response['body'] );
-
-            // Display checkout.
-            $html = '<p>' . __( 'Thank you for your order, please click the button below to pay with MercadoPago.', 'wcmercadopago' ) . '</p>';
-
-            $html .= '<a id="submit-payment" href="' . esc_url( $checkout_info->init_point ) . '" name="MP-Checkout" class="button alt" mp-mode="modal">' . __( 'Pay via MercadoPago', 'wcmercadopago' ) . '</a> <a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Cancel order &amp; restore cart', 'wcmercadopago' ) . '</a>';
-
-            // Add MercadoPago JS.
-            $html .= '<script type="text/javascript">(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent("onload", $MPBR_load) : window.addEventListener("load", $MPBR_load, false)) : null;})();</script>';
 
             if ( 'yes' == $this->debug )
                 $this->log->add( 'mercadopago', 'Payment link generated with success from MercadoPago' );
 
-            return $html;
+            return esc_url( $checkout_info->init_point );
 
+        } else {
+            if ( 'yes' == $this->debug )
+                $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( $response, true ) );
+        }
+
+        return false;
+    }
+
+    /**
+     * Generate the form.
+     *
+     * @param mixed $order_id
+     *
+     * @return string
+     */
+    public function generate_form( $order_id ) {
+
+        $order = new WC_Order( $order_id );
+        $url = $this->get_mercadopago_url( $order );
+
+        if ( $url ) {
+
+            // Display checkout.
+            $html = '<p>' . __( 'Thank you for your order, please click the button below to pay with MercadoPago.', 'wcmercadopago' ) . '</p>';
+
+            $html .= '<a id="submit-payment" href="' . $url . '" name="MP-Checkout" class="button alt" mp-mode="modal">' . __( 'Pay via MercadoPago', 'wcmercadopago' ) . '</a> <a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Cancel order &amp; restore cart', 'wcmercadopago' ) . '</a>';
+
+            // Add MercadoPago JS.
+            $html .= '<script type="text/javascript">(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent("onload", $MPBR_load) : window.addEventListener("load", $MPBR_load, false)) : null;})();</script>';
+
+            return $html;
         } else {
             // Display message if a problem occurs.
             $html = '<p>' . __( 'An error has occurred while processing your payment, please try again. Or contact us for assistance.', 'wcmercadopago' ) . '</p>';
 
             $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
 
-            if ( 'yes' == $this->debug )
-                $this->log->add( 'mercadopago', 'Generate payment error response: ' . print_r( $response, true ) );
-
             return $html;
         }
-
     }
 
     /**
@@ -282,16 +308,24 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
         $order = new WC_Order( $order_id );
 
-        if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+        // Redirect or modal window integration.
+        if ( 'redirect' == $this->method ) {
             return array(
-                'result'   => 'success',
-                'redirect' => $order->get_checkout_payment_url( true )
+                'result'    => 'success',
+                'redirect'  => $this->get_mercadopago_url( $order )
             );
         } else {
-            return array(
-                'result'   => 'success',
-                'redirect' => add_query_arg( 'order', $order->id, add_query_arg( 'key', $order->order_key, get_permalink( woocommerce_get_page_id( 'pay' ) ) ) )
-            );
+            if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+                return array(
+                    'result'   => 'success',
+                    'redirect' => $order->get_checkout_payment_url( true )
+                );
+            } else {
+                return array(
+                    'result'   => 'success',
+                    'redirect' => add_query_arg( 'order', $order->id, add_query_arg( 'key', $order->order_key, get_permalink( woocommerce_get_page_id( 'pay' ) ) ) )
+                );
+            }
         }
     }
 

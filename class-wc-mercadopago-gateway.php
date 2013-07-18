@@ -108,6 +108,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'title' => __( 'Title', 'wcmercadopago' ),
                 'type' => 'text',
                 'description' => __( 'This controls the title which the user sees during checkout.', 'wcmercadopago' ),
+                'desc_tip' => true,
                 'default' => __( 'MercadoPago', 'wcmercadopago' )
             ),
             'description' => array(
@@ -132,6 +133,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'title' => __( 'Invoice Prefix', 'wcmercadopago' ),
                 'type' => 'text',
                 'description' => __( 'Please enter a prefix for your invoice numbers. If you use your MercadoPago account for multiple stores ensure this prefix is unqiue as MercadoPago will not allow orders with the same invoice number.', 'wcmercadopago' ),
+                'desc_tip' => true,
                 'default' => 'WC-'
             ),
             'testing' => array(
@@ -144,7 +146,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'type' => 'checkbox',
                 'label' => __( 'Enable logging', 'wcmercadopago' ),
                 'default' => 'no',
-                'description' => __( 'Log MercadoPago events, such as API requests, inside <code>woocommerce/logs/mercadopago.txt</code>', 'wcmercadopago'  ),
+                'description' => sprintf( __( 'Log MercadoPago events, such as API requests, inside %s', 'wcmercadopago' ), '<code>woocommerce/logs/mercadopago' . sanitize_file_name( wp_hash( 'mercadopago' ) ) . '.txt</code>' ),
             )
         );
     }

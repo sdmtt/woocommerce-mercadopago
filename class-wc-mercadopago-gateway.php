@@ -296,7 +296,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             // Display message if a problem occurs.
             $html = '<p>' . __( 'An error has occurred while processing your payment, please try again. Or contact us for assistance.', 'wcmercadopago' ) . '</p>';
 
-            $html .='<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
+            $html .= '<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'wcmercadopago' ) . '</a>';
 
             return $html;
         }

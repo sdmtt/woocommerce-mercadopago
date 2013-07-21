@@ -183,7 +183,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
-= 1.4.0 - 07/04/2013 =
+= 1.4.0 - 17/07/2013 =
 
 * Melhoria no código.
 * Adicionada opção para pagamento direto ou por janela modal.

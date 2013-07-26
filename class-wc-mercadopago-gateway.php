@@ -237,7 +237,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $args = json_encode( $this->get_form_args( $order ) );
 
         if ( 'yes' == $this->debug )
-            $this->log->add( 'mercadopago', 'Payment arguments for order #' . $order->id . ': ' . print_r( $this->get_form_args( $order ), true ) );
+            $this->log->add( 'mercadopago', 'Payment arguments for order ' . $order->get_order_number() . ': ' . print_r( $this->get_form_args( $order ), true ) );
 
         $url = $this->payment_url . $this->get_client_credentials();
 
@@ -488,7 +488,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
             if ( $order->id === $order_id ) {
 
                 if ( 'yes' == $this->debug )
-                    $this->log->add( 'mercadopago', 'Payment status from order #' . $order->id . ': ' . $data->status );
+                    $this->log->add( 'mercadopago', 'Payment status from order ' . $order->get_order_number() . ': ' . $data->status );
 
                 switch ( $data->status ) {
                     case 'approved':

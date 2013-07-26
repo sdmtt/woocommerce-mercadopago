@@ -4,7 +4,7 @@ Donate link: http://claudiosmweb.com/doacoes/
 Tags: woocommerce, mercadopago, payment
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: 1.5.0
+Stable tag: 1.6.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,11 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 1.6.0 - 26/07/2013 =
+
+* Melhoria nas mensagens de status do pedido.
+* Melhoria no código do plugin.
+
 = 1.5.0 - 26/07/2013 =
 
 * Adicionada tradução para es_ES por [Marcelo Pedra](http://profiles.wordpress.org/kent-brockman)
@@ -234,21 +239,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Upgrade Notice ==
 
-= 1.2 =
+= 1.6.0 =
 
-* Added es_AR translation.
-
-= 1.1.1 =
-
-* Fixed error logs.
-
-= 1.1 =
-
-* Added error logs.
-
-= 1.0 =
-
-* Enjoy it.
+* Melhoria nas mensagens de status do pedido.
+* Melhoria no código do plugin.
 
 == License ==
 

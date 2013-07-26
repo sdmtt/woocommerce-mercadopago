@@ -517,32 +517,32 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                         }
 
                         // Payment completed.
-                        $order->add_order_note( __( 'The payment was approved by MercadoPago.', 'wcmercadopago' ) );
+                        $order->add_order_note( __( 'MercadoPago: Payment approved.', 'wcmercadopago' ) );
                         $order->payment_complete();
 
                         break;
                     case 'pending':
-                        $order->add_order_note( __( 'The user has not completed the payment process yet.', 'wcmercadopago' ) );
+                        $order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'wcmercadopago' ) );
 
                         break;
                     case 'in_process':
-                        $order->update_status( 'on-hold', __( 'Payment under review by MercadoPago.', 'wcmercadopago' ) );
+                        $order->update_status( 'on-hold', __( 'MercadoPago: Payment under review.', 'wcmercadopago' ) );
 
                         break;
                     case 'rejected':
-                        $order->add_order_note( __( 'The payment was declined. The user can try again.', 'wcmercadopago' ) );
+                        $order->add_order_note( __( 'MercadoPago: The payment was declined. The user can try again.', 'wcmercadopago' ) );
 
                         break;
                     case 'refunded':
-                        $order->update_status( 'refunded', __( 'The payment was returned to the user.', 'wcmercadopago' ) );
+                        $order->update_status( 'refunded', __( 'MercadoPago: The payment was returned to the user.', 'wcmercadopago' ) );
 
                         break;
                     case 'cancelled':
-                        $order->update_status( 'cancelled', __( 'Payment canceled by MercadoPago.', 'wcmercadopago' ) );
+                        $order->update_status( 'cancelled', __( 'MercadoPago: Payment canceled.', 'wcmercadopago' ) );
 
                         break;
                     case 'in_mediation':
-                        $order->add_order_note( __( 'It started a dispute for payment.', 'wcmercadopago' ) );
+                        $order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'wcmercadopago' ) );
 
                         break;
 

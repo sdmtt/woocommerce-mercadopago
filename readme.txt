@@ -184,7 +184,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
-= 1.5.0 - 17/07/2013 =
+= 1.5.0 - 26/07/2013 =
 
 * Adicionada tradução para es_ES por [Marcelo Pedra](http://profiles.wordpress.org/kent-brockman)
 * Adicionado o filtro `woocommerce_mercadopago_icon` para a modificação do ícone durante o checkout.

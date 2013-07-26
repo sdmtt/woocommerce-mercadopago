@@ -1,10 +1,10 @@
 === WooCommerce MercadoPago ===
 Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
-Tags: ecommerce, e-commerce, commerce, wordpress ecommerce, checkout, payment, payment gateway, mercadopago
+Tags: woocommerce, mercadopago, payment
 Requires at least: 3.0
 Tested up to: 3.6
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -50,6 +50,7 @@ Você pode contribuir com código-fonte em nossa página no [GitHub](https://git
 
 ### Translators ###
 
+* es_ES by [Marcelo Pedra](http://profiles.wordpress.org/kent-brockman)
 * es_AR by [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
 
 == Installation ==
@@ -182,6 +183,13 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 2. Checkout page.
 
 == Changelog ==
+
+= 1.5.0 - 17/07/2013 =
+
+* Adicionada tradução para es_ES por [Marcelo Pedra](http://profiles.wordpress.org/kent-brockman)
+* Adicionado o filtro `woocommerce_mercadopago_icon` para a modificação do ícone durante o checkout.
+* Adicionado parâmetro $order no filtro `woocommerce_mercadopago_args`.
+* Melhorias no código.
 
 = 1.4.0 - 17/07/2013 =
 

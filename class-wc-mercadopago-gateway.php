@@ -16,7 +16,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
         // Standards
         $this->id              = 'mercadopago';
-        $this->icon            = plugins_url( 'images/mercadopago.png', __FILE__ );
+        $this->icon            = apply_filters( 'woocommerce_mercadopago_icon', plugins_url( 'images/mercadopago.png', __FILE__ ) );
         $this->has_fields      = false;
         $this->method_title    = __( 'MercadoPago', 'wcmercadopago' );
 

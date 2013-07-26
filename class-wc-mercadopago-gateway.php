@@ -174,7 +174,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
                 'type' => 'checkbox',
                 'label' => __( 'Enable logging', 'wcmercadopago' ),
                 'default' => 'no',
-                'description' => sprintf( __( 'Log MercadoPago events, such as API requests, inside %s', 'wcmercadopago' ), '<code>woocommerce/logs/mercadopago' . sanitize_file_name( wp_hash( 'mercadopago' ) ) . '.txt</code>' ),
+                'description' => sprintf( __( 'Log MercadoPago events, such as API requests, inside %s', 'wcmercadopago' ), '<code>woocommerce/logs/mercadopago-' . sanitize_file_name( wp_hash( 'mercadopago' ) ) . '.txt</code>' ),
             )
         );
     }

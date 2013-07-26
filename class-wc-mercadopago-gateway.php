@@ -20,7 +20,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $this->has_fields      = false;
         $this->method_title    = __( 'MercadoPago', 'wcmercadopago' );
 
-        // API urls.
+        // API URLs.
         $this->payment_url     = 'https://api.mercadolibre.com/checkout/preferences?access_token=';
         $this->ipn_url         = 'https://api.mercadolibre.com/collections/notifications/';
         $this->sandbox_ipn_url = 'https://api.mercadolibre.com/sandbox/collections/notifications/';
@@ -177,9 +177,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     /**
      * Generate the args to form.
      *
-     * @param  array $order Order data.
+     * @param  object $order Order data.
      *
-     * @return array
+     * @return array         Form arguments.
      */
     public function get_form_args( $order ) {
 
@@ -272,9 +272,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     /**
      * Generate the form.
      *
-     * @param mixed $order_id
+     * @param int     $order_id Order ID.
      *
-     * @return string
+     * @return string           Payment form.
      */
     public function generate_form( $order_id ) {
 
@@ -314,9 +314,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     /**
      * Process the payment and return the result.
      *
-     * @param int $order_id
+     * @param int    $order_id Order ID.
      *
-     * @return array
+     * @return array           Redirect.
      */
     public function process_payment( $order_id ) {
 
@@ -394,9 +394,11 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * Check ipn validity.
+     * Check IPN.
      *
-     * @return mixed
+     * @param  array $data MercadoPago post data.
+     *
+     * @return mixed       False or posted response.
      */
     public function check_ipn_request_is_valid( $data ) {
 
@@ -447,29 +449,22 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return void
      */
     public function check_ipn_response() {
-
         @ob_clean();
 
         $data = $this->check_ipn_request_is_valid( $_GET );
 
         if ( $data ) {
-
             header( 'HTTP/1.1 200 OK' );
-
             do_action( 'valid_mercadopago_ipn_request', $data );
-
         } else {
-
             wp_die( __( 'MercadoPago Request Failure', 'wcmercadopago' ) );
-
         }
-
     }
 
     /**
      * Successful Payment!
      *
-     * @param array $posted
+     * @param array $posted MercadoPago post data.
      *
      * @return void
      */

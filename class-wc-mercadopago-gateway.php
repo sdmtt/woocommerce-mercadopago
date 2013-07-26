@@ -221,7 +221,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         if ( $order->get_shipping() > 0 )
             $args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'wcmercadopago' ) . ' ' . ucwords( $order->shipping_method_title );
 
-        $args = apply_filters( 'woocommerce_mercadopago_args', $args );
+        $args = apply_filters( 'woocommerce_mercadopago_args', $args, $order );
 
         return $args;
     }

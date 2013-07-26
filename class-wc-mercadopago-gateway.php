@@ -560,7 +560,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return string Error Mensage.
      */
     public function client_id_missing_message() {
-        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_id in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . get_admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
+        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_id in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
     }
 
     /**
@@ -569,6 +569,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return string Error Mensage.
      */
     public function client_secret_missing_message() {
-        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_secret in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . get_admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
+        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_secret in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
     }
 }

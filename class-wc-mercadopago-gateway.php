@@ -84,13 +84,18 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * Admin Panel Options.
      */
     public function admin_options() {
-        ?>
-        <h3><?php _e( 'MercadoPago standard', 'wcmercadopago' ); ?></h3>
-        <p><?php _e( 'MercadoPago standard works by sending the user to MercadoPago to enter their payment information.', 'wcmercadopago' ); ?></p>
-        <table class="form-table">
-            <?php $this->generate_settings_html(); ?>
-        </table>
-        <?php
+        echo '<h3>' . __( 'MercadoPago standard', 'wcmercadopago' ) . '</h3>';
+        echo '<p>' . __( 'MercadoPago standard works by sending the user to MercadoPago to enter their payment information.', 'wcmercadopago' ) . '</p>';
+
+        // Checks if is valid for use.
+        if ( ! $this->is_valid_for_use() ) {
+            echo '<div class="inline error"><p><strong>' . __( 'MercadoPago Disabled', 'wcmercadopago' ) . '</strong>: ' . __( 'Works only with the currencies ARS, BRL, MXN, USD and VEF.', 'wcmercadopago' ) . '</p></div>';
+        } else {
+            // Generate the HTML For the settings form.
+            echo '<table class="form-table">';
+            $this->generate_settings_html();
+            echo '</table>';
+        }
     }
 
     /**
@@ -555,7 +560,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return string Error Mensage.
      */
     public function client_id_missing_message() {
-        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_id in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
+        echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'wcmercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_id. %s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">' . __( 'Click here to configure!', 'wcmercadopago' ) . '</a>' ) . '</p></div>';
     }
 
     /**
@@ -564,6 +569,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return string Error Mensage.
      */
     public function client_secret_missing_message() {
-        echo '<div class="error"><p>' . sprintf( __( '<strong>Gateway Disabled</strong> You should inform your Client_secret in MercadoPago. %sClick here to configure!%s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">', '</a>' ) . '</p></div>';
+        echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'wcmercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_secret. %s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">' . __( 'Click here to configure!', 'wcmercadopago' ) . '</a>' ) . '</p></div>';
     }
 }

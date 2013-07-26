@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce MercadoPago v1.5.0\n"
+"Project-Id-Version: WooCommerce MercadoPago v1.6.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: \n"
-"PO-Revision-Date: 2013-07-26 04:58:55+0000\n"
+"PO-Revision-Date: 2013-07-26 20:18:01+0000\n"
 "Last-Translator: Gustavo Coronel <gcoronel@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -39,114 +39,114 @@ msgid "claudiosanches"
 msgstr "claudiosanches"
 
 #: class-wc-mercadopago-gateway.php:21
-#: class-wc-mercadopago-gateway.php:117
+#: class-wc-mercadopago-gateway.php:122
 #@ wcmercadopago
 msgid "MercadoPago"
 msgstr "MercadoPago"
 
-#: class-wc-mercadopago-gateway.php:88
+#: class-wc-mercadopago-gateway.php:87
 #@ wcmercadopago
 msgid "MercadoPago standard"
 msgstr "MercadoPago estándar"
 
-#: class-wc-mercadopago-gateway.php:89
+#: class-wc-mercadopago-gateway.php:88
 #@ wcmercadopago
 msgid "MercadoPago standard works by sending the user to MercadoPago to enter their payment information."
 msgstr "MercadoPago estándar funciona enviando al usuario, hacia el sitio MercadoPago, donde se hará el pago."
 
-#: class-wc-mercadopago-gateway.php:107
+#: class-wc-mercadopago-gateway.php:112
 #@ wcmercadopago
 msgid "Enable/Disable"
 msgstr "Habilita/Desabilita"
 
-#: class-wc-mercadopago-gateway.php:109
+#: class-wc-mercadopago-gateway.php:114
 #@ wcmercadopago
 msgid "Enable MercadoPago standard"
 msgstr "Habilitar MercadoPago como estándar"
 
-#: class-wc-mercadopago-gateway.php:113
+#: class-wc-mercadopago-gateway.php:118
 #@ wcmercadopago
 msgid "Title"
 msgstr "Título"
 
-#: class-wc-mercadopago-gateway.php:115
+#: class-wc-mercadopago-gateway.php:120
 #@ wcmercadopago
 msgid "This controls the title which the user sees during checkout."
 msgstr "Controla el título que el usuario ve durante la comprobación."
 
-#: class-wc-mercadopago-gateway.php:120
+#: class-wc-mercadopago-gateway.php:125
 #@ wcmercadopago
 msgid "Description"
 msgstr "Descripción"
 
-#: class-wc-mercadopago-gateway.php:122
+#: class-wc-mercadopago-gateway.php:127
 #@ wcmercadopago
 msgid "This controls the description which the user sees during checkout."
 msgstr "Esto controla la descripción que el usuario ve durante la comprobación / checkout."
 
-#: class-wc-mercadopago-gateway.php:123
-#: class-wc-mercadopago-gateway.php:289
+#: class-wc-mercadopago-gateway.php:128
+#: class-wc-mercadopago-gateway.php:294
 #@ wcmercadopago
 msgid "Pay via MercadoPago"
 msgstr "Pagar con MercadoPago"
 
-#: class-wc-mercadopago-gateway.php:126
+#: class-wc-mercadopago-gateway.php:131
 #@ wcmercadopago
 msgid "MercadoPago Client_id"
 msgstr "Client_id de MercadoPago"
 
-#: class-wc-mercadopago-gateway.php:128
+#: class-wc-mercadopago-gateway.php:133
 #@ wcmercadopago
 msgid "Please enter your MercadoPago Client_id."
 msgstr "Introduzca su client_id de MercadoPago."
 
-#: class-wc-mercadopago-gateway.php:132
+#: class-wc-mercadopago-gateway.php:137
 #@ wcmercadopago
 msgid "MercadoPago Client_secret"
 msgstr "Client_secret de MercadoPago"
 
-#: class-wc-mercadopago-gateway.php:134
+#: class-wc-mercadopago-gateway.php:139
 #@ wcmercadopago
 msgid "Please enter your MercadoPago Client_secret."
 msgstr "Introduzca Client_secret de MercadoPago."
 
-#: class-wc-mercadopago-gateway.php:138
+#: class-wc-mercadopago-gateway.php:143
 #@ wcmercadopago
 msgid "Invoice Prefix"
 msgstr "Prefijo factura"
 
-#: class-wc-mercadopago-gateway.php:140
+#: class-wc-mercadopago-gateway.php:145
 #@ wcmercadopago
 msgid "Please enter a prefix for your invoice numbers. If you use your MercadoPago account for multiple stores ensure this prefix is unqiue as MercadoPago will not allow orders with the same invoice number."
 msgstr "Por favor, introduzca un prefijo para los números de factura. Si usted utiliza su cuenta MercadoPago para múltiples tiendas asegurar este prefijo es unico, MercadoPago no permitirá que las órdenes con el mismo número de factura."
 
-#: class-wc-mercadopago-gateway.php:218
+#: class-wc-mercadopago-gateway.php:223
 #, php-format
 #@ wcmercadopago
 msgid "Order %s"
 msgstr "Pedido %s"
 
-#: class-wc-mercadopago-gateway.php:222
+#: class-wc-mercadopago-gateway.php:227
 #@ wcmercadopago
 msgid "Shipping via"
 msgstr "Entrega via"
 
-#: class-wc-mercadopago-gateway.php:287
+#: class-wc-mercadopago-gateway.php:292
 #@ wcmercadopago
 msgid "Thank you for your order, please click the button below to pay with MercadoPago."
 msgstr "Gracias por su pedido, por favor haga clic en el botón de abajo para pagar con MercadoPago."
 
-#: class-wc-mercadopago-gateway.php:289
+#: class-wc-mercadopago-gateway.php:294
 #@ wcmercadopago
 msgid "Cancel order &amp; restore cart"
 msgstr "Cancelar pedido y restaurar el carro de compras"
 
-#: class-wc-mercadopago-gateway.php:297
+#: class-wc-mercadopago-gateway.php:302
 #@ wcmercadopago
 msgid "An error has occurred while processing your payment, please try again. Or contact us for assistance."
 msgstr "Se produjo un error al procesar su pago, por favor inténtelo de nuevo o póngase en contacto para obtener ayuda."
 
-#: class-wc-mercadopago-gateway.php:299
+#: class-wc-mercadopago-gateway.php:304
 #@ wcmercadopago
 msgid "Click to try again"
 msgstr "Haga clic para volver a intentarlo"
@@ -166,136 +166,89 @@ msgstr "Correo electrónico del comprador"
 msgid "Payment type"
 msgstr "Forma de pago"
 
-#: class-wc-mercadopago-gateway.php:520
-#@ wcmercadopago
-msgid "The payment was approved by MercadoPago."
-msgstr "El pago fue aprobado por MercadoPago."
-
-#: class-wc-mercadopago-gateway.php:525
-#@ wcmercadopago
-msgid "The user has not completed the payment process yet."
-msgstr "El usuario no ha completado el proceso de pago todavía."
-
-#: class-wc-mercadopago-gateway.php:529
-#@ wcmercadopago
-msgid "Payment under review by MercadoPago."
-msgstr "Pago en revisión por MercadoPago."
-
-#: class-wc-mercadopago-gateway.php:533
-#@ wcmercadopago
-msgid "The payment was declined. The user can try again."
-msgstr "El pago fue rechazado. El usuario puede volver a intentarlo."
-
-#: class-wc-mercadopago-gateway.php:537
-#@ wcmercadopago
-msgid "The payment was returned to the user."
-msgstr "El pago se devuelve al usuario."
-
-#: class-wc-mercadopago-gateway.php:541
-#@ wcmercadopago
-msgid "Payment canceled by MercadoPago."
-msgstr "Pago cancelado por MercadoPago."
-
-#: class-wc-mercadopago-gateway.php:545
-#@ wcmercadopago
-msgid "It started a dispute for payment."
-msgstr "Se inició una disputa por el pago."
-
-#: class-wc-mercadopago-gateway.php:563
-#, php-format
-#@ wcmercadopago
-msgid "<strong>Gateway Disabled</strong> You should inform your Client_id in MercadoPago. %sClick here to configure!%s"
-msgstr "<strong>Forma de pago deshabilitado</strong> Debe informar a su client_id de MercadoPago. %sHaga clic aquí para configurar!%s"
-
-#: class-wc-mercadopago-gateway.php:572
-#, php-format
-#@ wcmercadopago
-msgid "<strong>Gateway Disabled</strong> You should inform your Client_secret in MercadoPago. %sClick here to configure!%s"
-msgstr "<strong>Forma de pago deshabilitado</strong> Debe informar su Client_secret de MercadoPago. %sHaga clic aquí para configurar!%s"
-
-#: class-wc-mercadopago-gateway.php:156
+#: class-wc-mercadopago-gateway.php:161
 #@ wcmercadopago
 msgid "Gateway Testing"
 msgstr "Test de Gateway"
 
-#: class-wc-mercadopago-gateway.php:168
+#: class-wc-mercadopago-gateway.php:173
 #@ wcmercadopago
 msgid "Debug Log"
 msgstr "Log de depuración"
 
-#: class-wc-mercadopago-gateway.php:170
+#: class-wc-mercadopago-gateway.php:175
 #@ wcmercadopago
 msgid "Enable logging"
 msgstr "Habilitar log"
 
-#: class-wc-mercadopago-gateway.php:463
+#: class-wc-mercadopago-gateway.php:465
 #@ wcmercadopago
 msgid "MercadoPago Request Failure"
 msgstr "MercadoPago falta de solicitud"
 
-#: class-wc-mercadopago-gateway.php:103
+#: class-wc-mercadopago-gateway.php:108
 #@ wcmercadopago
 msgid "Argentine"
 msgstr "Argentina"
 
-#: class-wc-mercadopago-gateway.php:103
+#: class-wc-mercadopago-gateway.php:108
 #@ wcmercadopago
 msgid "Brazil"
 msgstr "Brasil"
 
-#: class-wc-mercadopago-gateway.php:103
+#: class-wc-mercadopago-gateway.php:108
 #@ wcmercadopago
 msgid "Mexico"
 msgstr "México"
 
-#: class-wc-mercadopago-gateway.php:103
+#: class-wc-mercadopago-gateway.php:108
 #@ wcmercadopago
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: class-wc-mercadopago-gateway.php:103
+#: class-wc-mercadopago-gateway.php:108
 #@ wcmercadopago
 msgid "or"
 msgstr "o"
 
-#: class-wc-mercadopago-gateway.php:128
-#: class-wc-mercadopago-gateway.php:134
+#: class-wc-mercadopago-gateway.php:133
+#: class-wc-mercadopago-gateway.php:139
 #, php-format
 #@ wcmercadopago
 msgid "You can to get this information in MercadoPago from %s."
 msgstr "Usted puede obtener esta información en la MercadoPago de %s"
 
-#: class-wc-mercadopago-gateway.php:145
+#: class-wc-mercadopago-gateway.php:150
 #@ wcmercadopago
 msgid "Integration method"
 msgstr "Método de integración"
 
-#: class-wc-mercadopago-gateway.php:151
+#: class-wc-mercadopago-gateway.php:156
 #@ wcmercadopago
 msgid "Modal Window"
 msgstr "Ventana Modal"
 
-#: class-wc-mercadopago-gateway.php:152
+#: class-wc-mercadopago-gateway.php:157
 #@ wcmercadopago
 msgid "Redirect"
 msgstr "Redireccionar"
 
-#: class-wc-mercadopago-gateway.php:161
+#: class-wc-mercadopago-gateway.php:166
 #@ wcmercadopago
 msgid "MercadoPago Sandbox"
 msgstr "MercadoPago Sandbox"
 
-#: class-wc-mercadopago-gateway.php:163
+#: class-wc-mercadopago-gateway.php:168
 #@ wcmercadopago
 msgid "Enable MercadoPago sandbox"
 msgstr "Habilitar MercadoPago sandbox"
 
-#: class-wc-mercadopago-gateway.php:165
+#: class-wc-mercadopago-gateway.php:170
 #@ wcmercadopago
 msgid "MercadoPago sandbox can be used to test payments."
 msgstr "MercadoPago sandbox puede ser utilizado para probar los pagos."
 
-#: class-wc-mercadopago-gateway.php:172
+#: class-wc-mercadopago-gateway.php:177
 #, php-format
 #@ wcmercadopago
 msgid "Log MercadoPago events, such as API requests, inside %s"
@@ -324,14 +277,79 @@ msgstr "WooCommerce MercadoPago gateway depende de la última versión de %s par
 msgid "Settings"
 msgstr "Configuración"
 
-#: class-wc-mercadopago-gateway.php:147
+#: class-wc-mercadopago-gateway.php:152
 #@ wcmercadopago
 msgid "Choose how the customer will interact with the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago)."
 msgstr "Elige cómo el cliente va a interactuar con la MercadoPago. Ventana Modal (Dentro de su tienda) Redireccionar (Client va a MercadoPago)."
 
+#: class-wc-mercadopago-gateway.php:92
+#: class-wc-mercadopago-gateway.php:563
+#: class-wc-mercadopago-gateway.php:572
+#@ wcmercadopago
+msgid "MercadoPago Disabled"
+msgstr "MercadoPago Deshabilitada"
+
+#: class-wc-mercadopago-gateway.php:92
+#@ wcmercadopago
+msgid "Works only with the currencies ARS, BRL, MXN, USD and VEF."
+msgstr "Sólo funciona con las monedas ARS, BRL, MXN, USD y VEF."
+
+#: class-wc-mercadopago-gateway.php:520
+#@ wcmercadopago
+msgid "MercadoPago: Payment approved."
+msgstr "MercadoPago: Aprobado el pago."
+
+#: class-wc-mercadopago-gateway.php:525
+#@ wcmercadopago
+msgid "MercadoPago: The user has not completed the payment process yet."
+msgstr "MercadoPago: El usuario no ha completado el proceso de pago todavía."
+
+#: class-wc-mercadopago-gateway.php:529
+#@ wcmercadopago
+msgid "MercadoPago: Payment under review."
+msgstr "MercadoPago: Pago en revisión."
+
+#: class-wc-mercadopago-gateway.php:533
+#@ wcmercadopago
+msgid "MercadoPago: The payment was declined. The user can try again."
+msgstr "MercadoPago: El pago fue rechazado. El usuario puede volver a intentarlo."
+
+#: class-wc-mercadopago-gateway.php:537
+#@ wcmercadopago
+msgid "MercadoPago: The payment was returned to the user."
+msgstr "MercadoPago: El pago se devolvió al usuario."
+
+#: class-wc-mercadopago-gateway.php:541
+#@ wcmercadopago
+msgid "MercadoPago: Payment canceled."
+msgstr "MercadoPago: Pago cancelado."
+
+#: class-wc-mercadopago-gateway.php:545
+#@ wcmercadopago
+msgid "MercadoPago: It started a dispute for payment."
+msgstr "MercadoPago: Se inició una disputa por el pago."
+
+#: class-wc-mercadopago-gateway.php:563
+#, php-format
+#@ wcmercadopago
+msgid "You should inform your Client_id. %s"
+msgstr "Debe informar su Client_id. %s"
+
+#: class-wc-mercadopago-gateway.php:563
+#: class-wc-mercadopago-gateway.php:572
+#@ wcmercadopago
+msgid "Click here to configure!"
+msgstr "Haga clic aquí para configurar!"
+
+#: class-wc-mercadopago-gateway.php:572
+#, php-format
+#@ wcmercadopago
+msgid "You should inform your Client_secret. %s"
+msgstr "Debe informar su Client_secret, %s"
+
 #. translators: plugin header field 'Version'
 #: wc-mercadopago.php:0
 #@ wcmercadopago
-msgid "1.5.0"
-msgstr "1.5.0"
+msgid "1.6.0"
+msgstr "1.6.0"
 

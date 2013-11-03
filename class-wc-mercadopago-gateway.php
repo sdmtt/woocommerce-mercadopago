@@ -52,9 +52,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         else
             add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
 
-        // Valid for use.
-        $this->enabled = ( 'yes' == $this->settings['enabled'] ) && ! empty( $this->client_id ) && ! empty( $this->client_secret ) && $this->is_valid_for_use();
-
         // Checks if client_id is not empty.
         if ( empty( $this->client_id ) )
             add_action( 'admin_notices', array( &$this, 'client_id_missing_message' ) );
@@ -69,16 +66,31 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * Check if this gateway is enabled and available in the user's country.
+     * Check if this gateway is enabled, properly configured and available for
+     * use.
      *
      * @return bool
      */
     public function is_valid_for_use() {
-        if ( ! in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) ) )
-            return false;
+			$result = ( 'yes' == $this->settings['enabled'] ) &&
+								! empty( $this->client_id ) &&
+								! empty( $this->client_secret ) &&
+								in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) );
 
-        return true;
+      return $result;
     }
+
+	/**
+	 * Returns a value indicating the the Gateway is available or not. It's called
+	 * automatically by WooCommerce before allowing customers to use the gateway
+	 * for payment.
+	 *
+	 * @return bool
+	 */
+		public function is_available() {
+      // Valid for use.
+			return $this->is_valid_for_use();
+		}
 
     /**
      * Admin Panel Options.

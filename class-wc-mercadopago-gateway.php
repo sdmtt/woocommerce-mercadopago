@@ -79,20 +79,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * Check if this gateway is enabled, properly configured and available for use.
-     *
-     * @return bool
-     */
-    public function is_valid_for_use() {
-        $result = ( 'yes' == $this->settings['enabled'] ) &&
-                    ! empty( $this->client_id ) &&
-                    ! empty( $this->client_secret ) &&
-                    $this->using_supported_currency();
-
-        return $result;
-    }
-
-    /**
      * Returns a value indicating the the Gateway is available or not. It's called
      * automatically by WooCommerce before allowing customers to use the gateway
      * for payment.
@@ -100,8 +86,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      * @return bool
      */
     public function is_available() {
-        // Valid for use.
-        return $this->is_valid_for_use();
+        // Test if is valid for use.
+        $available = ( 'yes' == $this->settings['enabled'] ) &&
+                    ! empty( $this->client_id ) &&
+                    ! empty( $this->client_secret ) &&
+                    $this->using_supported_currency();
+
+        return $available;
     }
 
     /**

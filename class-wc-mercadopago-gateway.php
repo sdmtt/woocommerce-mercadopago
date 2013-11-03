@@ -583,9 +583,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
     }
 
     /**
-     * Adds error message when not configured the client_secret.
-     *
-     * @return string Error Mensage.
+     * Adds error message when an unsupported currency is used.
      */
     public function currency_not_supported_message() {
 			$currency = get_woocommerce_currency();

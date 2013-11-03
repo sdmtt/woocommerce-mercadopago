@@ -52,51 +52,61 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         else
             add_action( 'woocommerce_update_options_payment_gateways', array( &$this, 'process_admin_options' ) );
 
-        // Valid for use.
-        $this->enabled = ( 'yes' == $this->settings['enabled'] ) && ! empty( $this->client_id ) && ! empty( $this->client_secret ) && $this->is_valid_for_use();
-
         // Checks if client_id is not empty.
-        if ( empty( $this->client_id ) )
-            add_action( 'admin_notices', array( &$this, 'client_id_missing_message' ) );
+        if ( empty( $this->client_id ) ) {
+            add_action( 'admin_notices', array( $this, 'client_id_missing_message' ) );
+        }
 
         // Checks if client_secret is not empty.
-        if ( empty( $this->client_secret ) )
-            add_action( 'admin_notices', array( &$this, 'client_secret_missing_message' ) );
+        if ( empty( $this->client_secret ) ) {
+            add_action( 'admin_notices', array( $this, 'client_secret_missing_message' ) );
+        }
+
+        // Checks that the currency is supported
+        if ( !( $this->using_supported_currency() ) ) {
+            add_action( 'admin_notices', array( $this, 'currency_not_supported_message' ) );
+        }
 
         // Active logs.
         if ( 'yes' == $this->debug )
             $this->log = $woocommerce->logger();
     }
 
+		/**
+		 * Returns a bool that indicates if currency is amongst the supported ones.
+		 *
+		 * @return bool
+		 */
+		protected function using_supported_currency() {
+			return in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ));
+		}
+
     /**
-     * Check if this gateway is enabled and available in the user's country.
+     * Check if this gateway is enabled, properly configured and available for
+     * use.
      *
      * @return bool
      */
     public function is_valid_for_use() {
-        if ( ! in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF' ) ) )
-            return false;
+			$result = ( 'yes' == $this->settings['enabled'] ) &&
+								! empty( $this->client_id ) &&
+								! empty( $this->client_secret ) &&
+								!$this->using_supported_currency();
 
-        return true;
+      return $result;
     }
 
-    /**
-     * Admin Panel Options.
-     */
-    public function admin_options() {
-        echo '<h3>' . __( 'MercadoPago standard', 'wcmercadopago' ) . '</h3>';
-        echo '<p>' . __( 'MercadoPago standard works by sending the user to MercadoPago to enter their payment information.', 'wcmercadopago' ) . '</p>';
-
-        // Checks if is valid for use.
-        if ( ! $this->is_valid_for_use() ) {
-            echo '<div class="inline error"><p><strong>' . __( 'MercadoPago Disabled', 'wcmercadopago' ) . '</strong>: ' . __( 'Works only with the currencies ARS, BRL, MXN, USD and VEF.', 'wcmercadopago' ) . '</p></div>';
-        } else {
-            // Generate the HTML For the settings form.
-            echo '<table class="form-table">';
-            $this->generate_settings_html();
-            echo '</table>';
-        }
-    }
+	/**
+	 * Returns a value indicating the the Gateway is available or not. It's called
+	 * automatically by WooCommerce before allowing customers to use the gateway
+	 * for payment.
+	 *
+	 * @return bool
+	 */
+		public function is_available() {
+      // Valid for use.
+			return $this->is_valid_for_use();
+		}
 
     /**
      * Initialise Gateway Settings Form Fields.
@@ -570,5 +580,18 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
      */
     public function client_secret_missing_message() {
         echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'wcmercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_secret. %s', 'wcmercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">' . __( 'Click here to configure!', 'wcmercadopago' ) . '</a>' ) . '</p></div>';
+    }
+
+    /**
+     * Adds error message when an unsupported currency is used.
+     */
+    public function currency_not_supported_message() {
+			$currency = get_woocommerce_currency();
+      echo '<div class="error"><p>';
+			echo '<strong>' . __( 'MercadoPago disabled', 'wcmercadopago' ) . '</strong>: ';
+			echo sprintf( __( 'Currency "%s" is not supported. Please make sure that you use one of the ' .
+											  'following supported currencies: ARS, BRL, MXN, USD, VEF.', 'wcmercadopago' ),
+									 $currency);
+			echo '</p></div>';
     }
 }

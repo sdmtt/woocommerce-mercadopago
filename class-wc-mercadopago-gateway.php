@@ -87,7 +87,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
         $result = ( 'yes' == $this->settings['enabled'] ) &&
                     ! empty( $this->client_id ) &&
                     ! empty( $this->client_secret ) &&
-                    ! $this->using_supported_currency();
+                    $this->using_supported_currency();
 
         return $result;
     }

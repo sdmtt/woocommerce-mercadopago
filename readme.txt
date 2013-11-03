@@ -2,9 +2,9 @@
 Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: woocommerce, mercadopago, payment
-Requires at least: 3.0
-Tested up to: 3.6
-Stable tag: 1.6.0
+Requires at least: 3.5
+Tested up to: 3.7.1
+Stable tag: 1.7.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -184,6 +184,12 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 1.7.0 - 03/11/2013 =
+
+* Corrigido o textdomain para suportar o padrão do WordPress 3.7.
+* Corrigida verificação que testa se o plugin esta pronto para funcionar ou não (créditos para daigo75).
+* Adicionada compatibilidade com o plugin Currency Switcher for WooCommerce (créditos para daigo75).
+
 = 1.6.0 - 26/07/2013 =
 
 * Melhoria nas mensagens de status do pedido.
@@ -239,10 +245,9 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Upgrade Notice ==
 
-= 1.6.0 =
+= 1.7.0 =
 
-* Melhoria nas mensagens de status do pedido.
-* Melhoria no código do plugin.
+* Adicionada compatibilidade com o plugin Currency Switcher for WooCommerce
 
 == License ==
 

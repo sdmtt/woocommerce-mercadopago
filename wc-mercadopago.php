@@ -2,12 +2,12 @@
 /**
  * Plugin Name: WooCommerce MercadoPago
  * Plugin URI: https://github.com/claudiosmweb/woocommerce-mercadopago
- * Description: Gateway de pagamento MercadoPago para WooCommerce.
+ * Description: MercadoPago gateway for Woocommerce.
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 1.6.0
+ * Version: 1.7.0
  * License: GPLv2 or later
- * Text Domain: wcmercadopago
+ * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
  */
 
@@ -15,7 +15,7 @@
  * WooCommerce fallback notice.
  */
 function wcmercadopago_woocommerce_fallback_notice() {
-    echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'wcmercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a>' ) . '</p></div>';
+    echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'woocommerce-mercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">WooCommerce</a>' ) . '</p></div>';
 }
 
 /**
@@ -32,7 +32,7 @@ function wcmercadopago_gateway_load() {
     /**
      * Load textdomain.
      */
-    load_plugin_textdomain( 'wcmercadopago', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+    load_plugin_textdomain( 'woocommerce-mercadopago', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 
     /**
      * Add the gateway to WooCommerce.
@@ -86,7 +86,7 @@ function wcmercadopago_action_links( $links ) {
         'settings' => sprintf(
             '<a href="%s">%s</a>',
             admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ),
-            __( 'Settings', 'wcmercadopago' )
+            __( 'Settings', 'woocommerce-mercadopago' )
         )
     );
 

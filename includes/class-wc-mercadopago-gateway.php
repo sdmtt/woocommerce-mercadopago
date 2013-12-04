@@ -68,7 +68,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			if ( class_exists( 'WC_Logger' ) ) {
 				$this->log = new WC_Logger();
 			} else {
-				$this->log = $this->woocommerce_method()->logger();
+				$this->log = $this->woocommerce_instance()->logger();
 			}
 		}
 	}
@@ -78,7 +78,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return object Returns the main instance of WooCommerce class.
 	 */
-	protected function woocommerce_method() {
+	protected function woocommerce_instance() {
 		if ( function_exists( 'WC' ) ) {
 			return WC();
 		} else {

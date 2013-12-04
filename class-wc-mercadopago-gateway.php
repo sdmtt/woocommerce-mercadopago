@@ -12,7 +12,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	public function __construct() {
-		global $woocommerce;
 
 		// Standards
 		$this->id              = 'mercadopago';
@@ -71,6 +70,20 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			} else {
 				$this->log = $this->woocommerce_method()->logger();
 			}
+		}
+	}
+
+	/**
+	 * Backwards compatibility with version prior to 2.1.
+	 *
+	 * @return object Returns the main instance of WooCommerce class.
+	 */
+	protected function woocommerce_method() {
+		if ( function_exists( 'WC' ) ) {
+			return WC();
+		} else {
+			global $woocommerce;
+			return $woocommerce;
 		}
 	}
 

@@ -334,7 +334,15 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string Styles.
 	 */
 	public function css() {
-		echo '<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>';
+		if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+			$page_id = wc_get_page_id( 'checkout' );
+		} else {
+			$page_id = woocommerce_get_page_id( 'checkout' );
+		}
+
+		if ( is_page( $page_id ) ) {
+			echo '<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>' . PHP_EOL;
+		}
 	}
 
 	/**

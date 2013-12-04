@@ -584,12 +584,25 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Gets the admin url.
+	 *
+	 * @return string
+	 */
+	protected function admin_url() {
+		if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+			return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' );
+		}
+
+		return admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' );
+	}
+
+	/**
 	 * Adds error message when not configured the client_id.
 	 *
 	 * @return string Error Mensage.
 	 */
 	public function client_id_missing_message() {
-		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_id. %s', 'woocommerce-mercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">' . __( 'Click here to configure!', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
+		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_id. %s', 'woocommerce-mercadopago' ), '<a href="' . $this->admin_url() . '">' . __( 'Click here to configure!', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
 	}
 
 	/**
@@ -598,7 +611,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string Error Mensage.
 	 */
 	public function client_secret_missing_message() {
-		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_secret. %s', 'woocommerce-mercadopago' ), '<a href="' . admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' ) . '">' . __( 'Click here to configure!', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
+		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'You should inform your Client_secret. %s', 'woocommerce-mercadopago' ), '<a href="' . $this->admin_url() . '">' . __( 'Click here to configure!', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
 	}
 
 	/**

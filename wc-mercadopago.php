@@ -63,9 +63,12 @@ add_action( 'plugins_loaded', 'wcmercadopago_gateway_load', 0 );
  */
 function wcmercadopago_legacy_ipn() {
 	if ( isset( $_GET['topic'] ) && ! isset( $_GET['wc-api'] ) ) {
-		global $woocommerce;
-
-		$woocommerce->payment_gateways();
+		if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+			WC()->payment_gateways();
+		} else {
+			global $woocommerce;
+			$woocommerce->payment_gateways();
+		}
 
 		do_action( 'woocommerce_api_wc_mercadopago_gateway' );
 	}

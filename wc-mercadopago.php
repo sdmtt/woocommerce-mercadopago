@@ -50,7 +50,7 @@ function wcmercadopago_gateway_load() {
 	add_filter( 'woocommerce_payment_gateways', 'wcmercadopago_add_gateway' );
 
 	// Include the WC_MercadoPago_Gateway class.
-	require_once plugin_dir_path( __FILE__ ) . 'class-wc-mercadopago-gateway.php';
+	require_once plugin_dir_path( __FILE__ ) . 'includes/class-wc-mercadopago-gateway.php';
 
 }
 

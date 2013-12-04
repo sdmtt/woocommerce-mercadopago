@@ -15,7 +15,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Standards
 		$this->id              = 'mercadopago';
-		$this->icon            = apply_filters( 'woocommerce_mercadopago_icon', plugins_url( 'images/mercadopago.png', __FILE__ ) );
+		$this->icon            = apply_filters( 'woocommerce_mercadopago_icon', plugins_url( 'images/mercadopago.png', plugin_dir_path( __FILE__ ) ) );
 		$this->has_fields      = false;
 		$this->method_title    = __( 'MercadoPago', 'woocommerce-mercadopago' );
 
@@ -45,7 +45,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'check_ipn_response' ) );
 		add_action( 'valid_mercadopago_ipn_request', array( $this, 'successful_request' ) );
 		add_action( 'woocommerce_receipt_mercadopago', array( $this, 'receipt_page' ) );
-		add_action( 'wp_head', array( &$this, 'css' ) );
+		add_action( 'wp_head', array( $this, 'css' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 
 		// Checks if client_id is not empty.

@@ -33,25 +33,21 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		// Define user set variables.
-		$this->title          = $this->settings['title'];
-		$this->description    = $this->settings['description'];
-		$this->client_id      = $this->settings['client_id'];
-		$this->client_secret  = $this->settings['client_secret'];
-		$this->invoice_prefix = ! empty( $this->settings['invoice_prefix'] ) ? $this->settings['invoice_prefix'] : 'WC-';
-		$this->method         = ! empty( $this->settings['method'] ) ? $this->settings['method'] : 'modal';
-		$this->sandbox        = isset( $this->settings['sandbox'] ) ? $this->settings['sandbox'] : false;
-		$this->debug          = $this->settings['debug'];
+		$this->title          = $this->get_option( 'title' );
+		$this->description    = $this->get_option( 'description' );
+		$this->client_id      = $this->get_option( 'client_id' );
+		$this->client_secret  = $this->get_option( 'client_secret' );
+		$this->invoice_prefix = $this->get_option( 'invoice_prefix', 'WC-' );
+		$this->method         = $this->get_option( 'method', 'modal' );
+		$this->sandbox        = $this->get_option( 'sandbox', false );
+		$this->debug          = $this->get_option( 'debug' );
 
 		// Actions.
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'check_ipn_response' ) );
 		add_action( 'valid_mercadopago_ipn_request', array( $this, 'successful_request' ) );
 		add_action( 'woocommerce_receipt_mercadopago', array( $this, 'receipt_page' ) );
 		add_action( 'wp_head', array( &$this, 'css' ) );
-		if ( version_compare( WOOCOMMERCE_VERSION, '2.0.0', '>=' ) ) {
-			add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
-		} else {
-			add_action( 'woocommerce_update_options_payment_gateways', array( $this, 'process_admin_options' ) );
-		}
+		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 
 		// Checks if client_id is not empty.
 		if ( empty( $this->client_id ) ) {

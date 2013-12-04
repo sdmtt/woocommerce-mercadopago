@@ -195,13 +195,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Generate the args to form.
+	 * Generate the payment arguments.
 	 *
 	 * @param  object $order Order data.
 	 *
-	 * @return array         Form arguments.
+	 * @return array         Payment arguments.
 	 */
-	public function get_form_args( $order ) {
+	public function get_payment_args( $order ) {
 
 		$args = array(
 			'back_urls' => array(
@@ -239,7 +239,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$args['items'][0]['title'] = sprintf( __( 'Order %s', 'woocommerce-mercadopago' ), $order->get_order_number() ) . ' - ' . implode( ', ', $item_names );
 
 		// Shipping Cost item.
-		if ( $order->get_shipping() > 0 ) {
+		if ( version_compare( WOOCOMMERCE_VERSION, '2.1', '>=' ) ) {
+			$shipping_total = $order->get_total_shipping();
+		} else {
+			$shipping_total = $order->get_shipping();
+		}
+
+		if ( $shipping_total > 0 ) {
 			$args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'woocommerce-mercadopago' ) . ' ' . ucwords( $order->shipping_method_title );
 		}
 
@@ -256,10 +262,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string        MercadoPago payment url.
 	 */
 	protected function get_mercadopago_url( $order ) {
-		$args = json_encode( $this->get_form_args( $order ) );
+		$args = json_encode( $this->get_payment_args( $order ) );
 
 		if ( 'yes' == $this->debug ) {
-			$this->log->add( 'mercadopago', 'Payment arguments for order ' . $order->get_order_number() . ': ' . print_r( $this->get_form_args( $order ), true ) );
+			$this->log->add( 'mercadopago', 'Payment arguments for order ' . $order->get_order_number() . ': ' . print_r( $this->get_payment_args( $order ), true ) );
 		}
 
 		$url = $this->payment_url . $this->get_client_credentials();

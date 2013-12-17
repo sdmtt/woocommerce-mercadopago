@@ -4,7 +4,7 @@
 **Tags:** woocommerce, mercadopago, payment  
 **Requires at least:** 3.5  
 **Tested up to:** 3.8  
-**Stable tag:** 1.8.0  
+**Stable tag:** 1.8.1  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -192,6 +192,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 ## Changelog ##
 
+### 1.8.1 - 17/12/2013 ###
+
+* Corrigido os parametros da conexão (cURL) que podiam gerar erro (`SSL connection timeout`) em alguns servidores.
+
 ### 1.8.0 - 04/12/2013 ###
 
 * Corrigido padrões de código.
@@ -259,10 +263,9 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 ## Upgrade Notice ##
 
-### 1.8.0 ###
+### 1.8.1 ###
 
-* Removida compatibilidade com versões 1.6.x ou inferiores do WooCommerce.
-* Adicionada compatibilidade com WooCommerce 2.1 ou superior.
+* Corrigido os parametros da conexão (cURL) que podiam gerar erro (`SSL connection timeout`) em alguns servidores.
 
 ## License ##
 

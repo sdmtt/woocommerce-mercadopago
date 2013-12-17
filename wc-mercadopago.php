@@ -5,7 +5,7 @@
  * Description: MercadoPago gateway for Woocommerce.
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 1.8.0
+ * Version: 1.8.1
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/

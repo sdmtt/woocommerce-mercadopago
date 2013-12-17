@@ -74,6 +74,17 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Fix cURL to works with MercadoPago.
+	 *
+	 * @param  $handle cURL handle.
+	 *
+	 * @return void
+	 */
+	public function fix_curl_to_mercadopago( $handle ) {
+		curl_setopt( $handle, CURLOPT_SSLVERSION, 3 );
+	}
+
+	/**
 	 * Backwards compatibility with version prior to 2.1.
 	 *
 	 * @return object Returns the main instance of WooCommerce class.
@@ -262,6 +273,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string        MercadoPago payment url.
 	 */
 	protected function get_mercadopago_url( $order ) {
+
 		$args = json_encode( $this->get_payment_args( $order ) );
 
 		if ( 'yes' == $this->debug ) {
@@ -273,11 +285,16 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$params = array(
 			'body'          => $args,
 			'sslverify'     => false,
-			'timeout'       => 30,
-			'headers'       => array( 'content-type' => 'application/json;charset=UTF-8' )
+			'timeout'       => 60,
+			'headers'       => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json;charset=UTF-8'
+			)
 		);
 
+		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_post( $url, $params );
+		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] == 201 && ( strcmp( $response['response']['message'], 'Created' ) == 0 ) ) {
 			$checkout_info = json_decode( $response['body'] );
@@ -398,7 +415,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return mixed Sucesse return the token and error return null.
 	 */
 	protected function get_client_credentials() {
-
 		if ( 'yes' == $this->debug ) {
 			$this->log->add( 'mercadopago', 'Getting client credentials...' );
 		}
@@ -412,10 +428,16 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$params = array(
 			'body'          => $postdata,
 			'sslverify'     => false,
-			'timeout'       => 30
+			'timeout'       => 60,
+			'headers'       => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/x-www-form-urlencoded'
+			)
 		);
 
+		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_post( $this->oauth_token, $params );
+		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		// Check to see if the request was valid and return the token.
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && ( strcmp( $response['response']['message'], 'OK' ) == 0 ) ) {
@@ -463,12 +485,18 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Send back post vars.
 		$params = array(
-			'sslverify'     => false,
-			'timeout'       => 30
+			'sslverify' => false,
+			'timeout'   => 60,
+			'headers'   => array(
+				'Accept' => 'application/json',
+				'Content-Type' => 'application/json;charset=UTF-8'
+			)
 		);
 
 		// GET a response.
+		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_get( $url, $params );
+		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		if ( 'yes' == $this->debug ) {
 			$this->log->add( 'mercadopago', 'IPN Response: ' . print_r( $response, true ) );

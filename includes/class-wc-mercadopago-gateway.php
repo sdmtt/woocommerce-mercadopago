@@ -68,7 +68,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			if ( class_exists( 'WC_Logger' ) ) {
 				$this->log = new WC_Logger();
 			} else {
-				$this->log = $this->woocommerce_instance()->logger();
+				$this->log = WC_MercadoPago::woocommerce_instance()->logger();
 			}
 		}
 	}
@@ -82,20 +82,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 */
 	public function fix_curl_to_mercadopago( $handle ) {
 		curl_setopt( $handle, CURLOPT_SSLVERSION, 3 );
-	}
-
-	/**
-	 * Backwards compatibility with version prior to 2.1.
-	 *
-	 * @return object Returns the main instance of WooCommerce class.
-	 */
-	protected function woocommerce_instance() {
-		if ( function_exists( 'WC' ) ) {
-			return WC();
-		} else {
-			global $woocommerce;
-			return $woocommerce;
-		}
 	}
 
 	/**

@@ -61,12 +61,19 @@ class WC_MercadoPago {
 	/**
 	 * Initialize the plugin.
 	 */
-	public function __construct() {
+	private function __construct() {
 		// Load plugin text domain
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
 
-		// Initialize the plugin actions.
-		$this->init();
+		// Checks with WooCommerce is installed.
+		if ( class_exists( 'WC_Payment_Gateway' ) ) {
+			// Include the WC_MercadoPago_Gateway class.
+			include_once 'includes/class-wc-mercadopago-gateway.php';
+
+			add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
+		} else {
+			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
+		}
 	}
 
 	/**
@@ -120,25 +127,6 @@ class WC_MercadoPago {
 
 		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
 		load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-	}
-
-	/**
-	 * Initialize the plugin actions.
-	 *
-	 * @since  1.9.0
-	 *
-	 * @return void
-	 */
-	protected function init() {
-		// Checks with WooCommerce is installed.
-		if ( class_exists( 'WC_Payment_Gateway' ) ) {
-			// Include the WC_MercadoPago_Gateway class.
-			include_once 'includes/class-wc-mercadopago-gateway.php';
-
-			add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
-		} else {
-			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
-		}
 	}
 
 	/**

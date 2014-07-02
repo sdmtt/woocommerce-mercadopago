@@ -165,6 +165,14 @@ Consulte os meios de pagamento em "[Meios de pagamento e parcelamento](https://w
 
 No momento é aceito **ARL** (Argentine peso ley) e **BRL** (Real Brasileiro).
 
+= O pedido foi pago e ficou com o status de "processando" e não como "concluído", isto esta certo ? =
+
+Sim, esta certo e significa que o plugin esta trabalhando como deveria.
+
+Todo gateway de pagamentos no WooCommerce deve mudar o status do pedido para "processando" no momento que é confirmado o pagamento e nunca deve ser alterado sozinho para "concluído", pois o pedido deve ir apenas para o status "concluído" após ele ter sido entregue.
+
+Para produtos baixáveis a configuração padrão do WooCommerce é permitir o acesso apenas quando o pedido tem o status "concluído", entretanto nas configurações do WooCommerce na aba *Produtos* é possível ativar a opção **"Conceder acesso para download do produto após o pagamento"** e assim liberar o download quando o status do pedido esta como "processando".
+
 = Quais são as taxas de transações que o MercadoPago cobra? =
 
 Consulte a página "[Taxas do Mercado Pago](http://guia.mercadolivre.com.br/taxas-mercado-pago-12593-VGP)".

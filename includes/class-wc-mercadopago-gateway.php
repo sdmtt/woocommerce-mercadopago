@@ -90,7 +90,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return bool
 	 */
 	protected function using_supported_currency() {
-		return in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'MXN', 'USD', 'VEF', 'COP' ) );
+		return in_array( get_woocommerce_currency(), array( 'ARS', 'BRL', 'COP', 'MXN', 'USD', 'VEF' ) );
 	}
 
 	/**
@@ -649,6 +649,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	public function currency_not_supported_message() {
-		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'Currency <code>%s</code> is not supported. Please make sure that you use one of the following supported currencies: ARS, BRL, MXN, USD or VEF.', 'woocommerce-mercadopago' ), get_woocommerce_currency() ) . '</p></div>';
+		echo '<div class="error"><p><strong>' . __( 'MercadoPago Disabled', 'woocommerce-mercadopago' ) . '</strong>: ' . sprintf( __( 'Currency <code>%s</code> is not supported. Please make sure that you use one of the following supported currencies: ARS, BRL, COP, MXN, USD or VEF.', 'woocommerce-mercadopago' ), get_woocommerce_currency() ) . '</p></div>';
 	}
 }

@@ -24,7 +24,7 @@ You can contribute to the source code in our [GitHub](https://github.com/claudio
 
 = Translate =
 
-translate this plugin in [Transifex](https://www.transifex.com/projects/p/woocommerce-mercadopago/).
+Translate this plugin in [Transifex](https://www.transifex.com/projects/p/woocommerce-mercadopago/).
 
 ### Descrição em Português: ###
 
@@ -85,17 +85,17 @@ Você pode acessar as suas informações de Client_id e Client_secret em:
 
 * [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/aplicaciones)
 * [MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/aplicacoes)
+* [MercadoPago da Colômbia](https://www.mercadopago.com/mco/herramientas/aplicaciones)
 * [MercadoPago do México](https://www.mercadopago.com/mlm/herramientas/aplicaciones)
 * [MercadoPago da Venezuela](https://www.mercadopago.com/mlv/herramientas/aplicaciones)
-* [MercadoPago da Colombia](https://www.mercadopago.com/mco/herramientas/aplicaciones)
 
 É necessário também configurar a página de retorno, para isso é necessário acessar:
 
 * [MercadoPago da Argentina](https://www.mercadopago.com/mla/herramientas/notificaciones)
 * [MercadoPago do Brasil](https://www.mercadopago.com/mlb/ferramentas/notificacoes)
+* [MercadoPago da Colômbia](https://www.mercadopago.com/mco/herramientas/notificaciones)
 * [MercadoPago do México](https://www.mercadopago.com/mlm/herramientas/notificaciones)
 * [MercadoPago da Venezuela](https://www.mercadopago.com/mlv/herramientas/notificaciones)
-* [MercadoPago da Colombia](https://www.mercadopago.com/mco/herramientas/notificaciones)
 
 Deve ser configurada a sua página de retorno como por exemplo:
 

@@ -117,7 +117,15 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 */
 	public function init_form_fields() {
 
-		$api_secret_locale = sprintf( '<a href="https://www.mercadopago.com/mla/herramientas/aplicaciones" target="_blank">%1$s</a>, <a href="https://www.mercadopago.com/mlb/ferramentas/aplicacoes" target="_blank">%2$s</a>, <a href="https://www.mercadopago.com/mlm/herramientas/aplicaciones" target="_blank">%3$s</a> %5$s <a href="https://www.mercadopago.com/mlv/herramientas/aplicaciones" target="_blank">%4$s</a>', __( 'Argentine', 'woocommerce-mercadopago' ), __( 'Brazil', 'woocommerce-mercadopago' ), __( 'Mexico', 'woocommerce-mercadopago' ), __( 'Venezuela', 'woocommerce-mercadopago' ), __( 'or', 'woocommerce-mercadopago' ) );
+		$api_secret_locale = sprintf(
+			'<a href="https://www.mercadopago.com/mla/herramientas/aplicaciones" target="_blank">%s</a>, <a href="https://www.mercadopago.com/mlb/ferramentas/aplicacoes" target="_blank">%s</a>, <a href="https://www.mercadopago.com/mco/ferramentas/aplicacoes" target="_blank">%s</a>, <a href="https://www.mercadopago.com/mlm/herramientas/aplicaciones" target="_blank">%s</a> %s <a href="https://www.mercadopago.com/mlv/herramientas/aplicaciones" target="_blank">%s</a>',
+			__( 'Argentine', 'woocommerce-mercadopago' ),
+			__( 'Brazil', 'woocommerce-mercadopago' ),
+			__( 'Colombia', 'woocommerce-mercadopago' ),
+			__( 'Mexico', 'woocommerce-mercadopago' ),
+			__( 'or', 'woocommerce-mercadopago' ),
+			__( 'Venezuela', 'woocommerce-mercadopago' )
+		);
 
 		$this->form_fields = array(
 			'enabled' => array(

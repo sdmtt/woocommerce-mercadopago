@@ -142,7 +142,6 @@ module.exports = function( grunt ) {
 
 	// Deploy task
 	grunt.registerTask( 'deploy', [
-		'default',
 		'rsync:tag',
 		'rsync:trunk',
 		'shell:svn_remove',

@@ -5,7 +5,7 @@
  * Description: MercadoPago gateway for Woocommerce.
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 1.9.0
+ * Version: 2.0.0
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
@@ -25,36 +25,14 @@ class WC_MercadoPago {
 	/**
 	 * Plugin version.
 	 *
-	 * @since 1.9.0
-	 *
-	 * @var   string
+	 * @var string
 	 */
-	const VERSION = '1.9.0';
-
-	/**
-	 * Integration id.
-	 *
-	 * @since 1.9.0
-	 *
-	 * @var   string
-	 */
-	protected static $gateway_id = 'mercadopago';
-
-	/**
-	 * Plugin slug.
-	 *
-	 * @since 1.9.0
-	 *
-	 * @var   string
-	 */
-	protected static $plugin_slug = 'woocommerce-mercadopago';
+	const VERSION = '2.0.0';
 
 	/**
 	 * Instance of this class.
 	 *
-	 * @since 1.9.0
-	 *
-	 * @var   object
+	 * @var object
 	 */
 	protected static $instance = null;
 
@@ -79,8 +57,6 @@ class WC_MercadoPago {
 	/**
 	 * Return an instance of this class.
 	 *
-	 * @since  1.9.0
-	 *
 	 * @return object A single instance of this class.
 	 */
 	public static function get_instance() {
@@ -93,46 +69,19 @@ class WC_MercadoPago {
 	}
 
 	/**
-	 * Return the plugin slug.
-	 *
-	 * @since  1.9.0
-	 *
-	 * @return string Plugin slug variable.
-	 */
-	public static function get_plugin_slug() {
-		return self::$plugin_slug;
-	}
-
-	/**
-	 * Return the gateway id/slug.
-	 *
-	 * @since  1.9.0
-	 *
-	 * @return string Gateway id/slug variable.
-	 */
-	public static function get_gateway_id() {
-		return self::$gateway_id;
-	}
-
-	/**
 	 * Load the plugin text domain for translation.
-	 *
-	 * @since  1.9.0
 	 *
 	 * @return void
 	 */
 	public function load_plugin_textdomain() {
-		$domain = self::$plugin_slug;
-		$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
+		$locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-mercadopago' );
 
-		load_textdomain( $domain, trailingslashit( WP_LANG_DIR ) . $domain . '/' . $domain . '-' . $locale . '.mo' );
-		load_plugin_textdomain( $domain, false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+		load_textdomain( 'woocommerce-mercadopago', trailingslashit( WP_LANG_DIR ) . 'woocommerce-mercadopago/woocommerce-mercadopago-' . $locale . '.mo' );
+		load_plugin_textdomain( 'woocommerce-mercadopago', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
 	}
 
 	/**
 	 * Add the gateway to WooCommerce.
-	 *
-	 * @version 1.9.0
 	 *
 	 * @param   array $methods WooCommerce payment methods.
 	 *
@@ -147,12 +96,10 @@ class WC_MercadoPago {
 	/**
 	 * WooCommerce fallback notice.
 	 *
-	 * @version 1.9.0
-	 *
 	 * @return  string
 	 */
 	public function woocommerce_missing_notice() {
-		echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', self::$plugin_slug ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">' . __( 'WooCommerce', self::$plugin_slug ) . '</a>' ) . '</p></div>';
+		echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'woocommerce-mercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">' . __( 'WooCommerce', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
 	}
 
 	/**

@@ -203,7 +203,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$args = array(
 			'back_urls' => array(
 				'success' => esc_url( $this->get_return_url( $order ) ),
-				'failure' => esc_url( $order->get_cancel_order_url() ),
+				'failure' => str_replace( '&amp;', '&', $order->get_cancel_order_url() ),
 				'pending' => esc_url( $this->get_return_url( $order ) )
 			),
 			'payer' => array(

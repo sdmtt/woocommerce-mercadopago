@@ -3,7 +3,7 @@ Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: woocommerce, mercadopago, payment
 Requires at least: 3.5
-Tested up to: 3.9.2
+Tested up to: 4.0
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -136,6 +136,10 @@ The plugin works with ARS and BRL.
 
 Add ARS with [WooCommerce ARS Currency](http://wordpress.org/extend/plugins/woocommerce-ars-currency/) plugin.
 
+= Is your site is not receiving the payment notifications? =
+
+This can happen when you are using the **iThemes Security**, here's how to solve [here](http://tureseller.com.ar/solucion-al-problema-de-recibir-notificaciones-de-compra-desde-mercadopago-en-woocommerce-para-wordpress/).
+
 ### FAQ em Português: ###
 
 = Qual é a licença do plugin? =
@@ -190,7 +194,11 @@ Fazemos a integração baseada na documentação oficial do MercadoPago que pode
 
 Para resolver este problema vá até "WooCommerce" > "Configurações" > "Inventário" e limpe (deixe em branco) o valor da opção **Manter Estoque (minutos)**.
 
-= Mais dúvidas relacionadas ao funcionamento do plugin? =
+= Is your site is not receiving the payment notifications? =
+
+Isso pode acontecer quando você esta utilizando o iThemes Security, veja como resolver [aqui](http://tureseller.com.ar/solucion-al-problema-de-recibir-notificaciones-de-compra-desde-mercadopago-en-woocommerce-para-wordpress/).
+
+= O seu site não esta recebendo as notificações de pagamento? =
 
 Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
 

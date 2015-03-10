@@ -74,17 +74,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Fix cURL to works with MercadoPago.
-	 *
-	 * @param  $handle cURL handle.
-	 *
-	 * @return void
-	 */
-	public function fix_curl_to_mercadopago( $handle ) {
-		curl_setopt( $handle, CURLOPT_SSLVERSION, 3 );
-	}
-
-	/**
 	 * Returns a bool that indicates if currency is amongst the supported ones.
 	 *
 	 * @return bool
@@ -286,9 +275,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			)
 		);
 
-		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_post( $url, $params );
-		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		if ( ! is_wp_error( $response ) && $response['response']['code'] == 201 && ( strcmp( $response['response']['message'], 'Created' ) == 0 ) ) {
 			$checkout_info = json_decode( $response['body'] );
@@ -429,9 +416,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			)
 		);
 
-		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_post( $this->oauth_token, $params );
-		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		// Check to see if the request was valid and return the token.
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && ( strcmp( $response['response']['message'], 'OK' ) == 0 ) ) {
@@ -488,9 +473,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		);
 
 		// GET a response.
-		add_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 		$response = wp_remote_get( $url, $params );
-		remove_action( 'http_api_curl', array( $this, 'fix_curl_to_mercadopago' ) );
 
 		if ( 'yes' == $this->debug ) {
 			$this->log->add( $this->id, 'IPN Response: ' . print_r( $response, true ) );

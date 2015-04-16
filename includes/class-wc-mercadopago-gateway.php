@@ -540,7 +540,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				}
 
 				switch ( $data->status ) {
-					case 'approved':
+					case 'approved' :
 
 						// Order details.
 						if ( ! empty( $data->id ) ) {
@@ -570,27 +570,27 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 						$order->payment_complete();
 
 						break;
-					case 'pending':
+					case 'pending' :
 						$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
 
 						break;
-					case 'in_process':
+					case 'in_process' :
 						$order->update_status( 'on-hold', __( 'MercadoPago: Payment under review.', 'woocommerce-mercadopago' ) );
 
 						break;
-					case 'rejected':
+					case 'rejected' :
 						$order->add_order_note( __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
 
 						break;
-					case 'refunded':
+					case 'refunded' :
 						$order->update_status( 'refunded', __( 'MercadoPago: The payment was returned to the user.', 'woocommerce-mercadopago' ) );
 
 						break;
-					case 'cancelled':
+					case 'cancelled' :
 						$order->update_status( 'cancelled', __( 'MercadoPago: Payment canceled.', 'woocommerce-mercadopago' ) );
 
 						break;
-					case 'in_mediation':
+					case 'in_mediation' :
 						$order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'woocommerce-mercadopago' ) );
 
 						break;

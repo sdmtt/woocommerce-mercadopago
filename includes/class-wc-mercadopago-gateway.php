@@ -17,9 +17,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->has_fields      = false;
 		$this->method_title    = __( 'MercadoPago', 'woocommerce-mercadopago' );
 
-		$this->ipn_url         = 'https://api.mercadolibre.com/collections/notifications/';
-		$this->sandbox_ipn_url = 'https://api.mercadolibre.com/sandbox/collections/notifications/';
-
 		// Load the form fields.
 		$this->init_form_fields();
 
@@ -91,6 +88,19 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Get log.
+	 *
+	 * @return string
+	 */
+	protected function get_log_view() {
+		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.2', '>=' ) ) {
+			return '<a href="' . esc_url( admin_url( 'admin.php?page=wc-status&tab=logs&log_file=' . esc_attr( $this->id ) . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.log' ) ) . '">' . __( 'System Status &gt; Logs', 'woocommerce-mercadopago' ) . '</a>';
+		}
+
+		return '<code>woocommerce/logs/' . esc_attr( $this->id ) . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.txt</code>';
+	}
+
+	/**
 	 * Initialise Gateway Settings Form Fields.
 	 */
 	public function init_form_fields() {
@@ -107,72 +117,79 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		$this->form_fields = array(
 			'enabled' => array(
-				'title' => __( 'Enable/Disable', 'woocommerce-mercadopago' ),
-				'type' => 'checkbox',
-				'label' => __( 'Enable MercadoPago standard', 'woocommerce-mercadopago' ),
-				'default' => 'yes'
+				'title'   => __( 'Enable/Disable', 'woocommerce-mercadopago' ),
+				'type'    => 'checkbox',
+				'label'   => __( 'Enable MercadoPago standard', 'woocommerce-mercadopago' ),
+				'default' => 'no'
 			),
 			'title' => array(
-				'title' => __( 'Title', 'woocommerce-mercadopago' ),
-				'type' => 'text',
+				'title'       => __( 'Title', 'woocommerce-mercadopago' ),
+				'type'        => 'text',
 				'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce-mercadopago' ),
-				'desc_tip' => true,
-				'default' => __( 'MercadoPago', 'woocommerce-mercadopago' )
+				'desc_tip'    => true,
+				'default'     => __( 'MercadoPago', 'woocommerce-mercadopago' )
 			),
 			'description' => array(
-				'title' => __( 'Description', 'woocommerce-mercadopago' ),
-				'type' => 'textarea',
+				'title'       => __( 'Description', 'woocommerce-mercadopago' ),
+				'type'        => 'textarea',
 				'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce-mercadopago' ),
-				'default' => __( 'Pay via MercadoPago', 'woocommerce-mercadopago' )
+				'default'     => __( 'Pay via MercadoPago', 'woocommerce-mercadopago' )
 			),
 			'client_id' => array(
-				'title' => __( 'MercadoPago Client_id', 'woocommerce-mercadopago' ),
-				'type' => 'text',
-				'description' => __( 'Please enter your MercadoPago Client_id.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
-				'default' => ''
+				'title'             => __( 'MercadoPago Client_id', 'woocommerce-mercadopago' ),
+				'type'              => 'text',
+				'description'       => __( 'Please enter your MercadoPago Client_id.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
+				'default'           => '',
+				'custom_attributes' => array(
+					'required' => 'required'
+				)
 			),
 			'client_secret' => array(
-				'title' => __( 'MercadoPago Client_secret', 'woocommerce-mercadopago' ),
-				'type' => 'text',
-				'description' => __( 'Please enter your MercadoPago Client_secret.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
-				'default' => ''
+				'title'             => __( 'MercadoPago Client_secret', 'woocommerce-mercadopago' ),
+				'type'              => 'text',
+				'description'       => __( 'Please enter your MercadoPago Client_secret.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
+				'default'           => '',
+				'custom_attributes' => array(
+					'required' => 'required'
+				)
 			),
 			'invoice_prefix' => array(
-				'title' => __( 'Invoice Prefix', 'woocommerce-mercadopago' ),
-				'type' => 'text',
+				'title'       => __( 'Invoice Prefix', 'woocommerce-mercadopago' ),
+				'type'        => 'text',
 				'description' => __( 'Please enter a prefix for your invoice numbers. If you use your MercadoPago account for multiple stores ensure this prefix is unqiue as MercadoPago will not allow orders with the same invoice number.', 'woocommerce-mercadopago' ),
-				'desc_tip' => true,
-				'default' => 'WC-'
+				'desc_tip'    => true,
+				'default'     => 'WC-'
 			),
 			'method' => array(
-				'title' => __( 'Integration method', 'woocommerce-mercadopago' ),
-				'type' => 'select',
+				'title'       => __( 'Integration method', 'woocommerce-mercadopago' ),
+				'type'        => 'select',
 				'description' => __( 'Choose how the customer will interact with the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago).', 'woocommerce-mercadopago' ),
-				'desc_tip' => true,
-				'default' => 'redirect',
-				'options' => array(
-					'modal' => __( 'Modal Window', 'woocommerce-mercadopago' ),
+				'desc_tip'    => true,
+				'class'       => 'wc-enhanced-select',
+				'default'     => 'redirect',
+				'options'     => array(
+					'modal'    => __( 'Modal Window', 'woocommerce-mercadopago' ),
 					'redirect' => __( 'Redirect', 'woocommerce-mercadopago' ),
 				)
 			),
 			'testing' => array(
-				'title' => __( 'Gateway Testing', 'woocommerce-mercadopago' ),
-				'type' => 'title',
+				'title'       => __( 'Gateway Testing', 'woocommerce-mercadopago' ),
+				'type'        => 'title',
 				'description' => '',
 			),
 			'sandbox' => array(
-				'title' => __( 'MercadoPago Sandbox', 'woocommerce-mercadopago' ),
-				'type' => 'checkbox',
-				'label' => __( 'Enable MercadoPago sandbox', 'woocommerce-mercadopago' ),
-				'default' => 'no',
+				'title'       => __( 'MercadoPago Sandbox', 'woocommerce-mercadopago' ),
+				'type'        => 'checkbox',
+				'label'       => __( 'Enable MercadoPago sandbox', 'woocommerce-mercadopago' ),
+				'default'     => 'no',
 				'description' => __( 'MercadoPago sandbox can be used to test payments.', 'woocommerce-mercadopago' ),
 			),
 			'debug' => array(
-				'title' => __( 'Debug Log', 'woocommerce-mercadopago' ),
-				'type' => 'checkbox',
-				'label' => __( 'Enable logging', 'woocommerce-mercadopago' ),
-				'default' => 'no',
-				'description' => sprintf( __( 'Log MercadoPago events, such as API requests, inside %s', 'woocommerce-mercadopago' ), '<code>woocommerce/logs/' . $this->id . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.txt</code>' ),
+				'title'       => __( 'Debug Log', 'woocommerce-mercadopago' ),
+				'type'        => 'checkbox',
+				'label'       => __( 'Enable logging', 'woocommerce-mercadopago' ),
+				'default'     => 'no',
+				'description' => sprintf( __( 'Log MercadoPago events, such as API requests. You can find the log in %s', 'woocommerce-mercadopago' ), $this->get_log_view() ),
 			)
 		);
 	}

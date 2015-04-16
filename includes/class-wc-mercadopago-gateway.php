@@ -60,11 +60,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Active logs.
 		if ( 'yes' == $this->debug ) {
-			if ( class_exists( 'WC_Logger' ) ) {
-				$this->log = new WC_Logger();
-			} else {
-				$this->log = WC_MercadoPago::woocommerce_instance()->logger();
-			}
+			$this->log = new WC_Logger();
 		}
 	}
 
@@ -205,13 +201,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string Styles.
 	 */
 	public function css() {
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1', '>=' ) ) {
-			$page_id = wc_get_page_id( 'checkout' );
-		} else {
-			$page_id = woocommerce_get_page_id( 'checkout' );
-		}
-
-		if ( is_page( $page_id ) ) {
+		if ( is_page( wc_get_page_id( 'checkout' ) ) ) {
 			echo '<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>' . PHP_EOL;
 		}
 	}
@@ -233,17 +223,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'redirect'  => $this->api->get_user_payment_url( $order )
 			);
 		} else {
-			if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1', '>=' ) ) {
-				return array(
-					'result'   => 'success',
-					'redirect' => $order->get_checkout_payment_url( true )
-				);
-			} else {
-				return array(
-					'result'   => 'success',
-					'redirect' => add_query_arg( 'order', $order->id, add_query_arg( 'key', $order->order_key, get_permalink( woocommerce_get_page_id( 'pay' ) ) ) )
-				);
-			}
+			return array(
+				'result'   => 'success',
+				'redirect' => $order->get_checkout_payment_url( true )
+			);
 		}
 	}
 
@@ -361,11 +344,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return string
 	 */
 	protected function admin_url() {
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1', '>=' ) ) {
-			return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' );
-		}
-
-		return admin_url( 'admin.php?page=woocommerce_settings&tab=payment_gateways&section=WC_MercadoPago_Gateway' );
+		return admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' );
 	}
 
 	/**

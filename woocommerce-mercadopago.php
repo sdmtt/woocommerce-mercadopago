@@ -104,36 +104,8 @@ class WC_MercadoPago {
 	public function woocommerce_missing_notice() {
 		echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'woocommerce-mercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">' . __( 'WooCommerce', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
 	}
-
-	/**
-	 * Backwards compatibility with version prior to 2.1.
-	 *
-	 * @return object Returns the main instance of WooCommerce class.
-	 */
-	public static function woocommerce_instance() {
-		if ( function_exists( 'WC' ) ) {
-			return WC();
-		} else {
-			global $woocommerce;
-			return $woocommerce;
-		}
-	}
 }
 
 add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ) );
-
-/**
- * Adds support to legacy IPN.
- */
-function wcmercadopago_legacy_ipn() {
-	if ( isset( $_GET['topic'] ) && ! isset( $_GET['wc-api'] ) ) {
-		$woocommerce = WC_MercadoPago::woocommerce_instance();
-		$woocommerce->payment_gateways();
-
-		do_action( 'woocommerce_api_wc_mercadopago_gateway' );
-	}
-}
-
-add_action( 'init', 'wcmercadopago_legacy_ipn' );
 
 endif;

@@ -244,7 +244,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		if ( $data = $this->get_payment_data( $_GET ) ) {
 			header( 'HTTP/1.1 200 OK' );
-			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated action
+			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated since 3.0.0
 			do_action( 'woocommerce_mercadopago_change_order_status', $data );
 		} else {
 			wp_die( __( 'MercadoPago Request Failure', 'woocommerce-mercadopago' ) );
@@ -262,8 +262,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		if ( ! empty( $order_key ) ) {
 			$order_id = intval( str_replace( $this->invoice_prefix, '', $order_key ) );
-
-			$order = new WC_Order( $order_id );
+			$order    = new WC_Order( $order_id );
 
 			// Checks whether the invoice number matches the order.
 			// If true processes the payment.
@@ -277,27 +276,33 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 					case 'approved' :
 
 						// Order details.
-						if ( ! empty( $data->id ) ) {
-							update_post_meta(
-								$order_id,
-								__( 'MercadoPago Transaction ID', 'woocommerce-mercadopago' ),
-								$data->id
-							);
+						if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1.12', '<=' ) ) {
+							// Save the transaction ID has custom field just for old versions.
+							if ( ! empty( $data->id ) ) {
+								update_post_meta(
+									$order_id,
+									__( 'MercadoPago Transaction ID', 'woocommerce-mercadopago' ),
+									sanitize_text_field( $data->id )
+								);
+							}
 						}
 						if ( ! empty( $data->payer->email ) ) {
 							update_post_meta(
 								$order_id,
 								__( 'Payer email', 'woocommerce-mercadopago' ),
-								$data->payer->email
+								sanitize_text_field( $data->payer->email )
 							);
 						}
 						if ( ! empty( $data->payment_type ) ) {
 							update_post_meta(
 								$order_id,
 								__( 'Payment type', 'woocommerce-mercadopago' ),
-								$data->payment_type
+								sanitize_text_field( $data->payment_type )
 							);
 						}
+
+						// For WooCommerce 2.2 or later.
+						add_post_meta( $order->id, '_transaction_id', sanitize_text_field( $data->id ), true );
 
 						// Payment completed.
 						$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
@@ -313,7 +318,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 						break;
 					case 'rejected' :
-						$order->add_order_note( __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
+						$order->update_status( 'failed', __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
 
 						break;
 					case 'refunded' :

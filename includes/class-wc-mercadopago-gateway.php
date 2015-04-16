@@ -96,8 +96,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Initialise Gateway Settings Form Fields.
-	 *
-	 * @return void
 	 */
 	public function init_form_fields() {
 
@@ -251,8 +249,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Output for the order received page.
-	 *
-	 * @return void
 	 */
 	public function receipt_page( $order ) {
 		echo $this->get_modal_buttons( $order );
@@ -260,8 +256,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Check API Response.
-	 *
-	 * @return void
 	 */
 	public function check_ipn_response() {
 		@ob_clean();
@@ -276,11 +270,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Successful Payment!
+	 * Change order status
 	 *
 	 * @param array $posted MercadoPago post data.
-	 *
-	 * @return void
 	 */
 	public function change_order_status( $posted ) {
 		$data      = $posted->collection;

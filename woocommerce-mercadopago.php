@@ -67,8 +67,6 @@ class WC_MercadoPago {
 
 	/**
 	 * Load the plugin text domain for translation.
-	 *
-	 * @return void
 	 */
 	public function load_plugin_textdomain() {
 		$locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-mercadopago' );
@@ -126,8 +124,6 @@ add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ) );
 
 /**
  * Adds support to legacy IPN.
- *
- * @return void
  */
 function wcmercadopago_legacy_ipn() {
 	if ( isset( $_GET['topic'] ) && ! isset( $_GET['wc-api'] ) ) {

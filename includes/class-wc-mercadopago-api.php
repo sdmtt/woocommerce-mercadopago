@@ -250,7 +250,9 @@ class WC_Mercadopago_API {
 			}
 		}
 
-		return false;
+		wc_add_notice( __( 'An error has occurred while processing your order, please try again. Or contact us for assistance.', 'woocommerce-mercadopago' ), 'error' );
+
+		return '';
 	}
 
 	/**

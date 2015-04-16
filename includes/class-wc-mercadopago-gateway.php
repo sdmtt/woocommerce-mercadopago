@@ -218,16 +218,15 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Redirect or modal window integration.
 		if ( 'redirect' == $this->method ) {
-			return array(
-				'result'    => 'success',
-				'redirect'  => $this->api->get_user_payment_url( $order )
-			);
+			$url = $this->api->get_user_payment_url( $order );
 		} else {
-			return array(
-				'result'   => 'success',
-				'redirect' => $order->get_checkout_payment_url( true )
-			);
+			$url = $order->get_checkout_payment_url( true );
 		}
+
+		return array(
+			'result'   => '' !== $url ? 'success' : 'fail',
+			'redirect' => $url
+		);
 	}
 
 	/**

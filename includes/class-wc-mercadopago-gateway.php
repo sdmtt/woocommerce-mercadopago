@@ -155,7 +155,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'type' => 'select',
 				'description' => __( 'Choose how the customer will interact with the MercadoPago. Modal Window (Inside your store) Redirect (Client goes to MercadoPago).', 'woocommerce-mercadopago' ),
 				'desc_tip' => true,
-				'default' => 'modal',
+				'default' => 'redirect',
 				'options' => array(
 					'modal' => __( 'Modal Window', 'woocommerce-mercadopago' ),
 					'redirect' => __( 'Redirect', 'woocommerce-mercadopago' ),
@@ -190,30 +190,15 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return string           Payment form.
 	 */
-	public function generate_form( $order_id ) {
-
+	public function get_modal_buttons( $order_id ) {
 		$order = new WC_Order( $order_id );
-		$url = $this->api->get_user_payment_url( $order );
+		$url   = $this->api->get_user_payment_url( $order );
 
-		if ( $url ) {
-
-			// Display checkout.
-			$html = '<p>' . __( 'Thank you for your order, please click the button below to pay with MercadoPago.', 'woocommerce-mercadopago' ) . '</p>';
-
-			$html .= '<a id="submit-payment" href="' . $url . '" name="MP-Checkout" class="button alt" mp-mode="modal">' . __( 'Pay via MercadoPago', 'woocommerce-mercadopago' ) . '</a> <a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Cancel order &amp; restore cart', 'woocommerce-mercadopago' ) . '</a>';
-
-			// Add MercadoPago JS.
-			$html .= '<script type="text/javascript">(function(){function $MPBR_load(){window.$MPBR_loaded !== true && (function(){var s = document.createElement("script");s.type = "text/javascript";s.async = true;s.src = ("https:"==document.location.protocol?"https://www.mercadopago.com/org-img/jsapi/mptools/buttons/":"http://mp-tools.mlstatic.com/buttons/")+"render.js";var x = document.getElementsByTagName("script")[0];x.parentNode.insertBefore(s, x);window.$MPBR_loaded = true;})();}window.$MPBR_loaded !== true ? (window.attachEvent ? window.attachEvent("onload", $MPBR_load) : window.addEventListener("load", $MPBR_load, false)) : null;})();</script>';
-
-			return $html;
-		} else {
-			// Display message if a problem occurs.
-			$html = '<p>' . __( 'An error has occurred while processing your payment, please try again. Or contact us for assistance.', 'woocommerce-mercadopago' ) . '</p>';
-
-			$html .= '<a class="button cancel" href="' . esc_url( $order->get_cancel_order_url() ) . '">' . __( 'Click to try again', 'woocommerce-mercadopago' ) . '</a>';
-
-			return $html;
-		}
+		ob_start();
+		include 'views/html-modal-payment.php';
+		$html = ob_get_contents();
+		ob_end_clean();
+		return $html;
 	}
 
 	/**
@@ -270,7 +255,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return void
 	 */
 	public function receipt_page( $order ) {
-		echo $this->generate_form( $order );
+		echo $this->get_modal_buttons( $order );
 	}
 
 	/**

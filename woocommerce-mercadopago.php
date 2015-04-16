@@ -5,7 +5,7 @@
  * Description: MercadoPago gateway for Woocommerce.
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 2.0.1
+ * Version: 3.0.0-dev
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
@@ -27,7 +27,7 @@ class WC_MercadoPago {
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = '3.0.0-dev';
 
 	/**
 	 * Instance of this class.
@@ -45,9 +45,6 @@ class WC_MercadoPago {
 
 		// Checks with WooCommerce is installed.
 		if ( class_exists( 'WC_Payment_Gateway' ) ) {
-			// Include the WC_MercadoPago_Gateway class.
-			include_once 'includes/class-wc-mercadopago-gateway.php';
-
 			add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
 		} else {
 			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
@@ -78,6 +75,14 @@ class WC_MercadoPago {
 
 		load_textdomain( 'woocommerce-mercadopago', trailingslashit( WP_LANG_DIR ) . 'woocommerce-mercadopago/woocommerce-mercadopago-' . $locale . '.mo' );
 		load_plugin_textdomain( 'woocommerce-mercadopago', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Includes.
+	 */
+	private function includes() {
+		include_once 'includes/class-wc-mercadopago-api.php';
+		include_once 'includes/class-wc-mercadopago-gateway.php';
 	}
 
 	/**
@@ -117,7 +122,7 @@ class WC_MercadoPago {
 	}
 }
 
-add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ), 0 );
+add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ) );
 
 /**
  * Adds support to legacy IPN.

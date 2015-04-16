@@ -8,8 +8,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 	/**
 	 * Constructor for the gateway.
-	 *
-	 * @return void
 	 */
 	public function __construct() {
 
@@ -19,11 +17,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->has_fields      = false;
 		$this->method_title    = __( 'MercadoPago', 'woocommerce-mercadopago' );
 
-		// API URLs.
-		$this->payment_url     = 'https://api.mercadolibre.com/checkout/preferences?access_token=';
 		$this->ipn_url         = 'https://api.mercadolibre.com/collections/notifications/';
 		$this->sandbox_ipn_url = 'https://api.mercadolibre.com/sandbox/collections/notifications/';
-		$this->oauth_token     = 'https://api.mercadolibre.com/oauth/token';
 
 		// Load the form fields.
 		$this->init_form_fields();
@@ -38,12 +33,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->client_secret  = $this->get_option( 'client_secret' );
 		$this->invoice_prefix = $this->get_option( 'invoice_prefix', 'WC-' );
 		$this->method         = $this->get_option( 'method', 'modal' );
-		$this->sandbox        = $this->get_option( 'sandbox', false );
+		$this->sandbox        = $this->get_option( 'sandbox' );
 		$this->debug          = $this->get_option( 'debug' );
 
 		// Actions.
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'check_ipn_response' ) );
-		add_action( 'valid_mercadopago_ipn_request', array( $this, 'successful_request' ) );
+		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ) );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'wp_head', array( $this, 'css' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
@@ -91,7 +86,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 */
 	public function is_available() {
 		// Test if is valid for use.
-		$available = ( 'yes' == $this->settings['enabled'] ) &&
+		$available = ( 'yes' == $this->get_option( 'enabled' ) ) &&
 					! empty( $this->client_id ) &&
 					! empty( $this->client_secret ) &&
 					$this->using_supported_currency();
@@ -189,117 +184,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Generate the payment arguments.
-	 *
-	 * @param  object $order Order data.
-	 *
-	 * @return array         Payment arguments.
-	 */
-	public function get_payment_args( $order ) {
-
-		$args = array(
-			'back_urls' => array(
-				'success' => esc_url( $this->get_return_url( $order ) ),
-				'failure' => str_replace( '&amp;', '&', $order->get_cancel_order_url() ),
-				'pending' => esc_url( $this->get_return_url( $order ) )
-			),
-			'payer' => array(
-				'name'    => $order->billing_first_name,
-				'surname' => $order->billing_last_name,
-				'email'   => $order->billing_email
-			),
-			'external_reference' => $this->invoice_prefix . $order->id,
-			'items' => array(
-				array(
-					'quantity'    => 1,
-					'unit_price'  => (float) $order->order_total,
-					'currency_id' => get_woocommerce_currency(),
-					// 'picture_url' => 'https://www.mercadopago.com/org-img/MP3/home/logomp3.gif'
-				)
-			)
-		);
-
-		// Cart Contents.
-		$item_names = array();
-
-		if ( sizeof( $order->get_items() ) > 0 ) {
-			foreach ( $order->get_items() as $item ) {
-				if ( $item['qty'] ) {
-					$item_names[] = $item['name'] . ' x ' . $item['qty'];
-				}
-			}
-		}
-
-		$args['items'][0]['title'] = sprintf( __( 'Order %s', 'woocommerce-mercadopago' ), $order->get_order_number() ) . ' - ' . implode( ', ', $item_names );
-
-		// Shipping Cost item.
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1', '>=' ) ) {
-			$shipping_total = $order->get_total_shipping();
-		} else {
-			$shipping_total = $order->get_shipping();
-		}
-
-		if ( $shipping_total > 0 ) {
-			$args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'woocommerce-mercadopago' ) . ' ' . ucwords( $order->shipping_method_title );
-		}
-
-		$args = apply_filters( 'woocommerce_mercadopago_args', $args, $order );
-
-		return $args;
-	}
-
-	/**
-	 * Generate the MercadoPago payment url.
-	 *
-	 * @param  object $order Order Object.
-	 *
-	 * @return string        MercadoPago payment url.
-	 */
-	protected function get_mercadopago_url( $order ) {
-
-		$args = json_encode( $this->get_payment_args( $order ) );
-
-		if ( 'yes' == $this->debug ) {
-			$this->log->add( $this->id, 'Payment arguments for order ' . $order->get_order_number() . ': ' . print_r( $this->get_payment_args( $order ), true ) );
-		}
-
-		$url = $this->payment_url . $this->get_client_credentials();
-
-		$params = array(
-			'body'          => $args,
-			'sslverify'     => false,
-			'timeout'       => 60,
-			'headers'       => array(
-				'Accept' => 'application/json',
-				'Content-Type' => 'application/json;charset=UTF-8'
-			)
-		);
-
-		$response = wp_remote_post( $url, $params );
-
-		if ( ! is_wp_error( $response ) && $response['response']['code'] == 201 && ( strcmp( $response['response']['message'], 'Created' ) == 0 ) ) {
-			$checkout_info = json_decode( $response['body'] );
-
-			if ( 'yes' == $this->debug ) {
-				$this->log->add( $this->id, 'Payment link generated with success from MercadoPago' );
-			}
-
-			if ( 'yes' == $this->sandbox ) {
-				return esc_url( $checkout_info->sandbox_init_point );
-			} else {
-				return esc_url( $checkout_info->init_point );
-			}
-
-		} else {
-			if ( 'yes' == $this->debug ) {
-				$this->log->add( $this->id, 'Generate payment error response: ' . print_r( $response, true ) );
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Generate the form.
 	 *
 	 * @param int     $order_id Order ID.
@@ -309,7 +193,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	public function generate_form( $order_id ) {
 
 		$order = new WC_Order( $order_id );
-		$url = $this->get_mercadopago_url( $order );
+		$url = $this->api->get_user_payment_url( $order );
 
 		if ( $url ) {
 
@@ -357,14 +241,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return array           Redirect.
 	 */
 	public function process_payment( $order_id ) {
-
 		$order = new WC_Order( $order_id );
 
 		// Redirect or modal window integration.
 		if ( 'redirect' == $this->method ) {
 			return array(
 				'result'    => 'success',
-				'redirect'  => $this->get_mercadopago_url( $order )
+				'redirect'  => $this->api->get_user_payment_url( $order )
 			);
 		} else {
 			if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1', '>=' ) ) {
@@ -391,112 +274,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Get cliente token.
-	 *
-	 * @return mixed Sucesse return the token and error return null.
-	 */
-	protected function get_client_credentials() {
-		if ( 'yes' == $this->debug ) {
-			$this->log->add( $this->id, 'Getting client credentials...' );
-		}
-
-		// Set postdata.
-		$postdata = 'grant_type=client_credentials';
-		$postdata .= '&client_id=' . $this->client_id;
-		$postdata .= '&client_secret=' . $this->client_secret;
-
-		// Built wp_remote_post params.
-		$params = array(
-			'body'          => $postdata,
-			'sslverify'     => false,
-			'timeout'       => 60,
-			'headers'       => array(
-				'Accept' => 'application/json',
-				'Content-Type' => 'application/x-www-form-urlencoded'
-			)
-		);
-
-		$response = wp_remote_post( $this->oauth_token, $params );
-
-		// Check to see if the request was valid and return the token.
-		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && ( strcmp( $response['response']['message'], 'OK' ) == 0 ) ) {
-
-			$token = json_decode( $response['body'] );
-
-			if ( 'yes' == $this->debug ) {
-				$this->log->add( $this->id, 'Received valid response from MercadoPago' );
-			}
-
-			return $token->access_token;
-		} else {
-			if ( 'yes' == $this->debug ) {
-				$this->log->add( $this->id, 'Received invalid response from MercadoPago. Error response: ' . print_r( $response, true ) );
-			}
-		}
-
-		return null;
-	}
-
-	/**
-	 * Check IPN.
-	 *
-	 * @param  array $data MercadoPago post data.
-	 *
-	 * @return mixed       False or posted response.
-	 */
-	public function check_ipn_request_is_valid( $data ) {
-
-		if ( ! isset( $data['id'] ) ) {
-			return false;
-		}
-
-		if ( 'yes' == $this->debug ) {
-			$this->log->add( $this->id, 'Checking IPN request...' );
-		}
-
-		if ( 'yes' == $this->sandbox ) {
-			$ipn_url = $this->sandbox_ipn_url;
-		} else {
-			$ipn_url = $this->ipn_url;
-		}
-
-		$url = $ipn_url . $data['id'] . '?access_token=' . $this->get_client_credentials();
-
-		// Send back post vars.
-		$params = array(
-			'sslverify' => false,
-			'timeout'   => 60,
-			'headers'   => array(
-				'Accept' => 'application/json',
-				'Content-Type' => 'application/json;charset=UTF-8'
-			)
-		);
-
-		// GET a response.
-		$response = wp_remote_get( $url, $params );
-
-		if ( 'yes' == $this->debug ) {
-			$this->log->add( $this->id, 'IPN Response: ' . print_r( $response, true ) );
-		}
-
-		// Check to see if the request was valid.
-		if ( ! is_wp_error( $response ) && 200 == $response['response']['code'] ) {
-
-			$body = json_decode( $response['body'] );
-
-			$this->log->add( $this->id, 'Received valid IPN response from MercadoPago' );
-
-			return $body;
-		} else {
-			if ( 'yes' == $this->debug ) {
-				$this->log->add( $this->id, 'Received invalid IPN response from MercadoPago.' );
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Check API Response.
 	 *
 	 * @return void
@@ -504,11 +281,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	public function check_ipn_response() {
 		@ob_clean();
 
-		$data = $this->check_ipn_request_is_valid( $_GET );
-
-		if ( $data ) {
+		if ( $data = $this->get_payment_data( $_GET ) ) {
 			header( 'HTTP/1.1 200 OK' );
-			do_action( 'valid_mercadopago_ipn_request', $data );
+			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated action
+			do_action( 'woocommerce_mercadopago_change_order_status', $data );
 		} else {
 			wp_die( __( 'MercadoPago Request Failure', 'woocommerce-mercadopago' ) );
 		}
@@ -521,13 +297,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 *
 	 * @return void
 	 */
-	public function successful_request( $posted ) {
-
-		$data = $posted->collection;
+	public function change_order_status( $posted ) {
+		$data      = $posted->collection;
 		$order_key = $data->external_reference;
 
 		if ( ! empty( $order_key ) ) {
-			$order_id = (int) str_replace( $this->invoice_prefix, '', $order_key );
+			$order_id = intval( str_replace( $this->invoice_prefix, '', $order_key ) );
 
 			$order = new WC_Order( $order_id );
 

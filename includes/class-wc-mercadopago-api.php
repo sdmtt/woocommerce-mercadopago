@@ -16,13 +16,6 @@ class WC_Mercadopago_API {
 	protected $api_url = 'https://api.mercadolibre.com/';
 
 	/**
-	 * JS Library URL.
-	 *
-	 * @var string
-	 */
-	protected $js_url = 'https://secure.mlstatic.com/org-img/checkout/custom/1.0/checkout.js';
-
-	/**
 	 * Gateway class.
 	 *
 	 * @var WC_MercadoPago_Gateway
@@ -76,15 +69,6 @@ class WC_Mercadopago_API {
 	 */
 	public function get_oauth_token_url() {
 		return $this->get_api_url() . 'oauth/token';
-	}
-
-	/**
-	 * Get JS Library URL.
-	 *
-	 * @return string
-	 */
-	public function get_js_url() {
-		return $this->js_url;
 	}
 
 	/**
@@ -142,7 +126,6 @@ class WC_Mercadopago_API {
 				'pending' => esc_url( $this->gateway->get_return_url( $order ) )
 			),
 			'auto_return' => 'approved',
-			'notification_url' => WC()->api_request_url( 'WC_Mercadopago_API' ),
 			'payer' => array(
 				'name'    => $order->billing_first_name,
 				'surname' => $order->billing_last_name,
@@ -290,7 +273,7 @@ class WC_Mercadopago_API {
 		$id          = sanitize_text_field( $data['id'] );
 		$credentials = $this->get_client_credentials();
 		$url         = $this->get_ipn_url( $id, $credentials );
-		$response    = $this->do_request( $url, 'POST' );
+		$response    = $this->do_request( $url, 'GET' );
 
 		if ( 'yes' == $this->gateway->debug ) {
 			$this->gateway->log->add( $this->gateway->id, 'IPN Response: ' . print_r( $response, true ) );

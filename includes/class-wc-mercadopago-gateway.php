@@ -269,7 +269,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			if ( $order->id === $order_id ) {
 
 				if ( 'yes' == $this->debug ) {
-					$this->log->add( $this->id, 'Payment status from order ' . $order->get_order_number() . ': ' . $data->status );
+					$this->log->add( $this->id, 'Payment status for order ' . $order->get_order_number() . ': ' . $data->status );
 				}
 
 				switch ( $data->status ) {

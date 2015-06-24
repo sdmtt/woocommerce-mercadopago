@@ -40,7 +40,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->api = new WC_Mercadopago_API( $this );
 
 		// Actions.
-		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'check_ipn_response' ) );
+		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'ipn_handler' ) );
 		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ) );
 		add_action( 'wp_head', array( $this, 'css' ) );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
@@ -237,9 +237,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Check API Response.
+	 * IPN handler.
 	 */
-	public function check_ipn_response() {
+	public function ipn_handler() {
 		@ob_clean();
 
 		if ( $data = $this->api->get_payment_data( $_GET ) ) {
@@ -247,7 +247,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated since 3.0.0
 			do_action( 'woocommerce_mercadopago_change_order_status', $data );
 		} else {
-			wp_die( __( 'MercadoPago Request Failure', 'woocommerce-mercadopago' ) );
+			$message = __( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' );
+			wp_die( $message, $message, array( 'response' => 401 ) );
 		}
 	}
 

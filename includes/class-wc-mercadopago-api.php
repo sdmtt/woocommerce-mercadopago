@@ -262,7 +262,7 @@ class WC_Mercadopago_API {
 	 * @return array
 	 */
 	public function get_payment_data( $data ) {
-		if ( ! isset( $data['id'] ) ) {
+		if ( ! isset( $data['id'] ) && ! isset( $data['topic'] ) ) {
 			return array();
 		}
 

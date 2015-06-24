@@ -46,6 +46,7 @@ class WC_MercadoPago {
 		// Checks with WooCommerce is installed.
 		if ( class_exists( 'WC_Payment_Gateway' ) ) {
 			add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
+			add_filter( 'woocommerce_cancel_unpaid_order', array( $this, 'stop_cancel_unpaid_orders' ), 10, 2 );
 		} else {
 			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
 		}
@@ -94,6 +95,22 @@ class WC_MercadoPago {
 		$methods[] = 'WC_MercadoPago_Gateway';
 
 		return $methods;
+	}
+
+	/**
+	 * Stop cancel unpaid MercadoPago orders.
+	 *
+	 * @param  bool     $cancel
+	 * @param  WC_Order $order
+	 *
+	 * @return bool
+	 */
+	public function stop_cancel_unpaid_orders( $cancel, $order ) {
+		if ( 'mercadopago' === $order->payment_method ) {
+			return false;
+		}
+
+		return $cancel;
 	}
 
 	/**

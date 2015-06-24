@@ -93,7 +93,7 @@ class WC_Mercadopago_API {
 	 * @return array
 	 */
 	public function get_supported_currencies() {
-		return apply_filters( 'woocommerce_mercadopago_supported_currencies', array( 'ARS', 'BRL', 'COP', 'MXN', 'USD', 'VEF' ) );
+		return apply_filters( 'woocommerce_mercadopago_supported_currencies', array( 'ARS', 'BRL', 'COP', 'MXN', 'VEF' ) );
 	}
 
 	/**
@@ -141,6 +141,8 @@ class WC_Mercadopago_API {
 				'failure' => str_replace( '&amp;', '&', $order->get_cancel_order_url() ),
 				'pending' => esc_url( $this->gateway->get_return_url( $order ) )
 			),
+			'auto_return' => 'approved',
+			'notification_url' => WC()->api_request_url( 'WC_Mercadopago_API' ),
 			'payer' => array(
 				'name'    => $order->billing_first_name,
 				'surname' => $order->billing_last_name,
@@ -151,8 +153,8 @@ class WC_Mercadopago_API {
 				array(
 					'quantity'    => 1,
 					'unit_price'  => (float) $order->order_total,
-					'currency_id' => get_woocommerce_currency(),
-					// 'picture_url' => 'https://www.mercadopago.com/org-img/MP3/home/logomp3.gif'
+					'currency_id' => $order->get_order_currency(),
+					'category_id' => 'others' // Generic category ID
 				)
 			)
 		);

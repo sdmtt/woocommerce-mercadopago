@@ -171,7 +171,13 @@ class WC_Mercadopago_API {
 
 		// Shipping Cost item.
 		if ( $order->get_total_shipping() > 0 ) {
-			$args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'woocommerce-mercadopago' ) . ' ' . ucwords( $order->shipping_method_title );
+			if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.2', '>=' ) ) {
+				$shipping_method = $order->get_shipping_method();
+			} else {
+				$shipping_method = ucwords( $order->shipping_method_title );
+			}
+
+			$args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'woocommerce-mercadopago' ) . ' ' . $shipping_method;
 		}
 
 		$args = apply_filters( 'woocommerce_mercadopago_args', $args, $order );

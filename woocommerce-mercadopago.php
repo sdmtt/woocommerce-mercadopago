@@ -5,7 +5,7 @@
  * Description: MercadoPago gateway for Woocommerce.
  * Author: claudiosanches
  * Author URI: http://claudiosmweb.com/
- * Version: 2.0.1
+ * Version: 3.0.0-dev
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
@@ -27,7 +27,7 @@ class WC_MercadoPago {
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = '3.0.0-dev';
 
 	/**
 	 * Instance of this class.
@@ -45,10 +45,10 @@ class WC_MercadoPago {
 
 		// Checks with WooCommerce is installed.
 		if ( class_exists( 'WC_Payment_Gateway' ) ) {
-			// Include the WC_MercadoPago_Gateway class.
-			include_once 'includes/class-wc-mercadopago-gateway.php';
+			$this->includes();
 
 			add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
+			add_filter( 'woocommerce_cancel_unpaid_order', array( $this, 'stop_cancel_unpaid_orders' ), 10, 2 );
 		} else {
 			add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
 		}
@@ -70,14 +70,20 @@ class WC_MercadoPago {
 
 	/**
 	 * Load the plugin text domain for translation.
-	 *
-	 * @return void
 	 */
 	public function load_plugin_textdomain() {
 		$locale = apply_filters( 'plugin_locale', get_locale(), 'woocommerce-mercadopago' );
 
 		load_textdomain( 'woocommerce-mercadopago', trailingslashit( WP_LANG_DIR ) . 'woocommerce-mercadopago/woocommerce-mercadopago-' . $locale . '.mo' );
 		load_plugin_textdomain( 'woocommerce-mercadopago', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
+	}
+
+	/**
+	 * Includes.
+	 */
+	private function includes() {
+		include_once 'includes/class-wc-mercadopago-api.php';
+		include_once 'includes/class-wc-mercadopago-gateway.php';
 	}
 
 	/**
@@ -94,6 +100,22 @@ class WC_MercadoPago {
 	}
 
 	/**
+	 * Stop cancel unpaid MercadoPago orders.
+	 *
+	 * @param  bool     $cancel
+	 * @param  WC_Order $order
+	 *
+	 * @return bool
+	 */
+	public function stop_cancel_unpaid_orders( $cancel, $order ) {
+		if ( 'mercadopago' === $order->payment_method ) {
+			return false;
+		}
+
+		return $cancel;
+	}
+
+	/**
 	 * WooCommerce fallback notice.
 	 *
 	 * @return  string
@@ -101,38 +123,8 @@ class WC_MercadoPago {
 	public function woocommerce_missing_notice() {
 		echo '<div class="error"><p>' . sprintf( __( 'WooCommerce MercadoPago Gateway depends on the last version of %s to work!', 'woocommerce-mercadopago' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">' . __( 'WooCommerce', 'woocommerce-mercadopago' ) . '</a>' ) . '</p></div>';
 	}
-
-	/**
-	 * Backwards compatibility with version prior to 2.1.
-	 *
-	 * @return object Returns the main instance of WooCommerce class.
-	 */
-	public static function woocommerce_instance() {
-		if ( function_exists( 'WC' ) ) {
-			return WC();
-		} else {
-			global $woocommerce;
-			return $woocommerce;
-		}
-	}
 }
 
-add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ), 0 );
-
-/**
- * Adds support to legacy IPN.
- *
- * @return void
- */
-function wcmercadopago_legacy_ipn() {
-	if ( isset( $_GET['topic'] ) && ! isset( $_GET['wc-api'] ) ) {
-		$woocommerce = WC_MercadoPago::woocommerce_instance();
-		$woocommerce->payment_gateways();
-
-		do_action( 'woocommerce_api_wc_mercadopago_gateway' );
-	}
-}
-
-add_action( 'init', 'wcmercadopago_legacy_ipn' );
+add_action( 'plugins_loaded', array( 'WC_MercadoPago', 'get_instance' ) );
 
 endif;

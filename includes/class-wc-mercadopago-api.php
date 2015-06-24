@@ -88,21 +88,29 @@ class WC_Mercadopago_API {
 	}
 
 	/**
+	 * Get supported currencies.
+	 *
+	 * @return array
+	 */
+	public function get_supported_currencies() {
+		return apply_filters( 'woocommerce_mercadopago_supported_currencies', array( 'ARS', 'BRL', 'COP', 'MXN', 'USD', 'VEF' ) );
+	}
+
+	/**
 	 * Do requests in the MercardoPago API.
 	 *
-	 * @param  string $url      URL.
-	 * @param  string $method   Request method.
-	 * @param  array  $data     Request data.
-	 * @param  array  $headers  Request headers.
+	 * @param  string $url     URL.
+	 * @param  string $method  Request method (default: POST).
+	 * @param  array  $data    Request data (default: array()).
+	 * @param  array  $headers Request headers (default: array()).
 	 *
-	 * @return array            Request response.
+	 * @return array           Request response.
 	 */
 	protected function do_request( $url, $method = 'POST', $data = array(), $headers = array() ) {
 		$params = array(
-			'method'    => $method,
-			'sslverify' => false,
-			'timeout'   => 60,
-			'headers'    => array(
+			'method'  => $method,
+			'timeout' => 60,
+			'headers' => array(
 				'Accept'       => 'application/json',
 				'Content-Type' => 'application/json;charset=UTF-8'
 			)
@@ -116,7 +124,7 @@ class WC_Mercadopago_API {
 			$params['headers'] = $headers;
 		}
 
-		return wp_remote_post( $url, $params );
+		return wp_safe_remote_post( $url, $params );
 	}
 
 	/**
@@ -273,7 +281,7 @@ class WC_Mercadopago_API {
 
 		$id          = sanitize_text_field( $data['id'] );
 		$credentials = $this->get_client_credentials();
-		$url         = get_ipn_url( $id, $credentials );
+		$url         = $this->get_ipn_url( $id, $credentials );
 		$response    = $this->do_request( $url, 'POST' );
 
 		if ( 'yes' == $this->gateway->debug ) {

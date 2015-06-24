@@ -273,6 +273,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				}
 
 				switch ( $data->status ) {
+					case 'pending' :
+						$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
+
+						break;
 					case 'approved' :
 
 						// Order details.
@@ -314,10 +318,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 						}
 
 						break;
-					case 'pending' :
-						$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
-
-						break;
 					case 'in_process' :
 						$order->update_status( 'on-hold', __( 'MercadoPago: Payment under review.', 'woocommerce-mercadopago' ) );
 
@@ -327,7 +327,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 						break;
 					case 'refunded' :
-						$order->update_status( 'refunded', __( 'MercadoPago: The payment was returned to the user.', 'woocommerce-mercadopago' ) );
+						$order->update_status( 'refunded', __( 'MercadoPago: The payment was refunded.', 'woocommerce-mercadopago' ) );
 
 						break;
 					case 'cancelled' :
@@ -336,6 +336,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 						break;
 					case 'in_mediation' :
 						$order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'woocommerce-mercadopago' ) );
+
+						break;
+					case 'charged_back' :
+						$order->update_status( 'failed', __( 'MercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
 
 						break;
 

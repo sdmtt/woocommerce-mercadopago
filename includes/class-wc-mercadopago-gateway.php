@@ -80,19 +80,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Get log.
-	 *
-	 * @return string
-	 */
-	protected function get_log_view() {
-		if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.2', '>=' ) ) {
-			return '<a href="' . esc_url( admin_url( 'admin.php?page=wc-status&tab=logs&log_file=' . esc_attr( $this->id ) . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.log' ) ) . '">' . __( 'System Status &gt; Logs', 'woocommerce-mercadopago' ) . '</a>';
-		}
-
-		return '<code>woocommerce/logs/' . esc_attr( $this->id ) . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.txt</code>';
-	}
-
-	/**
 	 * Initialise gateway settings.
 	 */
 	public function init_form_fields() {
@@ -180,7 +167,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'type'        => 'checkbox',
 				'label'       => __( 'Enable logging', 'woocommerce-mercadopago' ),
 				'default'     => 'no',
-				'description' => sprintf( __( 'Log MercadoPago events, such as API requests. You can find the log in %s', 'woocommerce-mercadopago' ), $this->get_log_view() ),
+				'description' => sprintf( __( 'Log MercadoPago events, such as API requests. You can find the log in %s', 'woocommerce-mercadopago' ), '<a href="' . esc_url( admin_url( 'admin.php?page=wc-status&tab=logs&log_file=' . esc_attr( $this->id ) . '-' . sanitize_file_name( wp_hash( $this->id ) ) . '.log' ) ) . '">' . __( 'System Status &gt; Logs', 'woocommerce-mercadopago' ) . '</a>' ),
 			),
 		);
 	}
@@ -198,7 +185,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @param int $order_id Order ID.
 	 */
 	public function receipt_page( $order_id ) {
-		$order = new WC_Order( $order_id );
+		$order = wc_get_order( $order_id );
 		$url   = $this->api->get_user_payment_url( $order );
 
 		include 'views/html-modal-payment.php';
@@ -212,7 +199,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return array        Redirect.
 	 */
 	public function process_payment( $order_id ) {
-		$order = new WC_Order( $order_id );
+		$order = wc_get_order( $order_id );
 
 		// Redirect or modal window integration.
 		if ( 'redirect' == $this->method ) {
@@ -245,100 +232,86 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Change order status
 	 *
-	 * @param array $posted MercadoPago post data.
+	 * @param array $purchase_data MercadoPago purchase data.
 	 */
-	public function change_order_status( $posted ) {
-		$data      = $posted->collection;
-		$_order_id = $data->external_reference;
+	public function change_order_status( $purchase_data ) {
+		$data = $purchase_data->collection;
 
-		if ( ! empty( $_order_id ) ) {
-			$order_id = intval( str_replace( $this->invoice_prefix, '', $_order_id ) );
-			$order    = new WC_Order( $order_id );
+		if ( empty( $data->external_reference ) ) {
+			return;
+		}
 
-			// Checks whether the invoice number matches the order.
-			// If true processes the payment.
-			if ( $order->id === $order_id ) {
+		$order_id = intval( str_replace( $this->invoice_prefix, '', $data->external_reference ) );
+		$order    = wc_get_order( $order_id );
 
-				if ( 'yes' == $this->debug ) {
-					$this->log->add( $this->id, 'Payment status for order ' . $order->get_order_number() . ': ' . $data->status );
+		// Checks whether the invoice number matches the order.
+		// If true processes the payment.
+		if ( $order->id !== $order_id ) {
+			return;
+		}
+
+		if ( 'yes' == $this->debug ) {
+			$this->log->add( $this->id, 'Payment status for order ' . $order->get_order_number() . ': ' . $data->status );
+		}
+
+		switch ( $data->status ) {
+			case 'pending' :
+				$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'approved' :
+				if ( ! empty( $data->payer->email ) ) {
+					add_post_meta(
+						$order_id,
+						__( 'Payer email', 'woocommerce-mercadopago' ),
+						sanitize_text_field( $data->payer->email ),
+						true
+					);
+				}
+				if ( ! empty( $data->payment_type ) ) {
+					add_post_meta(
+						$order_id,
+						__( 'Payment type', 'woocommerce-mercadopago' ),
+						sanitize_text_field( $data->payment_type ),
+						true
+					);
 				}
 
-				switch ( $data->status ) {
-					case 'pending' :
-						$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'approved' :
-
-						// Order details.
-						if ( defined( 'WC_VERSION' ) && version_compare( WC_VERSION, '2.1.12', '<=' ) ) {
-							// Save the transaction ID has custom field just for old versions.
-							if ( ! empty( $data->id ) ) {
-								add_post_meta(
-									$order_id,
-									__( 'MercadoPago Transaction ID', 'woocommerce-mercadopago' ),
-									sanitize_text_field( $data->id ),
-									true
-								);
-							}
-						}
-						if ( ! empty( $data->payer->email ) ) {
-							add_post_meta(
-								$order_id,
-								__( 'Payer email', 'woocommerce-mercadopago' ),
-								sanitize_text_field( $data->payer->email ),
-								true
-							);
-						}
-						if ( ! empty( $data->payment_type ) ) {
-							add_post_meta(
-								$order_id,
-								__( 'Payment type', 'woocommerce-mercadopago' ),
-								sanitize_text_field( $data->payment_type ),
-								true
-							);
-						}
-
-						// For WooCommerce 2.2 or later.
-						add_post_meta( $order->id, '_transaction_id', sanitize_text_field( $data->id ), true );
-
-						// Payment completed.
-						if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
-							$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
-							$order->payment_complete();
-						}
-
-						break;
-					case 'in_process' :
-						$order->update_status( 'on-hold', __( 'MercadoPago: Payment under review.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'rejected' :
-						$order->update_status( 'failed', __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'refunded' :
-						$order->update_status( 'refunded', __( 'MercadoPago: The payment was refunded.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'cancelled' :
-						$order->update_status( 'cancelled', __( 'MercadoPago: Payment canceled.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'in_mediation' :
-						$order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'woocommerce-mercadopago' ) );
-
-						break;
-					case 'charged_back' :
-						$order->update_status( 'failed', __( 'MercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
-
-						break;
-
-					default :
-						// No action xD.
-						break;
+				// Payment completed.
+				if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
+					$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
+					$order->payment_complete( sanitize_text_field( $data->id ) );
 				}
-			}
+
+				break;
+			case 'in_process' :
+				$order->update_status( 'on-hold', __( 'MercadoPago: Payment under review.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'rejected' :
+				$order->update_status( 'failed', __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'refunded' :
+				$order->update_status( 'refunded', __( 'MercadoPago: The payment was refunded.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'cancelled' :
+				$order->update_status( 'cancelled', __( 'MercadoPago: Payment canceled.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'in_mediation' :
+				$order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'woocommerce-mercadopago' ) );
+
+				break;
+			case 'charged_back' :
+				$order->update_status( 'failed', __( 'MercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
+
+				break;
+
+			default :
+				// No action xD.
+				break;
 		}
 	}
 }

@@ -293,13 +293,15 @@ class WC_Mercadopago_API {
 	 * @return array
 	 */
 	public function get_payment_data( $data ) {
-		if ( ! isset( $data['id'] ) && ! isset( $data['topic'] ) ) {
+		if ( ! isset( $data['id'], $data['topic'] ) ) {
 			return array();
 		}
 
 		if ( 'yes' == $this->gateway->debug ) {
 			$this->gateway->log->add( $this->gateway->id, 'Checking IPN request...' );
 		}
+
+		$data = wp_unslash( $data );
 
 		$id          = sanitize_text_field( $data['id'] );
 		$credentials = $this->get_client_credentials();
@@ -316,9 +318,7 @@ class WC_Mercadopago_API {
 				$this->gateway->log->add( $this->gateway->id, 'Received valid IPN response from MercadoPago' );
 			}
 
-			$body = json_decode( $response['body'] );
-
-			return $body;
+			return json_decode( $response['body'] );
 		} else {
 			if ( 'yes' == $this->gateway->debug ) {
 				$this->gateway->log->add( $this->gateway->id, 'Received invalid IPN response from MercadoPago.' );

@@ -97,7 +97,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			'enabled' => array(
 				'title'   => __( 'Enable/Disable', 'woocommerce-mercadopago' ),
 				'type'    => 'checkbox',
-				'label'   => __( 'Enable MercadoPago standard', 'woocommerce-mercadopago' ),
+				'label'   => __( 'Enable MercadoPago', 'woocommerce-mercadopago' ),
 				'default' => 'no',
 			),
 			'title' => array(

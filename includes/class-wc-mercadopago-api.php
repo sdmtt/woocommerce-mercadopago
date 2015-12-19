@@ -1,10 +1,18 @@
 <?php
+/**
+ * WooCommerce MercadoPago API class
+ *
+ * @package WooCommerce_MercadoPago/Classes/API
+ * @since   3.0.0
+ * @version 3.0.0
+ */
+
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
 /**
- * MercadoPago Customized Checkout API class.
+ * MercadoPago Checkout API class.
  */
 class WC_Mercadopago_API {
 
@@ -25,9 +33,9 @@ class WC_Mercadopago_API {
 	/**
 	 * Constructor.
 	 *
-	 * @param WC_MercadoPago_Gateway $gateway
+	 * @param WC_MercadoPago_Gateway $gateway Gateway class.
 	 */
-	public function __construct( $gateway = null, $method = '' ) {
+	public function __construct( $gateway = null ) {
 		$this->gateway = $gateway;
 	}
 
@@ -43,7 +51,7 @@ class WC_Mercadopago_API {
 	/**
 	 * Get Checkout URL.
 	 *
-	 * @param  string $credentials
+	 * @param  string $credentials Access token.
 	 *
 	 * @return string
 	 */
@@ -53,6 +61,9 @@ class WC_Mercadopago_API {
 
 	/**
 	 * Get IPN URL.
+	 *
+	 * @param string $id          Purchase ID.
+	 * @param string $credentials Access token.
 	 *
 	 * @return string
 	 */
@@ -117,8 +128,8 @@ class WC_Mercadopago_API {
 			'timeout' => 60,
 			'headers' => array(
 				'Accept'       => 'application/json',
-				'Content-Type' => 'application/json;charset=UTF-8'
-			)
+				'Content-Type' => 'application/json;charset=UTF-8',
+			),
 		);
 
 		if ( ! empty( $data ) ) {
@@ -144,13 +155,13 @@ class WC_Mercadopago_API {
 			'back_urls' => array(
 				'success' => esc_url( $this->gateway->get_return_url( $order ) ),
 				'failure' => str_replace( '&amp;', '&', $order->get_cancel_order_url() ),
-				'pending' => esc_url( $this->gateway->get_return_url( $order ) )
+				'pending' => esc_url( $this->gateway->get_return_url( $order ) ),
 			),
 			'auto_return' => 'approved',
 			'payer' => array(
 				'name'    => $order->billing_first_name,
 				'surname' => $order->billing_last_name,
-				'email'   => $order->billing_email
+				'email'   => $order->billing_email,
 			),
 			'external_reference' => $this->gateway->invoice_prefix . $order->id,
 			'items' => array(
@@ -158,14 +169,14 @@ class WC_Mercadopago_API {
 					'quantity'    => 1,
 					'unit_price'  => (float) $order->order_total,
 					'currency_id' => $order->get_order_currency(),
-					'category_id' => 'others' // Generic category ID
-				)
-			)
+					'category_id' => 'others', // Generic category ID.
+				),
+			),
 		);
 
 		// Cart Contents.
 		$item_names = array();
-		if ( sizeof( $order->get_items() ) > 0 ) {
+		if ( 0 < count( $order->get_items() ) ) {
 			foreach ( $order->get_items() as $item ) {
 				if ( $item['qty'] ) {
 					$item_names[] = $item['name'] . ' x ' . $item['qty'];
@@ -205,11 +216,11 @@ class WC_Mercadopago_API {
 		$data = build_query( array(
 			'grant_type'    => 'client_credentials',
 			'client_id'     => $this->gateway->client_id,
-			'client_secret' => $this->gateway->client_secret
+			'client_secret' => $this->gateway->client_secret,
 		) );
 		$headers = array(
 			'Accept'       => 'application/json',
-			'Content-Type' => 'application/x-www-form-urlencoded'
+			'Content-Type' => 'application/x-www-form-urlencoded',
 		);
 
 		$response = $this->do_request( $this->get_oauth_token_url(), 'POST', $data, $headers );
@@ -251,7 +262,7 @@ class WC_Mercadopago_API {
 		$url         = $this->get_checkout_url( $credentials );
 		$response    = $this->do_request( $url, 'POST', $data );
 
-		if ( ! is_wp_error( $response ) && $response['response']['code'] == 201 && ( strcmp( $response['response']['message'], 'Created' ) == 0 ) ) {
+		if ( ! is_wp_error( $response ) && 201 == $response['response']['code'] && ( 0 == strcmp( $response['response']['message'], 'Created' ) ) ) {
 			$payment_data = json_decode( $response['body'] );
 
 			if ( 'yes' == $this->gateway->debug ) {
@@ -259,11 +270,10 @@ class WC_Mercadopago_API {
 			}
 
 			if ( 'yes' == $this->gateway->sandbox ) {
-				return esc_url( $payment_data->sandbox_init_point );
+				return $payment_data->sandbox_init_point;
 			} else {
-				return esc_url( $payment_data->init_point );
+				return $payment_data->init_point;
 			}
-
 		} else {
 			if ( 'yes' == $this->gateway->debug ) {
 				$this->gateway->log->add( $this->gateway->id, 'Generate payment error response: ' . print_r( $response, true ) );

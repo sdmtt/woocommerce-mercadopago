@@ -1,8 +1,18 @@
 <?php
 /**
- * WC MercadoPago Gateway Class.
+ * WooCommerce MercadoPago Gateway class
  *
- * Built the MercadoPago method.
+ * @package WooCommerce_MercadoPago/Classes/Gateway
+ * @since   3.0.0
+ * @version 3.0.0
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * MercadoPago payment method.
  */
 class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
@@ -15,6 +25,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$this->icon            = apply_filters( 'woocommerce_mercadopago_icon', plugins_url( 'images/mercadopago.png', plugin_dir_path( __FILE__ ) ) );
 		$this->has_fields      = false;
 		$this->method_title    = __( 'MercadoPago', 'woocommerce-mercadopago' );
+		$this->supports        = array(
+			'products',
+			'subscriptions',
+			'subscription_cancellation',
+			'subscription_amount_changes',
+		);
 
 		// Load the form fields.
 		$this->init_form_fields();
@@ -42,7 +58,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		// Actions.
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'ipn_handler' ) );
 		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ) );
-		add_action( 'wp_head', array( $this, 'css' ) );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 	}
@@ -96,20 +111,20 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'title'   => __( 'Enable/Disable', 'woocommerce-mercadopago' ),
 				'type'    => 'checkbox',
 				'label'   => __( 'Enable MercadoPago standard', 'woocommerce-mercadopago' ),
-				'default' => 'no'
+				'default' => 'no',
 			),
 			'title' => array(
 				'title'       => __( 'Title', 'woocommerce-mercadopago' ),
 				'type'        => 'text',
 				'description' => __( 'This controls the title which the user sees during checkout.', 'woocommerce-mercadopago' ),
 				'desc_tip'    => true,
-				'default'     => __( 'MercadoPago', 'woocommerce-mercadopago' )
+				'default'     => __( 'MercadoPago', 'woocommerce-mercadopago' ),
 			),
 			'description' => array(
 				'title'       => __( 'Description', 'woocommerce-mercadopago' ),
 				'type'        => 'textarea',
 				'description' => __( 'This controls the description which the user sees during checkout.', 'woocommerce-mercadopago' ),
-				'default'     => __( 'Pay via MercadoPago', 'woocommerce-mercadopago' )
+				'default'     => __( 'Pay via MercadoPago', 'woocommerce-mercadopago' ),
 			),
 			'client_id' => array(
 				'title'             => __( 'MercadoPago Client_id', 'woocommerce-mercadopago' ),
@@ -117,8 +132,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'description'       => __( 'Please enter your MercadoPago Client_id.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
 				'default'           => '',
 				'custom_attributes' => array(
-					'required' => 'required'
-				)
+					'required' => 'required',
+				),
 			),
 			'client_secret' => array(
 				'title'             => __( 'MercadoPago Client_secret', 'woocommerce-mercadopago' ),
@@ -126,15 +141,15 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'description'       => __( 'Please enter your MercadoPago Client_secret.', 'woocommerce-mercadopago' ) . ' ' . sprintf( __( 'You can to get this information in MercadoPago from %s.', 'woocommerce-mercadopago' ), $api_secret_locale ),
 				'default'           => '',
 				'custom_attributes' => array(
-					'required' => 'required'
-				)
+					'required' => 'required',
+				),
 			),
 			'invoice_prefix' => array(
 				'title'       => __( 'Invoice Prefix', 'woocommerce-mercadopago' ),
 				'type'        => 'text',
 				'description' => __( 'Please enter a prefix for your invoice numbers. If you use your MercadoPago account for multiple stores ensure this prefix is unqiue as MercadoPago will not allow orders with the same invoice number.', 'woocommerce-mercadopago' ),
 				'desc_tip'    => true,
-				'default'     => 'WC-'
+				'default'     => 'WC-',
 			),
 			'method' => array(
 				'title'       => __( 'Integration method', 'woocommerce-mercadopago' ),
@@ -146,7 +161,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'options'     => array(
 					'modal'    => __( 'Modal Window', 'woocommerce-mercadopago' ),
 					'redirect' => __( 'Redirect', 'woocommerce-mercadopago' ),
-				)
+				),
 			),
 			'testing' => array(
 				'title'       => __( 'Gateway Testing', 'woocommerce-mercadopago' ),
@@ -166,7 +181,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				'label'       => __( 'Enable logging', 'woocommerce-mercadopago' ),
 				'default'     => 'no',
 				'description' => sprintf( __( 'Log MercadoPago events, such as API requests. You can find the log in %s', 'woocommerce-mercadopago' ), $this->get_log_view() ),
-			)
+			),
 		);
 	}
 
@@ -178,47 +193,23 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Fix MercadoPago CSS.
+	 * Output for the order received page.
 	 *
-	 * @return string Styles.
+	 * @param int $order_id Order ID.
 	 */
-	public function css() {
-		if ( is_page( wc_get_page_id( 'checkout' ) ) ) {
-			echo '<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>' . PHP_EOL;
-		}
-	}
-
-	/**
-	 * Generate the form.
-	 *
-	 * @param int     $order_id Order ID.
-	 *
-	 * @return string           Payment form.
-	 */
-	public function get_modal_buttons( $order_id ) {
+	public function receipt_page( $order_id ) {
 		$order = new WC_Order( $order_id );
 		$url   = $this->api->get_user_payment_url( $order );
 
-		ob_start();
 		include 'views/html-modal-payment.php';
-		$html = ob_get_contents();
-		ob_end_clean();
-		return $html;
-	}
-
-	/**
-	 * Output for the order received page.
-	 */
-	public function receipt_page( $order ) {
-		echo $this->get_modal_buttons( $order );
 	}
 
 	/**
 	 * Process the payment and return the result.
 	 *
-	 * @param int    $order_id Order ID.
+	 * @param int $order_id Order ID.
 	 *
-	 * @return array           Redirect.
+	 * @return array        Redirect.
 	 */
 	public function process_payment( $order_id ) {
 		$order = new WC_Order( $order_id );
@@ -232,7 +223,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		return array(
 			'result'   => '' !== $url ? 'success' : 'fail',
-			'redirect' => $url
+			'redirect' => $url,
 		);
 	}
 
@@ -244,11 +235,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		if ( $data = $this->api->get_payment_data( $_GET ) ) {
 			header( 'HTTP/1.1 200 OK' );
-			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated since 3.0.0
+			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated since 3.0.0.
 			do_action( 'woocommerce_mercadopago_change_order_status', $data );
 		} else {
-			$message = __( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' );
-			wp_die( $message, $message, array( 'response' => 401 ) );
+			wp_die( esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), array( 'response' => 401 ) );
 		}
 	}
 

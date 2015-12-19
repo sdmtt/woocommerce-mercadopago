@@ -77,7 +77,28 @@ class WC_Mercadopago_API {
 	 * @return array
 	 */
 	public function get_supported_currencies() {
-		return apply_filters( 'woocommerce_mercadopago_supported_currencies', array( 'ARS', 'BRL', 'COP', 'MXN', 'VEF' ) );
+		return apply_filters( 'woocommerce_mercadopago_supported_currencies', array(
+			'ARS',
+			'BOB',
+			'BRL',
+			'CLF',
+			'CLP',
+			'COP',
+			'CRC',
+			'CUC',
+			'DOP',
+			'EUR',
+			'GTQ',
+			'HNL',
+			'MXN',
+			'NIO',
+			'PAB',
+			'PEN',
+			'PYG',
+			'USD',
+			'UYU',
+			'VEF',
+		) );
 	}
 
 	/**

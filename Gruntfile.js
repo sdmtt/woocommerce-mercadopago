@@ -65,13 +65,6 @@ module.exports = function( grunt ) {
 			}
 		},
 
-		po2mo: {
-			files: {
-				src: 'languages/*.po',
-				expand: true
-			}
-		},
-
 		// Rsync commands used to take the files to svn repository
 		rsync: {
 			options: {
@@ -138,7 +131,6 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-shell' );
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 	grunt.loadNpmTasks( 'grunt-checktextdomain' );
-	grunt.loadNpmTasks( 'grunt-po2mo' );
 
 	// Deploy task
 	grunt.registerTask( 'deploy', [

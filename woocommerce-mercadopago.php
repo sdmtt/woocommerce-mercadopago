@@ -50,6 +50,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 
 				add_filter( 'woocommerce_payment_gateways', array( $this, 'add_gateway' ) );
 				add_filter( 'woocommerce_cancel_unpaid_order', array( $this, 'stop_cancel_unpaid_orders' ), 10, 2 );
+				add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), array( $this, 'plugin_action_links' ) );
 			} else {
 				add_action( 'admin_notices', array( $this, 'woocommerce_missing_notice' ) );
 			}
@@ -119,6 +120,25 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 			}
 
 			return $cancel;
+		}
+
+		/**
+		 * Action links.
+		 *
+		 * @param  array $links Plugin action links.
+		 *
+		 * @return array
+		 */
+		public function plugin_action_links( $links ) {
+			$plugin_links = array();
+
+			if ( function_exists( 'wcs_is_subscription' ) ) {
+				$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_subscriptions_gateway' ) ) . '">' . esc_html__( 'Settings', 'woocommerce-mercadopago' ) . '</a>';
+			} else {
+				$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' ) ) . '">' . esc_html__( 'Settings', 'woocommerce-mercadopago' ) . '</a>';
+			}
+
+			return array_merge( $plugin_links, $links );
 		}
 
 		/**

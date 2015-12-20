@@ -253,7 +253,7 @@ class WC_Mercadopago_API {
 		$args = array(
 			'payer_email'        => $subscription->billing_email,
 			'back_url'           => esc_url( $this->gateway->get_return_url( $order ) ),
-			'reason'             => sprintf( __( '%s - Subscription for order #%s', 'woocommerce' ), esc_html( get_bloginfo( 'name', 'display' ) ), $order->get_order_number() ),
+			'reason'             => sprintf( __( '%s - Subscription for order #%s', 'woocommerce-mercadopago' ), esc_html( get_bloginfo( 'name', 'display' ) ), $order->get_order_number() ),
 			'external_reference' => $this->gateway->invoice_prefix . $order->id,
 			'auto_recurring'     => array(
 				'frequency'          => (int) $subscription->billing_interval,

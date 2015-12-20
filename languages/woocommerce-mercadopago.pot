@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: WooCommerce MercadoPago 3.0.0-beta-1\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/woocommerce-mercadopago/\n"
-"POT-Creation-Date: 2015-12-20 05:27:37+00:00\n"
+"POT-Creation-Date: 2015-12-20 05:40:48+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -16,8 +16,8 @@ msgstr ""
 
 #: includes/admin/views/html-admin-help-message.php:14
 msgid ""
-"Help us keep the %s plugin free making a donation or rate "
-"&#9733;&#9733;&#9733;&#9733;&#9733; on WordPress.org. Thank you in advance!"
+"Help us keep the %s plugin free making a donation or rate %s on "
+"WordPress.org. Thank you in advance!"
 msgstr ""
 
 #. Plugin Name of the plugin/theme

@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 	/**
-	 * Constructor for the gateway.
+	 * Initialize payment gateway actions.
 	 */
 	public function __construct() {
 		// Standards.
@@ -29,7 +29,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			'products',
 			'subscriptions',
 			'subscription_cancellation',
-			'subscription_amount_changes',
 			'gateway_scheduled_payments',
 		);
 
@@ -224,7 +223,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		if ( $data = $this->api->get_payment_data( $_GET ) ) {
 			header( 'HTTP/1.1 200 OK' );
 
-			$topic = sanitize_text_field( wp_unslash( $_GET['topic'] ) );
+			$topic = isset( $_GET['topic'] ) ? sanitize_text_field( wp_unslash( $_GET['topic'] ) ) : '';
 			do_action( 'woocommerce_mercadopago_change_order_status', $data, $topic );
 
 			// Deprecated since 3.0.0.

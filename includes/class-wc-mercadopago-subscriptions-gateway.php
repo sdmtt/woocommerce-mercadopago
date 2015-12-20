@@ -17,6 +17,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 
 	/**
+	 * Initialize subscription actions.
+	 */
+	public function __construct() {
+		parent::__construct();
+
+		add_action( 'woocommerce_subscription_cancelled_' . $this->id, array( $this, 'cancel_subscription' ) );
+	}
+
+	/**
 	 * Output for the order received page.
 	 *
 	 * @param int $order_id Order ID.
@@ -88,5 +97,16 @@ class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 		}
 
 		return $valid;
+	}
+
+	/**
+	 * Cancel subscription.
+	 *
+	 * @param WC_Subscription $subscription Subscription data.
+	 */
+	public function cancel_subscription( $subscription ) {
+		if ( $id = $subscription->order->mercadopago_payment_id ) {
+			$this->api->cancel_subscription( $id );
+		}
 	}
 }

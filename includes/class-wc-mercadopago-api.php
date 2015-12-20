@@ -311,7 +311,7 @@ class WC_Mercadopago_API {
 
 		$response = $this->do_request( $this->get_oauth_token_url(), 'POST', $data, $headers );
 
-		// Check to see if the request was valid and return the token.
+		// Check if the request was valid and return the token.
 		if ( ! is_wp_error( $response ) && $response['response']['code'] >= 200 && $response['response']['code'] < 300 && ( strcmp( $response['response']['message'], 'OK' ) == 0 ) ) {
 
 			$token = json_decode( $response['body'] );
@@ -360,6 +360,8 @@ class WC_Mercadopago_API {
 				$this->gateway->log->add( $this->gateway->id, 'Payment link generated from MercadoPago successfully!' );
 			}
 
+			add_post_meta( $order->id, '_mercadopago_payment_id', sanitize_text_field( $payment_data->id ), true );
+
 			if ( 'yes' == $this->gateway->sandbox ) {
 				return $payment_data->sandbox_init_point;
 			} else {
@@ -404,7 +406,7 @@ class WC_Mercadopago_API {
 			$this->gateway->log->add( $this->gateway->id, 'IPN Response: ' . print_r( $response, true ) );
 		}
 
-		// Check to see if the request was valid.
+		// Check if the request was valid.
 		if ( ! is_wp_error( $response ) && 200 == $response['response']['code'] ) {
 			if ( 'yes' == $this->gateway->debug ) {
 				$this->gateway->log->add( $this->gateway->id, 'Received valid IPN response from MercadoPago' );
@@ -418,5 +420,42 @@ class WC_Mercadopago_API {
 		}
 
 		return array();
+	}
+
+	/**
+	 * Cancel subscription.
+	 *
+	 * @param  string $id MercadoPago subscription ID.
+	 *
+	 * @return bool
+	 */
+	public function cancel_subscription( $id ) {
+		if ( 'yes' == $this->gateway->debug ) {
+			$this->gateway->log->add( $this->gateway->id, 'Cancelling subscription... MercadoPago ID: ' . $id );
+		}
+
+		$data        = json_encode( array( 'status' => 'cancelled' ) );
+		$credentials = $this->get_client_credentials();
+		$url         = $this->get_ipn_url( 'preapproval', $id, $credentials );
+		$response    = $this->do_request( $url, 'PUT', $data );
+
+		// Check if the request was valid.
+		if ( ! is_wp_error( $response ) && 200 == $response['response']['code'] ) {
+			$_data = json_decode( $response['body'] );
+
+			if ( 'cancelled' === $_data->status ) {
+				if ( 'yes' == $this->gateway->debug ) {
+					$this->gateway->log->add( $this->gateway->id, 'Subscription canceled successfully! MercadoPago ID: ' . $id );
+				}
+
+				return true;
+			}
+		}
+
+		if ( 'yes' == $this->gateway->debug ) {
+			$this->gateway->log->add( $this->gateway->id, 'Failed to cancel subscription: ' . print_r( $response, true ) );
+		}
+
+		return false;
 	}
 }

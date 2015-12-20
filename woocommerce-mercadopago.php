@@ -83,7 +83,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 			include_once 'includes/class-wc-mercadopago-api.php';
 			include_once 'includes/class-wc-mercadopago-gateway.php';
 
-			if ( class_exists( 'WC_Subscriptions_Order' ) ) {
+			if ( function_exists( 'wcs_is_subscription' ) ) {
 				include_once 'includes/class-wc-mercadopago-subscriptions-gateway.php';
 			}
 		}
@@ -96,7 +96,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 		 * @return array          Payment methods with MercadoPago.
 		 */
 		public function add_gateway( $methods ) {
-			if ( class_exists( 'WC_Subscriptions_Order' ) ) {
+			if ( function_exists( 'wcs_is_subscription' ) ) {
 				$methods[] = 'WC_MercadoPago_Subscriptions_Gateway';
 			} else {
 				$methods[] = 'WC_MercadoPago_Gateway';

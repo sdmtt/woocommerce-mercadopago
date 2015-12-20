@@ -17,22 +17,59 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 
 	/**
-	 * Initialize Subscriptions actions.
+	 * Process payments.
+	 *
+	 * @param  int $order_id Order ID.
+	 *
+	 * @return array
 	 */
-	public function __construct() {
-		parent::__construct();
+	public function process_payment( $order_id ) {
+		if ( wcs_order_contains_subscription( $order_id ) ) {
+			$order = wc_get_order( $order_id );
+			$valid = $this->validate_order( $order );
+			$url   = '';
 
-		if ( class_exists( 'WC_Subscriptions_Order' ) ) {
-			// add_action( 'woocommerce_scheduled_subscription_payment_' . $this->id, array( $this, 'scheduled_subscription_payment' ), 10, 2 );
-			// add_action( 'woocommerce_subscription_failing_payment_method_updated_' . $this->id, array( $this, 'update_failing_payment_method' ), 10, 2 );
+			if ( $valid ) {
+				$url = $this->api->get_user_payment_url( $order, true );
+			}
+
+			return array(
+				'result'   => '' !== $url ? 'success' : 'fail',
+				'redirect' => $url,
+			);
+		} else {
+			return parent::process_payment( $order_id );
 		}
 	}
 
-	public function process_payment( $order_id ) {
-		// if () {
+	/**
+	 * Validate order for subscriptions.
+	 * MercadoPago have a few limitations, we can just process one subscription at a time.
+	 *
+	 * @param  WC_Order $order Order data.
+	 *
+	 * @return bool
+	 */
+	public function validate_order( $order ) {
+		$valid = true;
 
-		// } else {
-			return parent::process_payment( $order_id );
-		// }
+		foreach ( $order->get_items() as $order_item ) {
+			if ( $order_item['qty'] ) {
+				$product = $order->get_product_from_item( $order_item );
+				if ( ! in_array( $product->product_type, array( 'subscription', 'variable-subscription' ) ) ) {
+					wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Only can process one subscription at a time without other products within the card. Please remove any others products before continue.', 'woocommerce-mercadopago' ), 'error' );
+
+					$valid = false;
+					break;
+				}
+			}
+		}
+
+		if ( $valid && 0 < WC_Subscriptions_Order::get_sign_up_fee( $order ) ) {
+			wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Unable to process signatures with sign-up fees.', 'woocommerce-mercadopago' ), 'error' );
+			$valid = false;
+		}
+
+		return $valid;
 	}
 }

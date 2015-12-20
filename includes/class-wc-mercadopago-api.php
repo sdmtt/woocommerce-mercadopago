@@ -21,7 +21,7 @@ class WC_Mercadopago_API {
 	 *
 	 * @var string
 	 */
-	protected $api_url = 'https://api.mercadolibre.com/';
+	protected $api_url = 'https://api.mercadopago.com/';
 
 	/**
 	 * Gateway class.
@@ -52,11 +52,14 @@ class WC_Mercadopago_API {
 	 * Get Checkout URL.
 	 *
 	 * @param  string $credentials Access token.
+	 * @param  bool $subscription Subscription order.
 	 *
 	 * @return string
 	 */
-	public function get_checkout_url( $credentials = '' ) {
-		return $this->get_api_url() . 'checkout/preferences?access_token=' . $credentials;
+	public function get_checkout_url( $credentials = '', $subscription = false ) {
+		$endpoint = $subscription ? 'preapproval' : 'checkout/preferences';
+
+		return $this->get_api_url() . $endpoint . '?access_token=' . $credentials;
 	}
 
 	/**
@@ -112,6 +115,10 @@ class WC_Mercadopago_API {
 		) );
 	}
 
+	protected function format_date( $date ) {
+		return date( 'Y-m-d\TH:i:s.ZP', strtotime( $date ) );
+	}
+
 	/**
 	 * Do requests in the MercardoPago API.
 	 *
@@ -144,13 +151,13 @@ class WC_Mercadopago_API {
 	}
 
 	/**
-	 * Generate the payment args.
+	 * Get purchase args.
 	 *
-	 * @param  object $order Order data.
+	 * @param  WC_Order $order Order data.
 	 *
-	 * @return array         Payment data.
+	 * @return array
 	 */
-	protected function get_payment_args( $order ) {
+	protected function get_purchase_args( $order ) {
 		$args = array(
 			'back_urls' => array(
 				'success' => esc_url( $this->gateway->get_return_url( $order ) ),
@@ -167,7 +174,7 @@ class WC_Mercadopago_API {
 			'items' => array(
 				array(
 					'quantity'    => 1,
-					'unit_price'  => (float) $order->order_total,
+					'unit_price'  => $order->get_total(),
 					'currency_id' => $order->get_order_currency(),
 					'category_id' => 'others', // Generic category ID.
 				),
@@ -197,9 +204,65 @@ class WC_Mercadopago_API {
 			$args['items'][0]['title'] .= ', ' . __( 'Shipping via', 'woocommerce-mercadopago' ) . ' ' . $shipping_method;
 		}
 
+		// Deprecated since 3.0.0.
 		$args = apply_filters( 'woocommerce_mercadopago_args', $args, $order );
 
-		return $args;
+		return apply_filters( 'woocommerce_mercadopago_purchase_args', $args, $order );
+	}
+
+	/**
+	 * Get subscription payment args.
+	 *
+	 * @param  WC_Order $order Order ID.
+	 *
+	 * @return array
+	 */
+	protected function get_subscription_args( $order ) {
+		$subscriptions = wcs_get_subscriptions_for_order( $order->id );
+		$subscription  = current( $subscriptions );
+
+		if ( ! in_array( $subscription->billing_period, array( 'day', 'month' ) ) ) {
+			wc_add_notice( '<strong>' . esc_html( $this->gateway->title ) . ': </strong>' . __( 'Process only daily or monthly subscriptions.', 'woocommerce-mercadopago' ), 'error' );
+			return array();
+		}
+
+		$args = array(
+			'payer_email'        => $subscription->billing_email,
+			'back_url'           => esc_url( $this->gateway->get_return_url( $order ) ),
+			'reason'             => sprintf( __( '%s - Subscription for order #%s', 'woocommerce' ), esc_html( get_bloginfo( 'name', 'display' ) ), $order->get_order_number() ),
+			'external_reference' => $this->gateway->invoice_prefix . $order->id,
+			'auto_recurring'     => array(
+				'frequency'          => (int) $subscription->billing_interval,
+				'frequency_type'     => $subscription->billing_period . 's',
+				'transaction_amount' => (float) $subscription->get_total(),
+				'currency_id'        => $subscription->get_order_currency(),
+			)
+		);
+
+		if ( $start_date = $subscription->calculate_date( 'trial_end' ) ) {
+			$args['auto_recurring']['start_date'] = $this->format_date( $start_date );
+		}
+		if ( $end_date   = $subscription->calculate_date( 'end' ) ) {
+			$args['auto_recurring']['end_date'] = $this->format_date( $end_date );
+		}
+
+		return apply_filters( 'woocommerce_mercadopago_subscription_args', $args, $order, $subscription );
+	}
+
+	/**
+	 * Generate the payment args.
+	 *
+	 * @param  WC_Order $order        Order data.
+	 * @param  bool     $subscription Subscription order.
+	 *
+	 * @return array
+	 */
+	protected function get_payment_args( $order, $subscription = false ) {
+		if ( $subscription ) {
+			return $this->get_subscription_args( $order );
+		}
+
+		return $this->get_purchase_args( $order );
 	}
 
 	/**
@@ -214,12 +277,11 @@ class WC_Mercadopago_API {
 
 		// Set data.
 		$data = build_query( array(
-			'grant_type'    => 'client_credentials',
 			'client_id'     => $this->gateway->client_id,
 			'client_secret' => $this->gateway->client_secret,
+			'grant_type'    => 'client_credentials',
 		) );
 		$headers = array(
-			'Accept'       => 'application/json',
 			'Content-Type' => 'application/x-www-form-urlencoded',
 		);
 
@@ -247,19 +309,24 @@ class WC_Mercadopago_API {
 	/**
 	 * Generate the MercadoPago payment url.
 	 *
-	 * @param  object $order Order Object.
+	 * @param  WC_Order $order        Order data.
+	 * @param  bool     $subscription Subscription order.
 	 *
-	 * @return string        MercadoPago payment url.
+	 * @return string
 	 */
-	public function get_user_payment_url( $order ) {
-		$data = json_encode( $this->get_payment_args( $order ) );
+	public function get_user_payment_url( $order, $subscription = false ) {
+		$data = json_encode( $this->get_payment_args( $order, $subscription ) );
+
+		if ( empty( $data ) ) {
+			return '';
+		}
 
 		if ( 'yes' == $this->gateway->debug ) {
 			$this->gateway->log->add( $this->gateway->id, 'Payment arguments for order ' . $order->get_order_number() . ': ' . print_r( $data, true ) );
 		}
 
 		$credentials = $this->get_client_credentials();
-		$url         = $this->get_checkout_url( $credentials );
+		$url         = $this->get_checkout_url( $credentials, $subscription );
 		$response    = $this->do_request( $url, 'POST', $data );
 
 		if ( ! is_wp_error( $response ) && 201 == $response['response']['code'] && ( 0 == strcmp( $response['response']['message'], 'Created' ) ) ) {

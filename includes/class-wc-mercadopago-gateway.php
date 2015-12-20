@@ -177,7 +177,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * Admin page.
 	 */
 	public function admin_options() {
-		include 'views/html-admin-page.php';
+		include 'admin/views/html-admin-page.php';
 	}
 
 	/**

@@ -30,6 +30,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			'subscriptions',
 			'subscription_cancellation',
 			'subscription_amount_changes',
+			'gateway_scheduled_payments',
 		);
 
 		// Load the form fields.

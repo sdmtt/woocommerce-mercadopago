@@ -51,8 +51,8 @@ class WC_Mercadopago_API {
 	/**
 	 * Get Checkout URL.
 	 *
-	 * @param  string $credentials Access token.
-	 * @param  bool $subscription Subscription order.
+	 * @param  string $credentials  Access token.
+	 * @param  bool   $subscription Subscription order.
 	 *
 	 * @return string
 	 */
@@ -65,15 +65,22 @@ class WC_Mercadopago_API {
 	/**
 	 * Get IPN URL.
 	 *
+	 * @param string $endpoint    IPN endpoint.
 	 * @param string $id          Purchase ID.
 	 * @param string $credentials Access token.
 	 *
 	 * @return string
 	 */
-	public function get_ipn_url( $id, $credentials = '' ) {
+	public function get_ipn_url( $endpoint, $id, $credentials = '' ) {
 		$sandbox = 'yes' == $this->gateway->sandbox ? 'sandbox/' : '';
 
-		return $this->get_api_url() . $sandbox . 'collections/notifications/' . $id . '?access_token=' . $credentials;
+		if ( 'preapproval' === $endpoint ) {
+			return $this->get_api_url() . $sandbox . 'preapproval/' . $id . '?access_token=' . $credentials;
+		} else if ( 'authorized_payment' === $endpoint ) {
+			return $this->get_api_url() . $sandbox . 'authorized_payments/' . $id . '?access_token=' . $credentials;
+		} else {
+			return $this->get_api_url() . $sandbox . 'collections/notifications/' . $id . '?access_token=' . $credentials;
+		}
 	}
 
 	/**
@@ -115,6 +122,13 @@ class WC_Mercadopago_API {
 		) );
 	}
 
+	/**
+	 * Format date for MercadoPago.
+	 *
+	 * @param  string $date Date to convert.
+	 *
+	 * @return string
+	 */
 	protected function format_date( $date ) {
 		return date( 'Y-m-d\TH:i:s.ZP', strtotime( $date ) );
 	}
@@ -236,7 +250,7 @@ class WC_Mercadopago_API {
 				'frequency_type'     => $subscription->billing_period . 's',
 				'transaction_amount' => (float) $subscription->get_total(),
 				'currency_id'        => $subscription->get_order_currency(),
-			)
+			),
 		);
 
 		if ( $start_date = $subscription->calculate_date( 'trial_end' ) ) {
@@ -371,8 +385,9 @@ class WC_Mercadopago_API {
 		$data = wp_unslash( $data );
 
 		$id          = sanitize_text_field( $data['id'] );
+		$topic       = sanitize_text_field( $data['topic'] );
 		$credentials = $this->get_client_credentials();
-		$url         = $this->get_ipn_url( $id, $credentials );
+		$url         = $this->get_ipn_url( $topic, $id, $credentials );
 		$response    = $this->do_request( $url, 'GET' );
 
 		if ( 'yes' == $this->gateway->debug ) {

@@ -134,6 +134,15 @@ class WC_Mercadopago_API {
 	}
 
 	/**
+	 * Get certificate.
+	 *
+	 * @return string
+	 */
+	protected function get_certificate() {
+		return plugin_dir_path( __FILE__ ) . 'certificates/cacert.pem';
+	}
+
+	/**
 	 * Do requests in the MercardoPago API.
 	 *
 	 * @param  string $url     URL.
@@ -145,9 +154,10 @@ class WC_Mercadopago_API {
 	 */
 	protected function do_request( $url, $method = 'POST', $data = array(), $headers = array() ) {
 		$params = array(
-			'method'  => $method,
-			'timeout' => 60,
-			'headers' => array(
+			'method'          => $method,
+			'timeout'         => 60,
+			'sslcertificates' => $this->get_certificate(),
+			'headers'         => array(
 				'Accept'       => 'application/json',
 				'Content-Type' => 'application/json;charset=UTF-8',
 			),

@@ -38,7 +38,7 @@ class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 	public function process_payment( $order_id ) {
 		if ( wcs_order_contains_subscription( $order_id ) ) {
 			$order = wc_get_order( $order_id );
-			$valid = $this->validate_order( $order );
+			$valid = $this->validate_subscription_order( $order );
 			$url   = '';
 
 			if ( $valid ) {
@@ -67,7 +67,7 @@ class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 	 *
 	 * @return bool
 	 */
-	public function validate_order( $order ) {
+	public function validate_subscription_order( $order ) {
 		$valid = true;
 
 		foreach ( $order->get_items() as $order_item ) {

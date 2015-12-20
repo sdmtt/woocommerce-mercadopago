@@ -263,6 +263,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			$this->log->add( $this->id, 'Payment status for order ' . $order->get_order_number() . ': ' . $data->status );
 		}
 
+		// Check if is a subscription order.
+		$is_subscription = false;
+		if ( function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order->id ) ) {
+			$is_subscription = true;
+		}
+
 		switch ( $data->status ) {
 			case 'pending' :
 				$order->add_order_note( __( 'MercadoPago: The user has not completed the payment process yet.', 'woocommerce-mercadopago' ) );
@@ -271,7 +277,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			case 'approved' :
 				if ( ! empty( $data->payer->email ) ) {
 					add_post_meta(
-						$order_id,
+						$order->id,
 						__( 'Payer email', 'woocommerce-mercadopago' ),
 						sanitize_text_field( $data->payer->email ),
 						true
@@ -279,7 +285,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				}
 				if ( ! empty( $data->payment_type ) ) {
 					add_post_meta(
-						$order_id,
+						$order->id,
 						__( 'Payment type', 'woocommerce-mercadopago' ),
 						sanitize_text_field( $data->payment_type ),
 						true
@@ -289,8 +295,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				add_post_meta( $this->id, '_transaction_id', sanitize_text_field( $data->id ), true );
 
 				// Payment completed.
-				if ( class_exists( 'WC_Subscriptions_Manager' ) ) {
-					WC_Subscriptions_Manager::process_subscription_payments_on_order();
+				if ( $is_subscription ) {
+					WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
 				} else if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
 					$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
 					$order->payment_complete();
@@ -302,15 +308,33 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 				break;
 			case 'rejected' :
-				$order->update_status( 'failed', __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
+				if ( $is_subscription ) {
+					WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order );
+				} else {
+					$order->update_status( 'failed' );
+				}
+
+				$order->add_order_note( __( 'MercadoPago: The payment was declined. The user can try again.', 'woocommerce-mercadopago' ) );
 
 				break;
 			case 'refunded' :
-				$order->update_status( 'refunded', __( 'MercadoPago: The payment was refunded.', 'woocommerce-mercadopago' ) );
+				if ( $is_subscription ) {
+					WC_Subscriptions_Manager::cancel_subscriptions_for_order( $order );
+				} else {
+					$order->update_status( 'refunded' );
+				}
+
+				$order->add_order_note( __( 'MercadoPago: The payment was refunded.', 'woocommerce-mercadopago' ) );
 
 				break;
 			case 'cancelled' :
-				$order->update_status( 'cancelled', __( 'MercadoPago: Payment canceled.', 'woocommerce-mercadopago' ) );
+				if ( $is_subscription ) {
+					WC_Subscriptions_Manager::cancel_subscriptions_for_order( $order );
+				} else {
+					$order->update_status( 'cancelled' );
+				}
+
+				$order->add_order_note( __( 'MercadoPago: Payment canceled.', 'woocommerce-mercadopago' ) );
 
 				break;
 			case 'in_mediation' :
@@ -318,7 +342,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 				break;
 			case 'charged_back' :
-				$order->update_status( 'failed', __( 'MercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
+				if ( $is_subscription ) {
+					WC_Subscriptions_Manager::process_subscription_payment_failure_on_order( $order );
+				} else {
+					$order->update_status( 'failed' );
+				}
+
+				$order->add_order_note( __( 'ercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
 
 				break;
 

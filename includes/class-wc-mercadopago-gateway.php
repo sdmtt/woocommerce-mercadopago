@@ -58,7 +58,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Actions.
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'ipn_handler' ) );
-		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ) );
+		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ), 10, 2 );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 	}
@@ -223,8 +223,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		if ( $data = $this->api->get_payment_data( $_GET ) ) {
 			header( 'HTTP/1.1 200 OK' );
-			do_action( 'valid_mercadopago_ipn_request', $data ); // Deprecated since 3.0.0.
-			do_action( 'woocommerce_mercadopago_change_order_status', $data );
+
+			$topic = sanitize_text_field( wp_unslash( $_GET['topic'] ) );
+			do_action( 'woocommerce_mercadopago_change_order_status', $data, $topic );
+
+			// Deprecated since 3.0.0.
+			do_action( 'valid_mercadopago_ipn_request', $data );
 		} else {
 			wp_die( esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), array( 'response' => 401 ) );
 		}
@@ -234,8 +238,13 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * Change order status
 	 *
 	 * @param array $purchase_data MercadoPago purchase data.
+	 * @param array $topic         MercadoPago notification topic.
 	 */
-	public function change_order_status( $purchase_data ) {
+	public function change_order_status( $purchase_data, $topic ) {
+		if ( 'payment' !== $topic ) {
+			return;
+		}
+
 		$data = $purchase_data->collection;
 
 		if ( empty( $data->external_reference ) ) {
@@ -278,10 +287,14 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 					);
 				}
 
+				add_post_meta( $this->id, '_transaction_id', sanitize_text_field( $data->id ), true );
+
 				// Payment completed.
-				if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
+				if ( class_exists( 'WC_Subscriptions_Manager' ) ) {
+					WC_Subscriptions_Manager::process_subscription_payments_on_order();
+				} else if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
 					$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
-					$order->payment_complete( sanitize_text_field( $data->id ) );
+					$order->payment_complete();
 				}
 
 				break;

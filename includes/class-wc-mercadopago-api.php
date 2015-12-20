@@ -75,9 +75,9 @@ class WC_Mercadopago_API {
 		$sandbox = 'yes' == $this->gateway->sandbox ? 'sandbox/' : '';
 
 		if ( 'preapproval' === $endpoint ) {
-			return $this->get_api_url() . $sandbox . 'preapproval/' . $id . '?access_token=' . $credentials;
+			return $this->get_api_url() . 'preapproval/' . $id . '?access_token=' . $credentials;
 		} else if ( 'authorized_payment' === $endpoint ) {
-			return $this->get_api_url() . $sandbox . 'authorized_payments/' . $id . '?access_token=' . $credentials;
+			return $this->get_api_url() . 'authorized_payments/' . $id . '?access_token=' . $credentials;
 		} else {
 			return $this->get_api_url() . $sandbox . 'collections/notifications/' . $id . '?access_token=' . $credentials;
 		}
@@ -388,14 +388,14 @@ class WC_Mercadopago_API {
 			return array();
 		}
 
+		$data  = wp_unslash( $data );
+		$id    = sanitize_text_field( $data['id'] );
+		$topic = sanitize_text_field( $data['topic'] );
+
 		if ( 'yes' == $this->gateway->debug ) {
-			$this->gateway->log->add( $this->gateway->id, 'Checking IPN request...' );
+			$this->gateway->log->add( $this->gateway->id, 'Checking IPN request... ID: ' . $id . ' | TOPIC: ' . $topic );
 		}
 
-		$data = wp_unslash( $data );
-
-		$id          = sanitize_text_field( $data['id'] );
-		$topic       = sanitize_text_field( $data['topic'] );
 		$credentials = $this->get_client_credentials();
 		$url         = $this->get_ipn_url( $topic, $id, $credentials );
 		$response    = $this->do_request( $url, 'GET' );

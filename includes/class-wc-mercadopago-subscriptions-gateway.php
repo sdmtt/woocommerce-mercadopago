@@ -17,6 +17,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 
 	/**
+	 * Output for the order received page.
+	 *
+	 * @param int $order_id Order ID.
+	 */
+	public function receipt_page( $order_id ) {
+		$order = wc_get_order( $order_id );
+		$url   = $this->api->get_user_payment_url( $order, true );
+
+		include 'views/html-modal-payment.php';
+	}
+
+	/**
 	 * Process payments.
 	 *
 	 * @param  int $order_id Order ID.
@@ -30,7 +42,12 @@ class WC_MercadoPago_Subscriptions_Gateway extends WC_MercadoPago_Gateway {
 			$url   = '';
 
 			if ( $valid ) {
-				$url = $this->api->get_user_payment_url( $order, true );
+				// Redirect or modal window integration.
+				if ( 'redirect' == $this->method ) {
+					$url = $this->api->get_user_payment_url( $order, true );
+				} else {
+					$url = $order->get_checkout_payment_url( true );
+				}
 			}
 
 			return array(

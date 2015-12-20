@@ -5,7 +5,7 @@
  * Description: MercadoPago gateway for Woocommerce.
  * Author: Claudio Sanches
  * Author URI: https://claudiosmweb.com/
- * Version: 3.0.0-dev
+ * Version: 3.0.0-beta-1
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
@@ -29,7 +29,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 		 *
 		 * @var string
 		 */
-		const VERSION = '3.0.0-dev';
+		const VERSION = '3.0.0-beta-1';
 
 		/**
 		 * Instance of this class.

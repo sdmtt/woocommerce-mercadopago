@@ -298,9 +298,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				if ( $is_subscription ) {
 					WC_Subscriptions_Manager::process_subscription_payments_on_order( $order );
 				} else if ( ! in_array( $order->get_status(), array( 'processing', 'completed' ) ) ) {
-					$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
 					$order->payment_complete();
 				}
+
+				$order->add_order_note( __( 'MercadoPago: Payment approved.', 'woocommerce-mercadopago' ) );
 
 				break;
 			case 'in_process' :

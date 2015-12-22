@@ -83,10 +83,6 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 		private function includes() {
 			include_once 'includes/class-wc-mercadopago-api.php';
 			include_once 'includes/class-wc-mercadopago-gateway.php';
-
-			if ( function_exists( 'wcs_is_subscription' ) ) {
-				include_once 'includes/class-wc-mercadopago-subscriptions-gateway.php';
-			}
 		}
 
 		/**
@@ -97,11 +93,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 		 * @return array          Payment methods with MercadoPago.
 		 */
 		public function add_gateway( $methods ) {
-			if ( function_exists( 'wcs_is_subscription' ) ) {
-				$methods[] = 'WC_MercadoPago_Subscriptions_Gateway';
-			} else {
-				$methods[] = 'WC_MercadoPago_Gateway';
-			}
+			$methods[] = 'WC_MercadoPago_Gateway';
 
 			return $methods;
 		}
@@ -132,11 +124,7 @@ if ( ! class_exists( 'WC_MercadoPago' ) ) :
 		public function plugin_action_links( $links ) {
 			$plugin_links = array();
 
-			if ( function_exists( 'wcs_is_subscription' ) ) {
-				$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_subscriptions_gateway' ) ) . '">' . esc_html__( 'Settings', 'woocommerce-mercadopago' ) . '</a>';
-			} else {
-				$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' ) ) . '">' . esc_html__( 'Settings', 'woocommerce-mercadopago' ) . '</a>';
-			}
+			$plugin_links[] = '<a href="' . esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout&section=wc_mercadopago_gateway' ) ) . '">' . esc_html__( 'Settings', 'woocommerce-mercadopago' ) . '</a>';
 
 			return array_merge( $plugin_links, $links );
 		}

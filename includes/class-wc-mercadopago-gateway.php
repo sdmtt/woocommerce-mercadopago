@@ -60,6 +60,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ), 10, 2 );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_action( 'woocommerce_subscription_cancelled_' . $this->id, array( $this, 'cancel_subscription' ) );
 	}
 
 	/**
@@ -180,28 +181,97 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Validate order for subscriptions.
+	 * MercadoPago have a few limitations, we can just process one subscription at a time.
+	 *
+	 * @param  WC_Order $order Order data.
+	 *
+	 * @return bool
+	 */
+	public function validate_subscription_order( $order ) {
+		$valid = true;
+
+		foreach ( $order->get_items() as $order_item ) {
+			if ( $order_item['qty'] ) {
+				$product = $order->get_product_from_item( $order_item );
+				if ( ! in_array( $product->product_type, array( 'subscription', 'variable-subscription' ) ) ) {
+					wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Only can process one subscription at a time without other products within the card. Please remove any others products before continue.', 'woocommerce-mercadopago' ), 'error' );
+
+					$valid = false;
+					break;
+				}
+			}
+		}
+
+		if ( $valid && 0 < WC_Subscriptions_Order::get_sign_up_fee( $order ) ) {
+			wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Unable to process signatures with sign-up fees.', 'woocommerce-mercadopago' ), 'error' );
+			$valid = false;
+		}
+
+		return $valid;
+	}
+
+	/**
+	 * Cancel subscription.
+	 *
+	 * @param WC_Subscription $subscription Subscription data.
+	 */
+	public function cancel_subscription( $subscription ) {
+		if ( $id = $subscription->order->mercadopago_payment_id ) {
+			$this->api->cancel_subscription( $id );
+		}
+	}
+
+	/**
 	 * Output for the order received page.
 	 *
 	 * @param int $order_id Order ID.
 	 */
 	public function receipt_page( $order_id ) {
-		$order = wc_get_order( $order_id );
-		$url   = $this->api->get_user_payment_url( $order );
+		$order        = wc_get_order( $order_id );
+		$subscription = false;
+
+		if ( function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order->id ) ) {
+			$subscription = true;
+		}
+
+		$url = $this->api->get_user_payment_url( $order, $subscription );
 
 		include 'views/html-modal-payment.php';
 	}
 
 	/**
-	 * Process the payment and return the result.
+	 * Process subscription payment.
 	 *
-	 * @param int $order_id Order ID.
+	 * @param  WC_Order $order Order Data.
 	 *
-	 * @return array        Redirect.
+	 * @return array
 	 */
-	public function process_payment( $order_id ) {
-		$order = wc_get_order( $order_id );
+	protected function process_subscription_payment( $order ) {
+		$url = '';
 
-		// Redirect or modal window integration.
+		if ( $this->validate_subscription_order( $order ) ) {
+			if ( 'redirect' == $this->method ) {
+				$url = $this->api->get_user_payment_url( $order, true );
+			} else {
+				$url = $order->get_checkout_payment_url( true );
+			}
+		}
+
+		return array(
+			'result'   => '' !== $url ? 'success' : 'fail',
+			'redirect' => $url,
+		);
+	}
+
+	/**
+	 * Process regular payment.
+	 *
+	 * @param  WC_Order $order Order Data.
+	 *
+	 * @return array
+	 */
+	protected function process_regular_payment( $order ) {
 		if ( 'redirect' == $this->method ) {
 			$url = $this->api->get_user_payment_url( $order );
 		} else {
@@ -212,6 +282,23 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			'result'   => '' !== $url ? 'success' : 'fail',
 			'redirect' => $url,
 		);
+	}
+
+	/**
+	 * Process the payment and return the result.
+	 *
+	 * @param int $order_id Order ID.
+	 *
+	 * @return array
+	 */
+	public function process_payment( $order_id ) {
+		$order = wc_get_order( $order_id );
+
+		if ( function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order->id ) ) {
+			return $this->process_subscription( $order );
+		} else {
+			return $this->process_regular_payment( $order );
+		}
 	}
 
 	/**

@@ -24,6 +24,13 @@ class WC_Mercadopago_API {
 	protected $api_url = 'https://api.mercadopago.com/';
 
 	/**
+	 * Modal JS URL.
+	 *
+	 * @var string
+	 */
+	protected $modal_js_url = 'https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js';
+
+	/**
 	 * Gateway class.
 	 *
 	 * @var WC_MercadoPago_Gateway
@@ -90,6 +97,15 @@ class WC_Mercadopago_API {
 	 */
 	public function get_oauth_token_url() {
 		return $this->get_api_url() . 'oauth/token';
+	}
+
+	/**
+	 * Get modal JS URL.
+	 *
+	 * @return string
+	 */
+	public function get_modal_js_url() {
+		return $this->modal_js_url;
 	}
 
 	/**

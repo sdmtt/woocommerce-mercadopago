@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 	<a id="submit-payment" href="<?php echo esc_url( $url ); ?>" name="MP-Checkout" class="button alt" mp-mode="modal"><?php _e( 'Pay via MercadoPago', 'woocommerce-mercadopago' ); ?></a> <a class="button cancel" href="<?php echo esc_url( $order->get_cancel_order_url() ); ?>"><?php _e( 'Cancel order &amp; restore cart', 'woocommerce-mercadopago' ); ?></a>
 
-	<script type="text/javascript" src="https://www.mercadopago.com/org-img/jsapi/mptools/buttons/render.js"></script>
+	<script type="text/javascript" src="<?php echo esc_url( $this->api->get_modal_js_url() ); ?>"></script>
 
 	<style type="text/css">#MP-Checkout-dialog { z-index: 9999 !important; }</style>
 

@@ -295,7 +295,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		$order = wc_get_order( $order_id );
 
 		if ( function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order->id ) ) {
-			return $this->process_subscription( $order );
+			return $this->process_subscription_payment( $order );
 		} else {
 			return $this->process_regular_payment( $order );
 		}

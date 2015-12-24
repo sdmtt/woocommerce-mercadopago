@@ -195,7 +195,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			if ( $order_item['qty'] ) {
 				$product = $order->get_product_from_item( $order_item );
 				if ( ! in_array( $product->product_type, array( 'subscription', 'variable-subscription' ) ) ) {
-					wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Only can process one subscription at a time without other products within the card. Please remove any others products before continue.', 'woocommerce-mercadopago' ), 'error' );
+					wc_add_notice( '<strong>' . esc_html( $this->title ) . ': </strong>' . __( 'Only can process one subscription at a time without other products in the cart. Please remove any other products before continue.', 'woocommerce-mercadopago' ), 'error' );
 
 					$valid = false;
 					break;

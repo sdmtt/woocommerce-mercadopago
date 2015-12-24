@@ -2,10 +2,10 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce MercadoPago 3.0.0-beta-1\n"
+"Project-Id-Version: WooCommerce MercadoPago 3.0.0\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/woocommerce-mercadopago/\n"
-"POT-Creation-Date: 2015-12-20 05:40:48+00:00\n"
+"POT-Creation-Date: 2015-12-24 01:18:28+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -54,220 +54,220 @@ msgid ""
 "following supported currencies: %s."
 msgstr ""
 
-#: includes/class-wc-mercadopago-api.php:218
+#: includes/class-wc-mercadopago-api.php:234
 msgid "Order %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-api.php:228
+#: includes/class-wc-mercadopago-api.php:244
 msgid "Shipping via"
 msgstr ""
 
-#: includes/class-wc-mercadopago-api.php:249
+#: includes/class-wc-mercadopago-api.php:265
 msgid "Process only daily or monthly subscriptions."
 msgstr ""
 
-#: includes/class-wc-mercadopago-api.php:256
+#: includes/class-wc-mercadopago-api.php:272
 msgid "%s - Subscription for order #%s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-api.php:376
+#: includes/class-wc-mercadopago-api.php:392
 msgid ""
 "An error has occurred while processing your order, please try again. Or "
 "contact us for assistance."
 msgstr ""
 
 #: includes/class-wc-mercadopago-gateway.php:27
-#: includes/class-wc-mercadopago-gateway.php:108
+#: includes/class-wc-mercadopago-gateway.php:109
 msgid "MercadoPago"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:88
+#: includes/class-wc-mercadopago-gateway.php:89
 msgid "Argentine"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:89
+#: includes/class-wc-mercadopago-gateway.php:90
 msgid "Brazil"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:90
+#: includes/class-wc-mercadopago-gateway.php:91
 msgid "Colombia"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:91
+#: includes/class-wc-mercadopago-gateway.php:92
 msgid "Mexico"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:92
+#: includes/class-wc-mercadopago-gateway.php:93
 msgid "or"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:93
+#: includes/class-wc-mercadopago-gateway.php:94
 msgid "Venezuela"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:98
+#: includes/class-wc-mercadopago-gateway.php:99
 msgid "Enable/Disable"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:100
+#: includes/class-wc-mercadopago-gateway.php:101
 msgid "Enable MercadoPago"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:104
+#: includes/class-wc-mercadopago-gateway.php:105
 msgid "Title"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:106
+#: includes/class-wc-mercadopago-gateway.php:107
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:111
+#: includes/class-wc-mercadopago-gateway.php:112
 msgid "Description"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:113
+#: includes/class-wc-mercadopago-gateway.php:114
 msgid "This controls the description which the user sees during checkout."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:114
+#: includes/class-wc-mercadopago-gateway.php:115
 #: includes/views/html-modal-payment.php:17
 msgid "Pay via MercadoPago"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:117
+#: includes/class-wc-mercadopago-gateway.php:118
 msgid "MercadoPago Client_id"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:119
+#: includes/class-wc-mercadopago-gateway.php:120
 msgid "Please enter your MercadoPago Client_id."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:119
-#: includes/class-wc-mercadopago-gateway.php:128
+#: includes/class-wc-mercadopago-gateway.php:120
+#: includes/class-wc-mercadopago-gateway.php:129
 msgid "You can to get this information in MercadoPago from %s."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:126
+#: includes/class-wc-mercadopago-gateway.php:127
 msgid "MercadoPago Client_secret"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:128
+#: includes/class-wc-mercadopago-gateway.php:129
 msgid "Please enter your MercadoPago Client_secret."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:135
+#: includes/class-wc-mercadopago-gateway.php:136
 msgid "Invoice Prefix"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:137
+#: includes/class-wc-mercadopago-gateway.php:138
 msgid ""
 "Please enter a prefix for your invoice numbers. If you use your MercadoPago "
 "account for multiple stores ensure this prefix is unqiue as MercadoPago "
 "will not allow orders with the same invoice number."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:142
+#: includes/class-wc-mercadopago-gateway.php:143
 msgid "Integration method"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:144
+#: includes/class-wc-mercadopago-gateway.php:145
 msgid ""
 "Choose how the customer will interact with the MercadoPago. Modal Window "
 "(Inside your store) Redirect (Client goes to MercadoPago)."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:149
+#: includes/class-wc-mercadopago-gateway.php:150
 msgid "Modal Window"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:150
+#: includes/class-wc-mercadopago-gateway.php:151
 msgid "Redirect"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:154
+#: includes/class-wc-mercadopago-gateway.php:155
 msgid "Gateway Testing"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:159
+#: includes/class-wc-mercadopago-gateway.php:160
 msgid "MercadoPago Sandbox"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:161
+#: includes/class-wc-mercadopago-gateway.php:162
 msgid "Enable MercadoPago sandbox"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:163
+#: includes/class-wc-mercadopago-gateway.php:164
 msgid "MercadoPago sandbox can be used to test payments."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:166
+#: includes/class-wc-mercadopago-gateway.php:167
 msgid "Debug Log"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:168
+#: includes/class-wc-mercadopago-gateway.php:169
 msgid "Enable logging"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:170
+#: includes/class-wc-mercadopago-gateway.php:171
 msgid "Log MercadoPago events, such as API requests. You can find the log in %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:170
+#: includes/class-wc-mercadopago-gateway.php:171
 msgid "System Status &gt; Logs"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:232
-msgid "MercadoPago Request Unauthorized"
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:274
-msgid "MercadoPago: The user has not completed the payment process yet."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:281
-msgid "Payer email"
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:289
-msgid "Payment type"
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:304
-msgid "MercadoPago: Payment approved."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:308
-msgid "MercadoPago: Payment under review."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:318
-msgid "MercadoPago: The payment was declined. The user can try again."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:328
-msgid "MercadoPago: The payment was refunded."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:338
-msgid "MercadoPago: Payment canceled."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:342
-msgid "MercadoPago: It started a dispute for payment."
-msgstr ""
-
-#: includes/class-wc-mercadopago-gateway.php:352
-msgid "ercadoPago: Payment refused because a credit card chargeback."
-msgstr ""
-
-#: includes/class-wc-mercadopago-subscriptions-gateway.php:86
+#: includes/class-wc-mercadopago-gateway.php:198
 msgid ""
 "Only can process one subscription at a time without other products within "
 "the card. Please remove any others products before continue."
 msgstr ""
 
-#: includes/class-wc-mercadopago-subscriptions-gateway.php:95
+#: includes/class-wc-mercadopago-gateway.php:207
 msgid "Unable to process signatures with sign-up fees."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:319
+msgid "MercadoPago Request Unauthorized"
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:361
+msgid "MercadoPago: The user has not completed the payment process yet."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:368
+msgid "Payer email"
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:376
+msgid "Payment type"
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:391
+msgid "MercadoPago: Payment approved."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:395
+msgid "MercadoPago: Payment under review."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:405
+msgid "MercadoPago: The payment was declined. The user can try again."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:415
+msgid "MercadoPago: The payment was refunded."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:425
+msgid "MercadoPago: Payment canceled."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:429
+msgid "MercadoPago: It started a dispute for payment."
+msgstr ""
+
+#: includes/class-wc-mercadopago-gateway.php:439
+msgid "ercadoPago: Payment refused because a credit card chargeback."
 msgstr ""
 
 #: includes/views/html-modal-payment.php:15
@@ -290,7 +290,7 @@ msgstr ""
 msgid "Click to try again"
 msgstr ""
 
-#: woocommerce-mercadopago.php:136 woocommerce-mercadopago.php:138
+#: woocommerce-mercadopago.php:127
 msgid "Settings"
 msgstr ""
 

@@ -436,7 +436,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 					$order->update_status( 'failed' );
 				}
 
-				$order->add_order_note( __( 'ercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
+				$order->add_order_note( __( 'MercadoPago: Payment refused because a credit card chargeback.', 'woocommerce-mercadopago' ) );
 
 				break;
 

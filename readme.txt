@@ -31,7 +31,7 @@ Check our [installation guide](http://wordpress.org/extend/plugins/woocommerce-m
 - Still have question? Create a topic in your [support forum](http://wordpress.org/support/plugin/woocommerce-mercadopago).
 - Or found a bug? Report in our [GitHub page](https://github.com/claudiosmweb/woocommerce-mercadopago/issues).
 
-Not always I have time to reply support topics, but whenever possible I'm answering questions from users, so please be patience!
+Usually I don't have time to reply support topics, so be patient.
 
 = Contribute =
 

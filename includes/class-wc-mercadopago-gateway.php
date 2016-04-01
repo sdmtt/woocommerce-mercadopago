@@ -316,7 +316,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			// Deprecated since 3.0.0.
 			do_action( 'valid_mercadopago_ipn_request', $data );
 		} else {
-			wp_die( esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), array( 'response' => 401 ) );
+			wp_die( esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), array( 'response' => 200 ) );
 		}
 	}
 

@@ -57,7 +57,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Actions.
 		add_action( 'woocommerce_api_wc_mercadopago_gateway', array( $this, 'ipn_handler' ) );
-		add_action( 'woocommerce_mercadopago_change_order_status', array( $this, 'change_order_status' ), 10, 2 );
+		add_action( 'woocommerce_mercadopago_payment_change_order_status', array( $this, 'change_order_status' ) );
 		add_action( 'woocommerce_receipt_' . $this->id, array( $this, 'receipt_page' ) );
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_action( 'woocommerce_subscription_cancelled_' . $this->id, array( $this, 'cancel_subscription' ) );
@@ -308,13 +308,14 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 		@ob_clean();
 
 		if ( $data = $this->api->get_payment_data( $_GET ) ) {
-			header( 'HTTP/1.1 200 OK' );
+			header( 'HTTP/1.1 201 (CREATED)' );
 
 			$topic = isset( $_GET['topic'] ) ? sanitize_text_field( wp_unslash( $_GET['topic'] ) ) : '';
-			do_action( 'woocommerce_mercadopago_change_order_status', $data, $topic );
+			do_action( 'woocommerce_mercadopago_' . $topic . '_change_order_status', $data, $topic );
 
 			// Deprecated since 3.0.0.
 			do_action( 'valid_mercadopago_ipn_request', $data );
+			exit;
 		} else {
 			wp_die( esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), esc_html__( 'MercadoPago Request Unauthorized', 'woocommerce-mercadopago' ), array( 'response' => 200 ) );
 		}
@@ -324,13 +325,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * Change order status
 	 *
 	 * @param array $purchase_data MercadoPago purchase data.
-	 * @param array $topic         MercadoPago notification topic.
 	 */
-	public function change_order_status( $purchase_data, $topic ) {
-		if ( 'payment' !== $topic ) {
-			return;
-		}
-
+	public function change_order_status( $purchase_data ) {
 		$data = $purchase_data->collection;
 
 		if ( empty( $data->external_reference ) ) {
@@ -352,8 +348,12 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 		// Check if is a subscription order.
 		$is_subscription = false;
-		if ( function_exists( 'wcs_order_contains_subscription' ) && wcs_order_contains_subscription( $order->id ) ) {
-			$is_subscription = true;
+		if ( function_exists( 'wcs_order_contains_subscription' ) ) {
+			$is_subscription = wcs_order_contains_subscription( $order->id ) || wcs_order_contains_resubscribe( $order->id );
+		}
+
+		if ( 'yes' == $this->debug ) {
+			$this->log->add( $this->id, sprintf( 'Payment status for %s %s: %s', $is_subscription ? 'subscription' : 'order', $order->get_order_number(), $data->status ) );
 		}
 
 		switch ( $data->status ) {
@@ -426,7 +426,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 
 				break;
 			case 'in_mediation' :
-				$order->add_order_note( __( 'MercadoPago: It started a dispute for payment.', 'woocommerce-mercadopago' ) );
+				$order->add_order_note( __( 'MercadoPago: Started a dispute for payment.', 'woocommerce-mercadopago' ) );
 
 				break;
 			case 'charged_back' :
@@ -441,7 +441,6 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 				break;
 
 			default :
-				// No action xD.
 				break;
 		}
 	}

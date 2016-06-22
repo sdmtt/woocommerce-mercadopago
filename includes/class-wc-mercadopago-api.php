@@ -279,10 +279,11 @@ class WC_Mercadopago_API {
 			),
 		);
 
-		if ( 0 < $subscription->trial_end_date && $start_date = $subscription->calculate_date( 'trial_end' ) ) {
+		if ( 0 < $subscription->trial_end_date && ( $start_date = $subscription->get_date( 'trial_end' ) ) ) {
 			$args['auto_recurring']['start_date'] = $this->format_date( $start_date );
 		}
-		if ( $end_date = $subscription->calculate_date( 'end' ) ) {
+
+		if ( $end_date = $subscription->get_date( 'end' ) ) {
 			$args['auto_recurring']['end_date'] = $this->format_date( $end_date );
 		}
 

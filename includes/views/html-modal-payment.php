@@ -8,9 +8,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-?>
-
-<?php if ( $url ) : ?>
+if ( $url ) : ?>
 
 	<p><?php _e( 'Thank you for your order, please click the button below to pay with MercadoPago.', 'woocommerce-mercadopago' ); ?></p>
 

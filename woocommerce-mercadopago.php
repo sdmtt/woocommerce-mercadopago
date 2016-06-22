@@ -3,9 +3,9 @@
  * Plugin Name: WooCommerce MercadoPago
  * Plugin URI: https://github.com/claudiosmweb/woocommerce-mercadopago
  * Description: MercadoPago gateway for Woocommerce.
- * Author: claudiosanches
+ * Author: Claudio Sanches
  * Author URI: http://claudiosmweb.com/
- * Version: 2.0.1
+ * Version: 2.0.2
  * License: GPLv2 or later
  * Text Domain: woocommerce-mercadopago
  * Domain Path: /languages/
@@ -27,7 +27,7 @@ class WC_MercadoPago {
 	 *
 	 * @var string
 	 */
-	const VERSION = '2.0.1';
+	const VERSION = '2.0.2';
 
 	/**
 	 * Instance of this class.

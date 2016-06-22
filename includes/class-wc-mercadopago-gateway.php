@@ -205,9 +205,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	/**
 	 * Generate the payment arguments.
 	 *
-	 * @param  object $order Order data.
+	 * @param  WC_Order $order Order data.
 	 *
-	 * @return array         Payment arguments.
+	 * @return array           Payment arguments.
 	 */
 	public function get_payment_args( $order ) {
 		$args = array(
@@ -229,7 +229,8 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 					'currency_id' => get_woocommerce_currency(),
 					// 'picture_url' => 'https://www.mercadopago.com/org-img/MP3/home/logomp3.gif'
 				)
-			)
+			),
+			'notification_url' => WC()->api_request_url( 'WC_MercadoPago_Gateway' )
 		);
 
 		// Cart Contents.

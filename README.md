@@ -2,9 +2,9 @@
 **Contributors:** claudiosanches  
 **Donate link:** http://claudiosmweb.com/doacoes/  
 **Tags:** woocommerce, mercadopago, payment  
-**Requires at least:** 3.9  
-**Tested up to:** 4.1.1  
-**Stable tag:** 2.0.1  
+**Requires at least:** 4.0  
+**Tested up to:** 4.5  
+**Stable tag:** 2.0.4  
 **License:** GPLv2 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-2.0.html  
 
@@ -22,10 +22,6 @@ Please notice that WooCommerce must be installed and active.
 
 You can contribute to the source code in our [GitHub](https://github.com/claudiosmweb/woocommerce-mercadopago) page.
 
-### Translate ###
-
-Translate this plugin in [Transifex](https://www.transifex.com/projects/p/woocommerce-mercadopago/).
-
 ### Descrição em Português: ###
 
 Adicione o MercadoPago como método de pagamento em sua loja WooCommerce.
@@ -38,7 +34,7 @@ Este plugin foi feito baseado na [documentação oficial do MercadoPago](http://
 
 ### Compatibilidade ###
 
-Compatível com as versões 2.1.x, 2.2.x e 2.3.x do WooCommerce.
+Compatível desde a versão 2.1.x até 2.6.x do WooCommerce.
 
 ### Instalação: ###
 
@@ -52,13 +48,9 @@ Você pode esclarecer suas dúvidas usando:
 * Criando um tópico no [fórum de ajuda do WordPress](http://wordpress.org/support/plugin/woocommerce-mercadopago) (apenas em inglês).
 * Ou entre em contato com os desenvolvedores do plugin em nossa [página](http://claudiosmweb.com/plugins/mercadopago-para-woocommerce/).
 
-### Coloborar ###
+### Colaborar ###
 
 Você pode contribuir com código-fonte em nossa página no [GitHub](https://github.com/claudiosmweb/woocommerce-mercadopago).
-
-### Traduzir ###
-
-Traduza este plugin no [Transifex](https://www.transifex.com/projects/p/woocommerce-mercadopago/)
 
 ## Installation ##
 
@@ -213,6 +205,18 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 ## Changelog ##
 
+### 2.0.4 - 2016/06/22 ###
+
+* Fixed `back_urls` parameter.
+
+### 2.0.3 - 2016/06/21 ###
+
+* Added support for `notification_url`.
+
+### 2.0.2 - 2016/06/21 ###
+
+* Fixed support for WooCommerce 2.6.
+
 ### 2.0.1 - 2015/03/12 ###
 
 * Removed the SSL verification for the new MercadoPago standards.
@@ -225,91 +229,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 * Corrigida as strings de tradução.
 * Corrigido o link de cancelamento.
 
-### 1.9.0 - 2014/05/17 ###
-
-* Improved the plugin classes.
-
-### 1.8.1 - 2013/12/17 ###
-
-* Corrigido os parametros da conexão (cURL) que podiam gerar erro (`SSL connection timeout`) em alguns servidores.
-
-### 1.8.0 - 2013/12/04 ###
-
-* Corrigido padrões de código.
-* Removida compatibilidade com versões 1.6.x ou inferiores do WooCommerce.
-* Adicionada compatibilidade com WooCommerce 2.1 ou superior.
-
-### 1.7.0 - 2013/11/03 ###
-
-* Corrigido o textdomain para suportar o padrão do WordPress 3.7.
-* Corrigida verificação que testa se o plugin esta pronto para funcionar ou não (créditos para daigo75).
-* Adicionada compatibilidade com o plugin Currency Switcher for WooCommerce (créditos para daigo75).
-
-### 1.6.0 - 2013/07/26 ###
-
-* Melhoria nas mensagens de status do pedido.
-* Melhoria no código do plugin.
-
-### 1.5.0 - 2013/07/26 ###
-
-* Adicionada tradução para es_ES por [Marcelo Pedra](http://profiles.wordpress.org/kent-brockman)
-* Adicionado o filtro `woocommerce_mercadopago_icon` para a modificação do ícone durante o checkout.
-* Adicionado parâmetro $order no filtro `woocommerce_mercadopago_args`.
-* Melhorias no código.
-
-### 1.4.0 - 2013/07/17 ###
-
-* Melhoria no código.
-* Adicionada opção para pagamento direto ou por janela modal.
-* Adicionada opção de sandbox.
-* Adicionada compatibilidade com o WooCommerce 2.1 ou superior.
-* Atualização das traduções em pt_BR e es_AR.
-
-### 1.3.0 - 2013/04/07 ###
-
-* Correção do retorno automático de dados na versão 2.0.0 ou superior do WooCommerce.
-* Atualização das traduções em pt_BR e es_AR.
-
-### 1.2.3 - 2013/03/11 ###
-
-* Adicionada compatibilidade com as moedas: `MXN`, `USD` e `VEF`.
-
-### 1.2.2 - 2013/03/06 ###
-
-* Corrigida a compatibilidade com WooCommerce 2.0.0 ou mais recente.
-
-### 1.2.1 - 2013/02/08 ###
-
-* Corrigido o hook responsavel por salvar as opções para a versão 2.0 RC do WooCommerce.
-
-### 1.2.0 - 2012/12/01 ###
-
-* Adicionada tradução para es_AR por [Gustavo Coronel](http://profiles.wordpress.org/gcoronel/)
-
-### 1.1.1 - 2012/11/30 ###
-
-* Correção dos logs de erro.
-
-### 1.1.0 - 2012/11/30 ###
-
-* Adicionada opção para logs de erro.
-
-### 1.0.0 ###
-
-* Versão Inicial.
-
 ## Upgrade Notice ##
 
-### 2.0.1 ###
+### 2.0.4 ###
 
-* Removed the SSL verification for the new MercadoPago standards.
-
-## License ##
-
-WooCommerce MercadoPago is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published
-by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
-
-WooCommerce MercadoPago is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License along with WooCommerce MercadoPago. If not, see <http://www.gnu.org/licenses/>.
+* Fixed support for WooCommerce 2.6.
+* Added support for `notification_url`.
+* Fixed `back_urls` parameter.

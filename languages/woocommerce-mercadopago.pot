@@ -1,15 +1,15 @@
-# Copyright (C) 2015 claudiosanches
+# Copyright (C) 2016 Claudio Sanches
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WooCommerce MercadoPago 2.0.1\n"
+"Project-Id-Version: WooCommerce MercadoPago 2.0.4\n"
 "Report-Msgid-Bugs-To: "
 "http://wordpress.org/support/plugin/woocommerce-mercadopago/\n"
-"POT-Creation-Date: 2015-03-12 23:58:24+00:00\n"
+"POT-Creation-Date: 2016-06-22 16:09:11+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2015-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
 "X-Generator: grunt-wp-i18n 0.4.9\n"
@@ -68,7 +68,7 @@ msgid "This controls the description which the user sees during checkout."
 msgstr ""
 
 #: includes/class-wc-mercadopago-gateway.php:137
-#: includes/class-wc-mercadopago-gateway.php:319
+#: includes/class-wc-mercadopago-gateway.php:333
 msgid "Pay via MercadoPago"
 msgstr ""
 
@@ -150,98 +150,98 @@ msgstr ""
 msgid "Log MercadoPago events, such as API requests, inside %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:233
+#: includes/class-wc-mercadopago-gateway.php:247
 msgid "Order %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:243
+#: includes/class-wc-mercadopago-gateway.php:257
 msgid "Shipping via"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:317
+#: includes/class-wc-mercadopago-gateway.php:331
 msgid ""
 "Thank you for your order, please click the button below to pay with "
 "MercadoPago."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:319
+#: includes/class-wc-mercadopago-gateway.php:333
 msgid "Cancel order &amp; restore cart"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:327
+#: includes/class-wc-mercadopago-gateway.php:341
 msgid ""
 "An error has occurred while processing your payment, please try again. Or "
 "contact us for assistance."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:329
+#: includes/class-wc-mercadopago-gateway.php:343
 msgid "Click to try again"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:513
+#: includes/class-wc-mercadopago-gateway.php:527
 msgid "MercadoPago Request Failure"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:549
+#: includes/class-wc-mercadopago-gateway.php:563
 msgid "MercadoPago Transaction ID"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:556
+#: includes/class-wc-mercadopago-gateway.php:570
 msgid "Payer email"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:563
+#: includes/class-wc-mercadopago-gateway.php:577
 msgid "Payment type"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:569
+#: includes/class-wc-mercadopago-gateway.php:583
 msgid "MercadoPago: Payment approved."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:574
+#: includes/class-wc-mercadopago-gateway.php:588
 msgid "MercadoPago: The user has not completed the payment process yet."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:578
+#: includes/class-wc-mercadopago-gateway.php:592
 msgid "MercadoPago: Payment under review."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:582
+#: includes/class-wc-mercadopago-gateway.php:596
 msgid "MercadoPago: The payment was declined. The user can try again."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:586
+#: includes/class-wc-mercadopago-gateway.php:600
 msgid "MercadoPago: The payment was returned to the user."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:590
+#: includes/class-wc-mercadopago-gateway.php:604
 msgid "MercadoPago: Payment canceled."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:594
+#: includes/class-wc-mercadopago-gateway.php:608
 msgid "MercadoPago: It started a dispute for payment."
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:625
-#: includes/class-wc-mercadopago-gateway.php:634
-#: includes/class-wc-mercadopago-gateway.php:643
+#: includes/class-wc-mercadopago-gateway.php:639
+#: includes/class-wc-mercadopago-gateway.php:648
+#: includes/class-wc-mercadopago-gateway.php:657
 msgid "MercadoPago Disabled"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:625
+#: includes/class-wc-mercadopago-gateway.php:639
 msgid "You should inform your Client_id. %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:625
-#: includes/class-wc-mercadopago-gateway.php:634
+#: includes/class-wc-mercadopago-gateway.php:639
+#: includes/class-wc-mercadopago-gateway.php:648
 msgid "Click here to configure!"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:634
+#: includes/class-wc-mercadopago-gateway.php:648
 msgid "You should inform your Client_secret. %s"
 msgstr ""
 
-#: includes/class-wc-mercadopago-gateway.php:643
+#: includes/class-wc-mercadopago-gateway.php:657
 msgid ""
 "Currency <code>%s</code> is not supported. Please make sure that you use "
 "one of the following supported currencies: ARS, BRL, COP, MXN, USD or VEF."
@@ -268,7 +268,7 @@ msgid "MercadoPago gateway for Woocommerce."
 msgstr ""
 
 #. Author of the plugin/theme
-msgid "claudiosanches"
+msgid "Claudio Sanches"
 msgstr ""
 
 #. Author URI of the plugin/theme

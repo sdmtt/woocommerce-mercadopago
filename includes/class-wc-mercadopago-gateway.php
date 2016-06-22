@@ -189,6 +189,20 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	}
 
 	/**
+	 * Get order cancel URL.
+	 *
+	 * @param WC_Order $order
+	 * @return string
+	 */
+	protected function get_order_cancel_url( $order ) {
+		if ( method_exists( $order, 'get_cancel_order_url_raw' ) ) {
+			return $order->get_cancel_order_url_raw();
+		}
+
+		return str_replace( array( '&amp;', '&#038;' ), '&', $order->get_cancel_order_url() );
+	}
+
+	/**
 	 * Generate the payment arguments.
 	 *
 	 * @param  object $order Order data.
@@ -196,11 +210,10 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	 * @return array         Payment arguments.
 	 */
 	public function get_payment_args( $order ) {
-
 		$args = array(
 			'back_urls' => array(
 				'success' => esc_url( $this->get_return_url( $order ) ),
-				'failure' => str_replace( '&amp;', '&', $order->get_cancel_order_url() ),
+				'failure' => $this->get_order_cancel_url( $order ),
 				'pending' => esc_url( $this->get_return_url( $order ) )
 			),
 			'payer' => array(

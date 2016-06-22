@@ -212,9 +212,9 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 	public function get_payment_args( $order ) {
 		$args = array(
 			'back_urls' => array(
-				'success' => esc_url( $this->get_return_url( $order ) ),
+				'success' => $this->get_return_url( $order ),
 				'failure' => $this->get_order_cancel_url( $order ),
-				'pending' => esc_url( $this->get_return_url( $order ) )
+				'pending' => $this->get_return_url( $order )
 			),
 			'payer' => array(
 				'name'    => $order->billing_first_name,

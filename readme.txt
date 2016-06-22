@@ -2,9 +2,9 @@
 Contributors: claudiosanches
 Donate link: http://claudiosmweb.com/doacoes/
 Tags: woocommerce, mercadopago, payment
-Requires at least: 3.9
+Requires at least: 4.0
 Tested up to: 4.5
-Stable tag: 2.0.1
+Stable tag: 2.0.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -201,6 +201,10 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Changelog ==
 
+= 2.0.3 - 2016/06/21 =
+
+* Added support for `notification_url`.
+
 = 2.0.2 - 2016/06/21 =
 
 * Fixed support for WooCommerce 2.6.
@@ -219,6 +223,7 @@ Entre em contato [clicando aqui](http://claudiosmweb.com/plugins/mercadopago-par
 
 == Upgrade Notice ==
 
-= 2.0.2 =
+= 2.0.3 =
 
 * Fixed support for WooCommerce 2.6.
+* Added support for `notification_url`.

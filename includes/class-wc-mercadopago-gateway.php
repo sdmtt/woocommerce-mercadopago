@@ -524,7 +524,7 @@ class WC_MercadoPago_Gateway extends WC_Payment_Gateway {
 			header( 'HTTP/1.1 200 OK' );
 			do_action( 'valid_mercadopago_ipn_request', $data );
 		} else {
-			wp_die( __( 'MercadoPago Request Failure', 'woocommerce-mercadopago' ) );
+			wp_die( __( 'MercadoPago Request Failure', 'woocommerce-mercadopago' ), 200 );
 		}
 	}
 
